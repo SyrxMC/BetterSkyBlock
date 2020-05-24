@@ -1,0 +1,44 @@
+# Name of the world to use for islands
+WorldName: world
+
+# Default island schematic
+Schematic: default
+
+# Default island radius (max 255)
+Radius: 120
+
+# Island default y level spawn
+YLevel: 124
+
+# When the island claim expires or the island gets deleted, delete the island region file to save hard disk space
+DeleteRegion: true
+
+# Teleport countdown in seconds
+TeleportCountdown: 5
+
+# Configuration for MySQL
+MySQL:
+  Hostname: localhost
+  Username: ${name}
+  Password: ${name}Password
+  Database: ${name}
+  
+# Default biome for islands. Set to UNCHANGED for leaving the island blocks biome unchanged.
+# Biome list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html
+DefaultBiome: PLAINS
+
+# Biomes to be used with the "/is setbiome" command
+AllowedBiomes:
+- DEEP_OCEAN
+- DESERT
+- EXTREME_HILLS
+- FLOWER_FOREST
+- FOREST
+- HELL
+- JUNGLE
+- MUSHROOM_ISLAND
+- OCEAN
+- PLAINS
+- SKY
+- SWAMPLAND
+- TAIGA
