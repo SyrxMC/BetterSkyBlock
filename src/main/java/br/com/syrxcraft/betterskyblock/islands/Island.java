@@ -33,6 +33,12 @@ public class Island {
 		this.claim = claim;
 		this.spawn = spawn;
 	}
+
+	public Island(UUID ownerId, Claim claim, int x, int y, int z) {
+		this.ownerId = ownerId;
+		this.claim = claim;
+		this.spawn = new Location(Utils.worldFromUUID(claim.getWorldUniqueId()),(x + 0.5), y , (z + 0.5));
+	}
 	
 	public Claim getClaim() {
 		return claim;

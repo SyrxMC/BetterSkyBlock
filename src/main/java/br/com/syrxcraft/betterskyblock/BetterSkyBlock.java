@@ -23,24 +23,23 @@ public class BetterSkyBlock extends JavaPlugin {
 	private LoggerHelper loggerHelper;
 	private IntegrationManager integrationManager;
 
+
 	private EventManager eventManager;
 	private World islandWorld;
 
 	@Override
 	public void onLoad() {
+		instance = this;
 
+		loggerHelper = new LoggerHelper(this);
 	}
 
 	@Override
 	public void onEnable() {
 
-		instance = this;
-
-		loggerHelper = new LoggerHelper(this);
 		config = new Config(this);
-		integrationManager = new IntegrationManager(this);
-
 		islandWorld = Bukkit.getWorld(config.getWorldName());
+		integrationManager = new IntegrationManager(this);
 
 		try {
 
@@ -52,6 +51,8 @@ public class BetterSkyBlock extends JavaPlugin {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		dropInformation(loggerHelper);
 	}
 
 	public LoggerHelper getLoggerHelper() {
@@ -88,5 +89,9 @@ public class BetterSkyBlock extends JavaPlugin {
 
 	public World getIslandWorld() {
 		return islandWorld;
+	}
+
+	public void dropInformation(LoggerHelper loggerHelper){
+		loggerHelper.info("\n");
 	}
 }

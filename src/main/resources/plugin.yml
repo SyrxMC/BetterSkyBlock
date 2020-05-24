@@ -4,6 +4,7 @@ version: @VERSION@
 author: brunoxkk0
 depend: [GriefDefender, WorldEdit]
 softdepend: [ PlaceholderAPI, BossShopPro ]
+load: POSTWORLD
 
 
 commands:
