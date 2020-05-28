@@ -29,9 +29,11 @@ public class BossShopProIntegration implements IIntegration, Listener {
     @Override
     public boolean load() {
 
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("BossShopPro"); //Get BossShopPro Plugin
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("BossShopPro");
 
-        if(plugin==null){ return false; }
+        if(plugin == null){
+            return false;
+        }
 
         bs = (BossShop) plugin;
         isEnabled  = true;

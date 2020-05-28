@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.utils.Chronometer;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import br.com.syrxcraft.betterskyblock.tasks.SpawnTeleportTask;
 import org.bukkit.*;
@@ -60,17 +61,19 @@ public class ResetIslandTask extends BukkitRunnable {
 	private final List<Chunk> islandChunks = new ArrayList<>();
 
 	private int INDEX = 0;
-	private int contador = 0;
+	private Chronometer chronometer = new Chronometer();
 
 	@Override
 	public void run() {
 
-		BetterSkyBlock.getInstance().getLoggerHelper().info("[" + (contador++) +  "] ResetIslandTask - PhaseProcess " + this.stage);
+		chronometer.start();
 
-		//TODO: brunoxkk0 22/05/20 ~ Use claim chunks to regenerate the island.
+		BetterSkyBlock.getInstance().getLoggerHelper().info("[" + chronometer.elapsedTime() +  "MS] ResetIslandTask - PhaseProcess " + stage);
+
 		switch(this.stage) {
-			case REGEN: { // Regenera 8 chunks por tick!
-				for (int i = 0; i<8; i++) {
+
+			case REGEN: {
+				for (int i = 0; i < 8; i++) {
 					if (x <= gx) {
 						if (z <= gz) {
 							try {
@@ -80,7 +83,7 @@ public class ResetIslandTask extends BukkitRunnable {
 
 								for (Entity entity : chunk.getEntities()) {
 									if (entity instanceof Player){
-										((Player)entity).kickPlayer("§cUma ilha estava sendo resetada enquanto você estava próximo! T>T");
+										((Player)entity).kickPlayer("§cUma ilha estava sendo resetada enquanto você estava próximo!");
 									}else {
 										entity.remove();
 									}
@@ -99,7 +102,7 @@ public class ResetIslandTask extends BukkitRunnable {
 								if (island.isOwnerOnline()) {
 									island.getPlayer().sendMessage(ChatColor.RED+"An error occurred while generating a new island: regen error.");
 								}
-								Bukkit.getLogger().info("An error occurred while generating "+ownerName+" island");
+								BetterSkyBlock.getInstance().getLoggerHelper().error("An error occurred while generating "+ownerName+" island");
 								e.printStackTrace();
 								this.cancel();
 								return;
@@ -150,7 +153,7 @@ public class ResetIslandTask extends BukkitRunnable {
 				return;
 			}
 			case SCHEMATIC: {
-				Bukkit.getLogger().info(ownerName + " island regeneration complete.");
+				BetterSkyBlock.getInstance().getLoggerHelper().info(ownerName + " island regeneration complete.");
 				try {
 					// read schematic file
 					FileInputStream fis = new FileInputStream(schematic);
@@ -180,10 +183,10 @@ public class ResetIslandTask extends BukkitRunnable {
 
 					if (BetterSkyBlock.getInstance().config().getDefaultBiome()!= null) {
 						island.setIslandBiome(BetterSkyBlock.getInstance().config().getDefaultBiome());
-						Bukkit.getLogger().info(ownerName+" island biome set to default biome ("+ BetterSkyBlock.getInstance().config().getDefaultBiome().toString()+")");
+						BetterSkyBlock.getInstance().getLoggerHelper().info(ownerName+" island biome set to default biome ("+ BetterSkyBlock.getInstance().config().getDefaultBiome().toString()+")");
 					}
 
-					this.stage = Stage.UNLOADCHUNKS;
+					this.stage = Stage.UNLOAD_CHUNKS;
 					this.initCoords();
 				} catch (MaxChangedBlocksException | IOException e) {
 					if (island.isOwnerOnline()) {
@@ -194,13 +197,16 @@ public class ResetIslandTask extends BukkitRunnable {
 				}
 				return;
 			}
-			case UNLOADCHUNKS: {
+			case UNLOAD_CHUNKS: {
 				islandChunks.forEach(Chunk::unload);
 				this.stage = Stage.COMPLETED;
 				return;
 			}
 			case COMPLETED: {
 				island.ready = true;
+				chronometer.stop();
+				BetterSkyBlock.getInstance().getLoggerHelper().info("Took " + chronometer.elapsedTime() + "MS to load " + island.getOwnerName() + " island.");
+
 				if (island.isOwnerOnline()) {
 					island.getPlayer().sendMessage(ChatColor.GREEN+"A sua ilha foi gerada com sucesso! Você será teletransportado em " + BetterSkyBlock.getInstance().config().getTpCountdown() + " segundos.");
 					SpawnTeleportTask.teleportTask(island.getPlayer(), island, BetterSkyBlock.getInstance().config().getTpCountdown());
@@ -221,7 +227,7 @@ public class ResetIslandTask extends BukkitRunnable {
 	}
 
 	enum Stage {
-		REGEN, CLEAR_THEM_ALL, SCHEMATIC, UNLOADCHUNKS, COMPLETED;
+		REGEN, CLEAR_THEM_ALL, SCHEMATIC, UNLOAD_CHUNKS, COMPLETED;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.data.providers.Providers;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,6 +38,7 @@ public class Config {
 	//Options
 	private boolean deleteRegion;
 	private int tpCountdown;
+	private Providers dataProvider;
 
 
 	private final BetterSkyBlock instance;
@@ -137,6 +139,7 @@ public class Config {
 
 		deleteRegion = config.getBoolean("DeleteRegion", true);
 		tpCountdown = config.getInt("TeleportCountdown", 5);
+		dataProvider = Providers.getFromName(config.getString("DataProvider", "null"));
 
 	}
 
@@ -266,5 +269,9 @@ public class Config {
 
 	public int getNextRegion() {
 		return nextRegion;
+	}
+
+	public Providers getDataProvider() {
+		return dataProvider;
 	}
 }

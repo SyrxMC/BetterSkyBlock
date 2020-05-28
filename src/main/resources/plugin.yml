@@ -9,7 +9,8 @@ load: POSTWORLD
 
 commands:
   island:
-      description: GPPSkyBlock main command
+      description: BetterSkyBlock main command.
+      usage: is help
       aliases: [is]
 
 permissions:

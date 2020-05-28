@@ -7,6 +7,8 @@ import br.com.syrxcraft.betterskyblock.config.Config;
 import br.com.syrxcraft.betterskyblock.data.DataStore;
 import br.com.syrxcraft.betterskyblock.listeners.EventManager;
 import br.com.syrxcraft.betterskyblock.utils.LoggerHelper;
+import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.claim.ClaimManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -28,29 +30,20 @@ public class BetterSkyBlock extends JavaPlugin {
 	private World islandWorld;
 
 	@Override
-	public void onLoad() {
+	public void onEnable() {
 		instance = this;
 
 		loggerHelper = new LoggerHelper(this);
-	}
 
-	@Override
-	public void onEnable() {
+		loggerHelper.info("Hello World!");
+		loggerHelper.info("Better Sky Block - " + getDescription().getVersion());
 
 		config = new Config(this);
 		islandWorld = Bukkit.getWorld(config.getWorldName());
 		integrationManager = new IntegrationManager(this);
-
-		try {
-
-			dataStore = new DataStore(this);
-			eventManager = new EventManager(this);
-
-			CommandRegisterer.registerCommands(this);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		dataStore = new DataStore(this);
+		eventManager = new EventManager(this);
+		CommandRegisterer.registerCommands(this);
 
 		dropInformation(loggerHelper);
 	}
@@ -91,7 +84,15 @@ public class BetterSkyBlock extends JavaPlugin {
 		return islandWorld;
 	}
 
-	public void dropInformation(LoggerHelper loggerHelper){
-		loggerHelper.info("\n");
+	public ClaimManager getClaimManager(){
+		return GriefDefender.getCore().getClaimManager(islandWorld.getUID());
 	}
+
+	public void dropInformation(LoggerHelper loggerHelper){
+		loggerHelper.info("Server version: "   + Bukkit.getVersion().replace("git-",""));
+		loggerHelper.info("Island World: "     + getIslandWorld().getName());
+		loggerHelper.info("DataProvider: "     + getDataStore().getDataProvider().getProvider().name());
+		loggerHelper.info("GriefDefenderAPI: " + GriefDefender.getVersion().getApiVersion());
+	}
+
 }

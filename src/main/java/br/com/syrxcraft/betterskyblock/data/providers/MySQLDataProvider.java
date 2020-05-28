@@ -86,19 +86,26 @@ public class MySQLDataProvider implements IDataProvider{
 
             islands.clear();
 
-            ClaimManager claimManager = GriefDefender.getCore().getClaimManager(instance.getIslandWorld().getUID());
+            ClaimManager claimManager = instance.getClaimManager();
 
             while (rs.next()) {
 
                 UUID uuid = Utils.toUUID(rs.getBytes(1));
                 Claim claim = claimManager.getClaimByUUID(Utils.toUUID(rs.getBytes(2))).orElse(null);
 
+                int x = rs.getInt(3);
+                int y = rs.getInt(4);
+                int z = rs.getInt(5);
+
                 if (claim != null) {
 
-                    Island island = new Island(uuid, claim, rs.getInt(3), rs.getInt(4), rs.getInt(5));
+                    Island island = new Island(uuid, claim, x, y, z);
                     islands.put(uuid, island);
 
+                    continue;
                 }
+
+                instance.getLoggerHelper().warn("Unable to load island for: " + uuid + " claim is null... [ X: " + x + " | Y: " + y + " | Z: " + z + "]");
             }
 
         }catch (Exception e) {
@@ -133,7 +140,7 @@ public class MySQLDataProvider implements IDataProvider{
                     Utils.UUIDtoHexString(island.getClaim().getUniqueId()) + ", " +
                     island.getSpawn().getBlockX() + ", " +
                     island.getSpawn().getBlockY() + ", " +
-                    island.getSpawn().getBlockZ() +");"
+                    island.getSpawn().getBlockZ() + ");"
 
             );
         } catch (SQLException exception) {

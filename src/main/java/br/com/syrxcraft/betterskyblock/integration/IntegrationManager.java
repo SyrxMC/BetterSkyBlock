@@ -11,23 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 public class IntegrationManager implements Listener {
 
-    private BetterSkyBlock betterSkyBlock;
-
-    private enum Integrations {
-
-        PlaceHolderAPI(PlaceHolderAPIIntegration.class),
-        BossShopPro(BossShopProIntegration.class);
-
-        private final Class<?> clazz;
-
-        Integrations(Class<?> clazz){
-            this.clazz = clazz;
-        }
-
-        public Class<?> getClazz() {
-            return clazz;
-        }
-    }
+    private final BetterSkyBlock betterSkyBlock;
 
     public IntegrationManager(BetterSkyBlock betterSkyBlock){
         this.betterSkyBlock = betterSkyBlock;
@@ -63,5 +47,5 @@ public class IntegrationManager implements Listener {
             } catch (IllegalAccessException | InstantiationException ignored) { }
         }
     }
-
 }
+

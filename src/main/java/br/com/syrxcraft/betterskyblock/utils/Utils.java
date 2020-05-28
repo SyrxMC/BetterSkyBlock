@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.util.UUID;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import com.sk89q.worldedit.blocks.TileEntityBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.EditSession;
@@ -32,6 +34,7 @@ import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.biome.Biomes;
 import com.sk89q.worldedit.world.registry.LegacyWorldData;
 import com.sk89q.worldedit.world.registry.WorldData;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Utils {
 
@@ -193,4 +196,11 @@ public class Utils {
 		return Bukkit.getWorld(uuid);
 	}
 
+	public static void bukkitSync(Runnable runnable){
+		Bukkit.getScheduler().runTask(BetterSkyBlock.getInstance(), runnable);
+	}
+
+	public static Player asBukkitPlayer(UUID uuid){
+		return Bukkit.getPlayer(uuid);
+	}
 }

@@ -14,4 +14,13 @@ public enum Providers {
         return targetClass;
     }
 
+    public static Providers getFromName(String name){
+
+        for(Providers providers : values()){
+            if(providers.name().equalsIgnoreCase(name)) return providers;
+        }
+
+        return null;
+    }
+
 }

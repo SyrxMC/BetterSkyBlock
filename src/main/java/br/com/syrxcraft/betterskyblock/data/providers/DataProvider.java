@@ -46,8 +46,10 @@ public class DataProvider implements IDataProvider{
 
 
     private IDataProvider internalProvider;
+    private final Providers provider;
 
     public DataProvider(Providers provider){
+        this.provider = provider;
 
         try {
             Object instance = provider.getTargetClass().newInstance();
@@ -61,4 +63,7 @@ public class DataProvider implements IDataProvider{
 
     }
 
+    public Providers getProvider() {
+        return provider;
+    }
 }

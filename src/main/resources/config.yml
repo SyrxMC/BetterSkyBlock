@@ -16,6 +16,9 @@ DeleteRegion: true
 # Teleport countdown in seconds
 TeleportCountdown: 5
 
+# DataProvider type selector. ~ Available: MySQL
+DataProvider: MySQL
+
 # Configuration for MySQL
 MySQL:
   Hostname: localhost
@@ -32,7 +35,6 @@ AllowedBiomes:
 - DEEP_OCEAN
 - DESERT
 - EXTREME_HILLS
-- FLOWER_FOREST
 - FOREST
 - HELL
 - JUNGLE

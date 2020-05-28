@@ -32,7 +32,7 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     void onPlayerTeleport(PlayerPortalEvent event) {
-        if (event.getCause()== PlayerTeleportEvent.TeleportCause.END_PORTAL && isIslandWorld(event.getFrom().getWorld())) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL && isIslandWorld(event.getFrom().getWorld())) {
             Location loc = event.getPortalTravelAgent().findPortal(new Location(event.getTo().getWorld(), 0, 64, 0));
             if (loc!=null) {
                 event.setTo(loc);
