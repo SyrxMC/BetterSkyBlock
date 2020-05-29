@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock;
 
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.integration.IntegrationManager;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.commands.CommandRegisterer;
@@ -24,6 +25,7 @@ public class BetterSkyBlock extends JavaPlugin {
 	private DataStore dataStore;
 	private LoggerHelper loggerHelper;
 	private IntegrationManager integrationManager;
+	private CommandManager commandManager;
 
 
 	private EventManager eventManager;
@@ -37,12 +39,13 @@ public class BetterSkyBlock extends JavaPlugin {
 
 		loggerHelper.info("Hello World!");
 		loggerHelper.info("Better Sky Block - " + getDescription().getVersion());
-
 		config = new Config(this);
 		islandWorld = Bukkit.getWorld(config.getWorldName());
 		integrationManager = new IntegrationManager(this);
 		dataStore = new DataStore(this);
 		eventManager = new EventManager(this);
+		commandManager = new CommandManager();
+		commandManager.load();
 		CommandRegisterer.registerCommands(this);
 
 		dropInformation(loggerHelper);
@@ -88,11 +91,14 @@ public class BetterSkyBlock extends JavaPlugin {
 		return GriefDefender.getCore().getClaimManager(islandWorld.getUID());
 	}
 
+	public CommandManager getCommandManager() {
+		return commandManager;
+	}
+
 	public void dropInformation(LoggerHelper loggerHelper){
 		loggerHelper.info("Server version: "   + Bukkit.getVersion().replace("git-",""));
 		loggerHelper.info("Island World: "     + getIslandWorld().getName());
 		loggerHelper.info("DataProvider: "     + getDataStore().getDataProvider().getProvider().name());
 		loggerHelper.info("GriefDefenderAPI: " + GriefDefender.getVersion().getApiVersion());
 	}
-
 }

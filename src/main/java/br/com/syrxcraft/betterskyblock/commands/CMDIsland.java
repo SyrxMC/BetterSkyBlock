@@ -8,11 +8,14 @@ import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.tasks.SpawnTeleportTask;
+import com.google.common.reflect.ClassPath;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.data.PlayerData;
+import com.griefdefender.api.event.RemoveClaimEvent;
 import com.griefdefender.api.permission.flag.Flags;
+import com.griefdefender.event.GDRemoveClaimEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
@@ -35,6 +38,7 @@ public class CMDIsland implements CommandExecutor {
         ArrayList<String> argumentos = new ArrayList<String>(Arrays.asList(args));
 
         if(argumentos.isEmpty()) argumentos.add("");
+
 
         switch (argumentos.get(0).toLowerCase()){
             case "":
@@ -436,12 +440,15 @@ public class CMDIsland implements CommandExecutor {
 //            }
 //        }
 
-//        ClaimDeletedEvent event = new ClaimDeletedEvent(island.getClaim(), (sender instanceof Player ? (Player) sender : null) , ClaimDeleteEvent.Reason.DELETE);
-//        Bukkit.getPluginManager().callEvent(event);
-//        if (event.isCancelled()) {
-//            sender.sendMessage("§4§l ▶ §cEssa ilha não pode ser deletada!");
-//            return true;
-//        }
+        GDRemoveClaimEvent.Delete event = new GDRemoveClaimEvent.Delete(island.getClaim());
+        event.shouldRestore(false);
+
+        GriefDefender.getEventManager().post(event);
+
+        if (event.cancelled()) {
+            sender.sendMessage("§4§l ▶ §cEssa ilha não pode ser deletada!");
+            return true;
+        }
 
         sender.sendMessage("§2§l ▶ §aIlha deletada com sucesso!");
         return true;

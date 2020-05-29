@@ -148,6 +148,8 @@ public class ClaimEvents implements Listener {
     @IgnoreCancelled
     public void onClaimCreate(CreateClaimEvent event) {
 
+        //TODO: check for sub claims
+
         if (!event.getCause().containsType(Player.class)) {
             return;
         }
