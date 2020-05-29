@@ -12,9 +12,7 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class CommandManager {
 
@@ -25,6 +23,7 @@ public class CommandManager {
 
     private final LinkedHashMap<CCommand,ICommand> commands = new LinkedHashMap<>();
     private final LinkedHashMap<CSubCommand, ISubCommand> subCommands = new LinkedHashMap<>();
+    private final LinkedHashMap<String,String> confirmations = new LinkedHashMap<String,String>();
 
     public void load(){
 
@@ -164,7 +163,16 @@ public class CommandManager {
                     ISubCommand iSubCommand = subCommands.get(subCommand);
 
                     if(iSubCommand != null){
-                        return iSubCommand.execute(commandSender, command, label, args);
+
+                        String[] args_;
+
+                        if(args.length < 2){
+                            args_ = new String[]{};
+                        }else{
+                            args_ = Arrays.copyOfRange(args, 1, args.length);
+                        }
+
+                        return iSubCommand.execute(commandSender, command, label, args_);
                     }
                 }
             }
@@ -173,4 +181,7 @@ public class CommandManager {
         return false;
     }
 
+    public LinkedHashMap<String, String> getConfirmations() {
+        return confirmations;
+    }
 }

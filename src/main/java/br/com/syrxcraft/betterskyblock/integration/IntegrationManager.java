@@ -47,5 +47,9 @@ public class IntegrationManager implements Listener {
             } catch (IllegalAccessException | InstantiationException ignored) { }
         }
     }
+
+    public boolean isIntegrationLoaded(Integrations integrations){
+        return integrations.isEnabled();
+    }
 }
 

@@ -213,6 +213,7 @@ class MySQLDriver {
 
         properties.setProperty("user", username);
         properties.setProperty("password", password);
+        properties.setProperty("autoReconnect", "true");
 
         return DriverManager.getConnection(getTargetConnection(), properties);
 

@@ -39,6 +39,7 @@ public class Config {
 	private boolean deleteRegion;
 	private int tpCountdown;
 	private Providers dataProvider;
+	private boolean UseBossShopForMenu = false;
 
 
 	private final BetterSkyBlock instance;
@@ -273,5 +274,9 @@ public class Config {
 
 	public Providers getDataProvider() {
 		return dataProvider;
+	}
+
+	public boolean useBossShopForMenu() {
+		return UseBossShopForMenu;
 	}
 }

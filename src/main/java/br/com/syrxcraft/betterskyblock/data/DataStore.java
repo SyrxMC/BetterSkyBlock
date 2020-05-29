@@ -10,6 +10,8 @@ import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.ClaimTypes;
 import com.griefdefender.api.data.PlayerData;
+import net.kyori.text.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.sql.SQLException;
@@ -60,6 +62,8 @@ public class DataStore {
 		Vector3i locL = new Vector3i((bx + 255 - radius), 0, (bz + 255 - radius));
 		Vector3i locU = new Vector3i((bx + 255 + radius), 255, (bz + 255 + radius));
 
+		String name = Bukkit.getPlayer(uuid).getName();
+
 		ClaimResult result = Claim.builder()
 				.world(world.getUID())
 				.bounds(locL, locU)
@@ -67,6 +71,8 @@ public class DataStore {
 				.requireClaimBlocks(false)
 				.sizeRestrictions(false)
 				.resizable(false)
+				.farewell(TextComponent.of("§3" + name + "'s island."))
+				.greeting(TextComponent.of("§3" + name + "'s island."))
 				.type(ClaimTypes.TOWN)
 				.build();
 
