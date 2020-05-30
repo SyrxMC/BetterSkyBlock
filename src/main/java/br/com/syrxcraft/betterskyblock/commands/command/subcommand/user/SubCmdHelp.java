@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 @HasSubCommand
 public class SubCmdHelp implements ISubCommand {
 
-    @CSubCommand(name = "help", targetCommand = "island2")
+    @CSubCommand(name = "help", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if(commandSender instanceof Player && BetterSkyBlock.getInstance().config().useBossShopForMenu() && BetterSkyBlock.getInstance().getIntegrationManager().isIntegrationLoaded(Integrations.BossShopPro)){
@@ -37,12 +37,12 @@ public class SubCmdHelp implements ISubCommand {
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " public","§bDeixa a sua ilha Pública!","/" + command + " public",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " reset","§bReseta a sua ilha!(Apaga ela inteira!!!)","/" + command + " reset",true));
 
-            if (player.hasPermission(PermissionNodes.ADMIN) && player.hasPermission(PermissionNodes.COMMAND_SETRADIUS))
-                FancyText.sendTo(player, new FancyText("§6§l ▶ §e/" + command + " setraio <Player> <Raio>","§bAltera o tamanho do raio da ilha!","/" + command + " setraio",true));
+//            if (player.hasPermission(PermissionNodes.ADMIN) && player.hasPermission(PermissionNodes.COMMAND_SETRADIUS))
+//                FancyText.sendTo(player, new FancyText("§6§l ▶ §e/" + command + " setraio <Player> <Raio>","§bAltera o tamanho do raio da ilha!","/" + command + " setraio",true));
 
-            if (player.hasPermission(PermissionNodes.ADMIN) || player.hasPermission(PermissionNodes.COMMAND_SETBIOME)) {
+            if (player.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE)) {
                 FancyText.sendTo(player, new FancyText("§3§l ▶ §b/" + command + " biomelist","§bMostra os possíveis biomas!","/" + command + " biomelist",true));
-                if (player.hasPermission(PermissionNodes.COMMAND_SETBIOME_OTHER)){
+                if (player.hasPermission(PermissionNodes.COMMAND_SET_BIOME_OTHER)){
                     FancyText.sendTo(player, new FancyText("§3§l ▶ §b/" + command + " setbiome <Bioma> [Player]","§bDefine o bioma de toda a sua ilha!","/" + command + " setbiome ",true));
                 }else {
                     FancyText.sendTo(player, new FancyText("§3§l ▶ §b/" + command + " setbiome <Bioma>","§bDefine o bioma de toda a sua ilha!","/" + command + " setbiome ",true));

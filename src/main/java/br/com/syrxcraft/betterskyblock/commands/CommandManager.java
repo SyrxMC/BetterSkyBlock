@@ -12,7 +12,9 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 public class CommandManager {
 
@@ -184,4 +186,10 @@ public class CommandManager {
     public LinkedHashMap<String, String> getConfirmations() {
         return confirmations;
     }
+
+    public static boolean noPermission(CommandSender sender){
+        sender.sendMessage("§cYou don't have permission to execute this action.");
+        return true;
+    }
+
 }

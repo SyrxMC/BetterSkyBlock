@@ -1,6 +1,8 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
@@ -16,7 +18,7 @@ import java.util.HashSet;
 @HasSubCommand
 public class SubCmdPublic implements ISubCommand {
 
-    @CSubCommand(name = "public", targetCommand = "island2")
+    @CSubCommand(name = "public", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!(commandSender instanceof Player)) {
@@ -24,6 +26,10 @@ public class SubCmdPublic implements ISubCommand {
         }
 
         Player player = (Player) commandSender;
+
+        if(!player.hasPermission(PermissionNodes.COMMAND_PUBLIC)){
+            return CommandManager.noPermission(player);
+        }
 
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
 

@@ -1,6 +1,7 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
@@ -9,11 +10,11 @@ import org.bukkit.command.CommandSender;
 @HasSubCommand
 public class SubCmdSetRadius implements ISubCommand {
 
-    @CSubCommand(name = "setradius", targetCommand = "island2")
+    @CSubCommand(name = "setradius", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
-        if (!commandSender.hasPermission(PermissionNodes.COMMAND_SETRADIUS)) {
-            return true;
+        if (!commandSender.hasPermission(PermissionNodes.COMMAND_SET_RADIUS)) {
+            return CommandManager.noPermission(commandSender);
         }
 
 //        if (argumentos.get(1).isEmpty() || argumentos.get(2).isEmpty()){
@@ -56,6 +57,7 @@ public class SubCmdSetRadius implements ISubCommand {
 //        island.setRadius(newRadius);
 //        sender.sendMessage("§3§l ▶ §aO novo raio da ilha foi definido para " + newRadius + " blocos de distancia!");
 //        return true;
+
         return false;
     }
 }

@@ -5,7 +5,7 @@ import br.com.syrxcraft.betterskyblock.commands.manager.ICommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-@CCommand(label = "island2", aliases = {"is2", "isl2", "bsis2"})
+@CCommand(label = "island", aliases = {"is", "isl", "bsis"})
 public class IsCommand implements ICommand {
 
     @Override
@@ -39,7 +39,7 @@ public class IsCommand implements ICommand {
             case "reload":
                 return deliverSubCommand(sender, command, "reload", args);
             default:{
-                sender.sendMessage("&cErro de parametros, por favor use /" + label + " help");
+                sender.sendMessage("§cErro de parametros, por favor use /" + label + " help");
                 return false;
             }
 

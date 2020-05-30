@@ -8,31 +8,52 @@ load: POSTWORLD
 
 
 commands:
+
   island:
       description: BetterSkyBlock main command.
       usage: is help
-      aliases: [is]
+      aliases: [is, isl, bsis]
 
 permissions:
-  gppskyblock.spawn:
-    default: true
-  gppskyblock.reset:
-    default: true
-  gppskyblock.setspawn:
-    default: true
-  gppskyblock.setbiome.all:
-    default: false
-  gppskyblock.manage:
+
+  betterskyblock.admin:
     default: op
-  gppskyblock.setradius:
-    default: op
-  gppskyblock.override:
-    default: op
-  gppskyblock.leaveisland:
+    children:
+      betterskyblock.cmd.spawn: true
+      betterskyblock.cmd.biome.list: true
+      betterskyblock.cmd.reset: true
+      betterskyblock.cmd.private: true
+      betterskyblock.cmd.public: true
+      betterskyblock.cmd.delete.other: true
+      betterskyblock.set.spawn: true
+      betterskyblock.set.biome: true
+      betterskyblock.set.biome.all: true
+      betterskyblock.set.radius: true
+      betterskyblock.noteleportdelay: true
+      betterskyblock.override: true
+      betterskyblock.leaveisland: true
+
+  betterskyblock.cmd.biome.list:
     default: true
-  gppskyblock.delete:
+  betterskyblock.cmd.reset:
     default: true
-  gppskyblock.delete.any:
+  betterskyblock.cmd.private:
+    default: true
+  betterskyblock.cmd.public:
+    default: true
+  betterskyblock.cmd.delete.other:
     default: op
-  gppskyblock.claimoutsidemainworld:
-    default: false
+  betterskyblock.set.spawn:
+    default: true
+  betterskyblock.set.biome:
+    default: true
+  betterskyblock.set.biome.all:
+    default: op
+  betterskyblock.set.radius:
+    default: op
+  betterskyblock.noteleportdelay:
+    default: op
+  betterskyblock.override:
+    default: op
+  betterskyblock.leaveisland:
+    default: op

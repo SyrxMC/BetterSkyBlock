@@ -1,6 +1,8 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
@@ -14,7 +16,7 @@ import java.sql.SQLException;
 @HasSubCommand
 public class SubCmdSetSpawn implements ISubCommand {
 
-    @CSubCommand(name = "setspawn", targetCommand = "island2")
+    @CSubCommand(name = "setspawn", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!(commandSender instanceof Player)) {
@@ -22,6 +24,10 @@ public class SubCmdSetSpawn implements ISubCommand {
         }
 
         Player player = (Player) commandSender;
+
+        if(!player.hasPermission(PermissionNodes.COMMAND_SET_SPAWN)){
+            return CommandManager.noPermission(player);
+        }
 
         player.sendMessage(ChatColor.RED + "ATENÇAO: Certifique-se de usar blocos inteiros para o spawn de sua ilha! Não use escadas ou lajes!");
 

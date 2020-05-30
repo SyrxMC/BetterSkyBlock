@@ -1,6 +1,8 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
@@ -11,7 +13,7 @@ import org.bukkit.entity.Player;
 @HasSubCommand
 public class SubCmdReset implements ISubCommand {
 
-    @CSubCommand(name = "reset", targetCommand = "island2")
+    @CSubCommand(name = "reset", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!(commandSender instanceof Player)) {
@@ -19,6 +21,10 @@ public class SubCmdReset implements ISubCommand {
         }
 
         Player player = (Player) commandSender;
+
+        if(!player.hasPermission(PermissionNodes.COMMAND_RESET)){
+            return CommandManager.noPermission(player);
+        }
 
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
 

@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 public class EventManager {
 
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public EventManager(Plugin plugin){
         this.plugin = plugin;
@@ -19,9 +19,7 @@ public class EventManager {
     }
 
     void registerEvents(){
-
         GriefDefender.getEventManager().register(new ClaimEvents());
-
         Bukkit.getPluginManager().registerEvents(new CommandHunter(), plugin);
         Bukkit.getPluginManager().registerEvents(new PlayerEvents(), plugin);
     }

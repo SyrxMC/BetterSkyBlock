@@ -1,9 +1,11 @@
 package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.islands.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
+import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.event.*;
 import com.griefdefender.event.GDTransferClaimEvent;
 import net.kyori.event.method.annotation.IgnoreCancelled;
@@ -15,11 +17,13 @@ import net.kyori.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.sql.SQLException;
 
 import static br.com.syrxcraft.betterskyblock.islands.IslandUtils.getIsland;
+import static br.com.syrxcraft.betterskyblock.islands.IslandUtils.isIslandWorld;
 
 public class ClaimEvents implements Listener {
 
@@ -139,4 +143,33 @@ public class ClaimEvents implements Listener {
             }
         }
     }
+
+
+    @Subscribe()
+    @PostOrder(-100)
+    @IgnoreCancelled
+    void onClaimExit(BorderClaimEvent event) {
+
+        if(!event.getUser().isPresent() || event.getExitClaim() == null){
+            return;
+        }
+
+        Player player = Utils.asBukkitPlayer(event.getUser().get().getUniqueId());
+
+        if(player == null) return;
+
+        if (player.hasPermission(PermissionNodes.OPTIONS_OVERRIDE) || player.hasPermission(PermissionNodes.OPTIONS_LEAVE_ISLAND)) {
+            return;
+        }
+
+        Island island = IslandUtils.getIsland(event.getExitClaim());
+
+        if(island != null){
+            player.sendMessage(ChatColor.RED+"Você não pode voar para fora de sua ilha!");
+            player.teleport(island.getSpawn());
+        }
+
+    }
+
+
 }

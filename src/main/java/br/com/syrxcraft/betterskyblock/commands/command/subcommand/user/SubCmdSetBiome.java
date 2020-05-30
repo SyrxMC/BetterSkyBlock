@@ -2,13 +2,12 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
-import com.griefdefender.api.GriefDefender;
-import com.griefdefender.api.data.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
@@ -19,18 +18,18 @@ import java.util.Arrays;
 @HasSubCommand
 public class SubCmdSetBiome implements ISubCommand {
 
-    @CSubCommand(name = "setbiome", targetCommand = "island2")
+    @CSubCommand(name = "setbiome", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         System.out.println(Arrays.asList(args));
 
-        if (!commandSender.hasPermission(PermissionNodes.COMMAND_SETBIOME)){
-            return false;
+        if (!commandSender.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE)){
+            return CommandManager.noPermission(commandSender);
         }
 
         Player player = null;
 
-        if (commandSender.hasPermission(PermissionNodes.COMMAND_SETBIOME_OTHER)){
+        if (commandSender.hasPermission(PermissionNodes.COMMAND_SET_BIOME_OTHER)){
 
             if(args.length >= 2 && args[1] != null && !args[1].isEmpty()){
 

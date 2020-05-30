@@ -39,7 +39,7 @@ public class Config {
 	private boolean deleteRegion;
 	private int tpCountdown;
 	private Providers dataProvider;
-	private boolean UseBossShopForMenu = false;
+	private boolean useBossShopForMenu = false;
 
 
 	private final BetterSkyBlock instance;
@@ -141,6 +141,7 @@ public class Config {
 		deleteRegion = config.getBoolean("DeleteRegion", true);
 		tpCountdown = config.getInt("TeleportCountdown", 5);
 		dataProvider = Providers.getFromName(config.getString("DataProvider", "null"));
+		useBossShopForMenu = config.getBoolean("useBossShopForMenu", false);
 
 	}
 
@@ -277,6 +278,6 @@ public class Config {
 	}
 
 	public boolean useBossShopForMenu() {
-		return UseBossShopForMenu;
+		return useBossShopForMenu;
 	}
 }

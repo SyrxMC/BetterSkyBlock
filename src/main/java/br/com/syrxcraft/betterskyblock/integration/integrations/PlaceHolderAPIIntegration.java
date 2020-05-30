@@ -7,6 +7,7 @@ import br.com.syrxcraft.betterskyblock.islands.Island;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+//TODO: Rewrite
 public class PlaceHolderAPIIntegration extends EZPlaceholderHook implements IIntegration {
 
     @Override

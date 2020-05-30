@@ -1,6 +1,7 @@
 package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.permissions.Permissible;
 
 import static br.com.syrxcraft.betterskyblock.islands.IslandUtils.isIslandWorld;
 
@@ -20,7 +22,10 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (!event.getPlayer().hasPermission("gppskyblock.override") && isIslandWorld(event.getTo().getWorld()) && !isIslandWorld(event.getFrom().getWorld()) && !event.getTo().equals(Bukkit.getWorld(BetterSkyBlock.getInstance().config().getWorldName()).getSpawnLocation())) {
+        if (!event.getPlayer().hasPermission(PermissionNodes.OPTIONS_OVERRIDE) &&
+                isIslandWorld(event.getTo().getWorld()) &&
+                !isIslandWorld(event.getFrom().getWorld()) &&
+                !event.getTo().equals(Bukkit.getWorld(BetterSkyBlock.getInstance().config().getWorldName()).getSpawnLocation())) {
             Claim claim = GriefDefender.getCore().getClaimManager(event.getTo().getWorld().getUID()).getClaimAt(new Vector3i(event.getTo().getX(),event.getTo().getY(),event.getTo().getZ()));
 
             if (claim==null) {
@@ -38,14 +43,6 @@ public class PlayerEvents implements Listener {
                 event.setTo(loc);
                 event.useTravelAgent(false);
             }
-        }
-    }
-
-    @EventHandler
-    void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction()== Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType()== Material.BUCKET && event.getClickedBlock().getType()==Material.OBSIDIAN && event.getPlayer().hasPermission("gppskyblock.lava")) {
-            event.getClickedBlock().setType(Material.AIR);
-            event.getPlayer().getItemInHand().setType(Material.LAVA_BUCKET);
         }
     }
 }

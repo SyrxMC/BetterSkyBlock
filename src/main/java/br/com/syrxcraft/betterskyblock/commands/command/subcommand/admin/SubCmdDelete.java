@@ -3,13 +3,13 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.admin;
 import br.com.finalcraft.evernifecore.FCBukkitUtil;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.data.PlayerData;
-import com.griefdefender.event.GDRemoveClaimEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -18,11 +18,11 @@ import java.sql.SQLException;
 @HasSubCommand
 public class SubCmdDelete implements ISubCommand {
 
-    @CSubCommand(name = "delete", targetCommand = "island2")
+    @CSubCommand(name = "delete", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_DELETE_OTHER)){
-            return true;
+            return CommandManager.noPermission(commandSender);
         }
 
         PlayerData playerData = GriefDefender.getCore().getPlayerData(BetterSkyBlock.getInstance().getIslandWorld().getUID(), Bukkit.getPlayerUniqueId(args[0])).orElse(null);

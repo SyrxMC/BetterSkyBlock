@@ -2,6 +2,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @HasSubCommand
 public class SubCmdSpawn implements ISubCommand {
 
-    @CSubCommand(name = "spawn", targetCommand = "island2")
+    @CSubCommand(name = "spawn", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!(commandSender instanceof Player)) {
@@ -30,7 +31,12 @@ public class SubCmdSpawn implements ISubCommand {
 
         Player player = (Player)commandSender;
 
+        if(!player.hasPermission(PermissionNodes.COMMAND_SPAWN)){
+            return CommandManager.noPermission(player);
+        }
+
         Island island;
+
         if (args.length > 1 && args[0] != null && !args[0].isEmpty()){
 
             UUID argPlayer = Bukkit.getPlayerUniqueId(args[0]);

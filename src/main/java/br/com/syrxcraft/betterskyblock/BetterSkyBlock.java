@@ -3,7 +3,6 @@ package br.com.syrxcraft.betterskyblock;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.integration.IntegrationManager;
 import br.com.syrxcraft.betterskyblock.islands.Island;
-import br.com.syrxcraft.betterskyblock.commands.CommandRegisterer;
 import br.com.syrxcraft.betterskyblock.config.Config;
 import br.com.syrxcraft.betterskyblock.data.DataStore;
 import br.com.syrxcraft.betterskyblock.listeners.EventManager;
@@ -39,20 +38,27 @@ public class BetterSkyBlock extends JavaPlugin {
 
 		loggerHelper.info("Hello World!");
 		loggerHelper.info("Better Sky Block - " + getDescription().getVersion());
+
 		config = new Config(this);
 		islandWorld = Bukkit.getWorld(config.getWorldName());
+
 		integrationManager = new IntegrationManager(this);
+
 		dataStore = new DataStore(this);
 		eventManager = new EventManager(this);
 		commandManager = new CommandManager();
+
 		commandManager.load();
-		CommandRegisterer.registerCommands(this);
 
 		dropInformation(loggerHelper);
 	}
 
 	public LoggerHelper getLoggerHelper() {
 		return loggerHelper;
+	}
+
+	public EventManager getEventManager() {
+		return eventManager;
 	}
 
 	public static BetterSkyBlock getInstance() {

@@ -62,7 +62,7 @@ public class Utils {
 	
 	public static boolean isFakePlayer(Player player) {
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			if(player==p) {
+			if(player == p) {
 				return false;
 			}
 		}
