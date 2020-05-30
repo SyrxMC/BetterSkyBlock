@@ -167,7 +167,9 @@ public class MySQLDataProvider implements IDataProvider{
 
     synchronized Statement statement() throws SQLException {
 
-        if(databaseConnection == null || databaseConnection.isClosed()) databaseConnection = mySQLDriver.connect();
+        if(databaseConnection == null || databaseConnection.isClosed()){
+            databaseConnection = mySQLDriver.connect();
+        }
 
         return databaseConnection.createStatement();
     }
@@ -213,7 +215,6 @@ class MySQLDriver {
 
         properties.setProperty("user", username);
         properties.setProperty("password", password);
-        properties.setProperty("autoReconnect", "true");
 
         return DriverManager.getConnection(getTargetConnection(), properties);
 

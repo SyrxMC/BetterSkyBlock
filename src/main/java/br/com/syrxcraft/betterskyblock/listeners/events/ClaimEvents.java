@@ -36,8 +36,6 @@ public class ClaimEvents implements Listener {
 
             if (event instanceof RemoveClaimEvent.Abandon) {
 
-                System.out.println(player != null);
-
                 if(player != null){
                     player.sendMessage(ChatColor.RED + "Se você quer deletar a sua ilha use o comando \"/is delete\"!");
                 }else if(island.getPlayer() != null){
@@ -50,18 +48,6 @@ public class ClaimEvents implements Listener {
             }
 
             island.teleportEveryoneToSpawn();
-
-            if (BetterSkyBlock.getInstance().config().deleteRegion()) {
-                island.deleteRegionFile();
-            }
-
-            try {
-                BetterSkyBlock.getInstance().getDataStore().removeIsland(island);
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
             BetterSkyBlock.getInstance().getLoggerHelper().info("Removed " + island.getOwnerName() + "'s island because the claim was deleted. Reason: " + event.getMessage() + ".");
         }
     }

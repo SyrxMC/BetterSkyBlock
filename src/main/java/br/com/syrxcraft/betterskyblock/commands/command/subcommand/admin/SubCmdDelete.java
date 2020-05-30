@@ -13,6 +13,8 @@ import com.griefdefender.event.GDRemoveClaimEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import java.sql.SQLException;
+
 @HasSubCommand
 public class SubCmdDelete implements ISubCommand {
 
@@ -38,13 +40,11 @@ public class SubCmdDelete implements ISubCommand {
             return true;
         }
 
-        GDRemoveClaimEvent.Delete event = new GDRemoveClaimEvent.Delete(island.getClaim());
-        event.shouldRestore(false);
-
-        GriefDefender.getEventManager().post(event);
-
-        if (event.cancelled()) {
+        try {
+            island.delete();
+        } catch (SQLException exception) {
             commandSender.sendMessage("§4§l ▶ §cEssa ilha não pode ser deletada!");
+            BetterSkyBlock.getInstance().getLoggerHelper().error(exception.getMessage());
             return true;
         }
 
