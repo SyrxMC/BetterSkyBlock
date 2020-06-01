@@ -2,6 +2,7 @@ package br.com.syrxcraft.betterskyblock.integration.integrations;
 
 import br.com.syrxcraft.betterskyblock.integration.IIntegration;
 import com.griefdefender.api.permission.flag.Flags;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.islands.Island;
@@ -11,11 +12,11 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashSet;
 
 //TODO: Rewrite
-public class PlaceHolderAPIIntegration extends EZPlaceholderHook implements IIntegration {
+public class PlaceHolderAPIIntegration extends PlaceholderExpansion implements IIntegration {
 
     @Override
     public String targetPlugin() {
-        return "PlaceHolderAPI";
+        return "PlaceholderAPI";
     }
 
     @Override
@@ -25,13 +26,7 @@ public class PlaceHolderAPIIntegration extends EZPlaceholderHook implements IInt
 
     @Override
     public boolean load() {
-        PlaceHolderAPIIntegration instance = new PlaceHolderAPIIntegration(BetterSkyBlock.getInstance(), "better_skyblock");
-
-        return instance.hook();
-    }
-
-    public PlaceHolderAPIIntegration(Plugin plugin, String identifier) {
-        super(plugin, identifier);
+        return new PlaceHolderAPIIntegration().register();
     }
 
     @Override
@@ -99,4 +94,18 @@ public class PlaceHolderAPIIntegration extends EZPlaceholderHook implements IInt
         return "" + BetterSkyBlock.getInstance().getDataStore().getTotalOfIslands();
     }
 
+    @Override
+    public String getIdentifier() {
+        return "betterskyblock";
+    }
+
+    @Override
+    public String getAuthor() {
+        return "brunoxkk0";
+    }
+
+    @Override
+    public String getVersion() {
+        return "1.0";
+    }
 }
