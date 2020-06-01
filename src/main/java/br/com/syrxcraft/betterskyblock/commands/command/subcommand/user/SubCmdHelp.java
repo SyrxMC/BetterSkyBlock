@@ -28,7 +28,7 @@ public class SubCmdHelp implements ISubCommand {
 
             Player player = (Player) commandSender;
 
-            player.sendMessage("§6§m------------§6(  §a§lGPPSkyBlock§e  §6)§m------------");
+            player.sendMessage("§3§m------------§3(  §b§lBetterSkyBlock§b  §3)§m------------");
 
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " help","§bMostra essa mensagem!","/" + command + " help",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " spawn [Player]","§bTeleporta para a sua ilha ou a de algum jogador!","/" + command + " spawn",true));

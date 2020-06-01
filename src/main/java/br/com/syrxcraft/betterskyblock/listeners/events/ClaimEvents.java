@@ -145,12 +145,13 @@ public class ClaimEvents implements Listener {
     }
 
 
-    @Subscribe()
-    @PostOrder(-100)
-    @IgnoreCancelled
-    void onClaimExit(BorderClaimEvent event) {
+//    @Subscribe()
+//    @PostOrder(-100)
+//    @IgnoreCancelled
+    public void onClaimExit(BorderClaimEvent event) {
 
-        if(!event.getUser().isPresent() || event.getExitClaim() == null){
+
+        if(!event.getUser().isPresent()){
             return;
         }
 
@@ -158,17 +159,21 @@ public class ClaimEvents implements Listener {
 
         if(player == null) return;
 
-        if (player.hasPermission(PermissionNodes.OPTIONS_OVERRIDE) || player.hasPermission(PermissionNodes.OPTIONS_LEAVE_ISLAND)) {
-            return;
-        }
+        Island island;
 
-        Island island = IslandUtils.getIsland(event.getExitClaim());
+        if((island = IslandUtils.getIsland(event.getExitClaim())) != null){
 
-        if(island != null){
-            player.sendMessage(ChatColor.RED+"Você não pode voar para fora de sua ilha!");
+            if (player.hasPermission(PermissionNodes.OPTIONS_OVERRIDE) || player.hasPermission(PermissionNodes.OPTIONS_LEAVE_ISLAND)) {
+                return;
+            }
+
+            if(!player.getLocation().getWorld().getUID().equals(BetterSkyBlock.getInstance().getIslandWorld().getUID())){
+                return;
+            }
+
+            player.sendMessage(ChatColor.RED + "Você não pode voar para fora de uma ilha.");
             player.teleport(island.getSpawn());
         }
-
     }
 
 

@@ -71,8 +71,6 @@ public class DataStore {
 				.requireClaimBlocks(false)
 				.sizeRestrictions(false)
 				.resizable(false)
-				.farewell(TextComponent.of("§3" + name + "'s island."))
-				.greeting(TextComponent.of("§3" + name + "'s island."))
 				.type(ClaimTypes.TOWN)
 				.build();
 

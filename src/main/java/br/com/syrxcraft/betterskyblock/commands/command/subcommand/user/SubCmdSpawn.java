@@ -11,12 +11,12 @@ import br.com.syrxcraft.betterskyblock.tasks.SpawnTeleportTask;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.api.permission.flag.Flags;
+import com.griefdefender.permission.GDPermissionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
 import java.util.UUID;
 
 @HasSubCommand
@@ -37,7 +37,7 @@ public class SubCmdSpawn implements ISubCommand {
 
         Island island;
 
-        if (args.length > 1 && args[0] != null && !args[0].isEmpty()){
+        if (args.length >= 1 && args[0] != null && !args[0].isEmpty()){
 
             UUID argPlayer = Bukkit.getPlayerUniqueId(args[0]);
             PlayerData playerData = GriefDefender.getCore().getPlayerData(BetterSkyBlock.getInstance().getIslandWorld().getUID(), argPlayer).orElse(null);
@@ -54,8 +54,8 @@ public class SubCmdSpawn implements ISubCommand {
                 return false;
             }
 
-            //TODO: TEST
-            if (!island.getClaim().getActiveFlagPermissionValue(Flags.ENTER_CLAIM, GriefDefender.getCore().getUser(argPlayer), new HashSet<>()).asBoolean()) {
+
+            if (!GDPermissionManager.getInstance().getFinalPermission(null, null, island.getClaim(), Flags.ENTER_CLAIM, player, player, player, null, true).asBoolean()) {
                 player.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                 return false;
             }
@@ -74,7 +74,6 @@ public class SubCmdSpawn implements ISubCommand {
                     return false;
                 }
 
-                return true;
             }
 
         }

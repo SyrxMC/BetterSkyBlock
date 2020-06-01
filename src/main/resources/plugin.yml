@@ -3,19 +3,10 @@ main: br.com.syrxcraft.betterskyblock.BetterSkyBlock
 version: @VERSION@
 author: brunoxkk0
 depend: [GriefDefender, WorldEdit]
-softdepend: [ PlaceholderAPI, BossShopPro ]
+softdepend: [PlaceholderAPI, BossShopPro]
 load: POSTWORLD
 
-
-commands:
-
-  island:
-      description: BetterSkyBlock main command.
-      usage: is help
-      aliases: [is, isl, bsis]
-
 permissions:
-
   betterskyblock.admin:
     default: op
     children:

@@ -47,17 +47,6 @@ public class BossShopProIntegration implements IIntegration, Listener {
     @EventHandler
     void onBossShopInventoryOpen(BSDisplayItemEvent event) {
 
-        if (event.getShopItem().getName().equalsIgnoreCase("IslandLock")){
-
-//            if (PlaceHolderIntegration.playersIslandIsPublic(event.getPlayer())) {
-//                ItemStack itemStack = event.getShop().getItem("IslandLockPublic").getItem();
-//                event.getShopItem().setItem(itemStack,true);
-//            }else {
-//                ItemStack itemStack = event.getShop().getItem("IslandLockPrivate").getItem();
-//                event.getShopItem().setItem(itemStack,true);
-//            }
-
-        }
     }
 
     public static void openShop(Player player, String shopName){
