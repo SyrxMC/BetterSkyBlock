@@ -1,6 +1,5 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.admin;
 
-import br.com.finalcraft.evernifecore.FCBukkitUtil;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;

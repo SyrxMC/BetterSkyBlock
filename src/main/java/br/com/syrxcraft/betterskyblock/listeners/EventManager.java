@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock.listeners;
 
+import br.com.syrxcraft.betterskyblock.border.IslandBorderHandler;
 import br.com.syrxcraft.betterskyblock.listeners.chunter.CommandHunter;
 import br.com.syrxcraft.betterskyblock.listeners.events.ClaimEvents;
 import br.com.syrxcraft.betterskyblock.listeners.events.PlayerEvents;
@@ -20,7 +21,9 @@ public class EventManager {
 
     void registerEvents(){
         GriefDefender.getEventManager().register(new ClaimEvents());
+       //GriefDefender.getEventManager().register(new IslandBorderHandler());
         Bukkit.getPluginManager().registerEvents(new CommandHunter(), plugin);
         Bukkit.getPluginManager().registerEvents(new PlayerEvents(), plugin);
+        Bukkit.getPluginManager().registerEvents(new IslandBorderHandler(), plugin);
     }
 }

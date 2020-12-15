@@ -7,8 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class LoggerHelper {
 
-    private Plugin plugin;
-    private boolean defaultLogger = false;
+    private final Plugin plugin;
+    private boolean defaultLogger;
 
     private Logger logger;
 
@@ -24,12 +24,8 @@ public class LoggerHelper {
 
     }
 
-    public void enableDefaultLogger(){
-        defaultLogger = true;
-    }
-
-    public void disableDefaultLogger(){
-        defaultLogger = false;
+    public void updateDefaultLoggerStatus(boolean status){
+        defaultLogger = status;
     }
 
     public void info(String message){

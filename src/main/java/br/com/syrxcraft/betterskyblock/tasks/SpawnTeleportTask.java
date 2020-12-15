@@ -45,7 +45,7 @@ public class SpawnTeleportTask extends BukkitRunnable {
 
 			if (errors > 50) {
 
-				player.sendMessage(ChatColor.RED+"Teleport cancelado");
+				player.sendMessage(ChatColor.RED + "Teleport cancelado");
 				cancel();
 				return;
 
@@ -54,12 +54,12 @@ public class SpawnTeleportTask extends BukkitRunnable {
 
 		try {
 			if (this.location.distanceSquared(location)>0) {
-				player.sendMessage(ChatColor.RED+"Teleport cancelado");
+				player.sendMessage(ChatColor.RED + "Teleport cancelado");
 				this.cancel();
 				return;
 			}
 		} catch (IllegalStateException e) {
-			player.sendMessage(ChatColor.RED+"Teleport cancelado");
+			player.sendMessage(ChatColor.RED + "Teleport cancelado");
 			this.cancel();
 			return;
 		}

@@ -25,8 +25,8 @@ public class Reflections {
     private final String targetPackage;
     private final ClassLoader classLoader;
 
-    private boolean ignoreInterfaces;
-    private boolean ignoreAnnotations;
+    private final boolean ignoreInterfaces;
+    private final boolean ignoreAnnotations;
 
     Reflections(String targetPackage, ClassLoader classLoader, boolean ignoreInterfaces, boolean ignoreAnnotations){
 

@@ -25,8 +25,6 @@ public class BetterSkyBlock extends JavaPlugin {
 	private LoggerHelper loggerHelper;
 	private IntegrationManager integrationManager;
 	private CommandManager commandManager;
-
-
 	private EventManager eventManager;
 	private World islandWorld;
 
@@ -50,7 +48,7 @@ public class BetterSkyBlock extends JavaPlugin {
 
 		commandManager.load();
 
-		dropInformation(loggerHelper);
+		showInfo();
 	}
 
 	public LoggerHelper getLoggerHelper() {
@@ -101,7 +99,7 @@ public class BetterSkyBlock extends JavaPlugin {
 		return commandManager;
 	}
 
-	public void dropInformation(LoggerHelper loggerHelper){
+	public void showInfo(){
 		loggerHelper.info("Server version: "   + Bukkit.getVersion().replace("git-",""));
 		loggerHelper.info("Island World: "     + getIslandWorld().getName());
 		loggerHelper.info("DataProvider: "     + getDataStore().getDataProvider().getProvider().name());

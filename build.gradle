@@ -60,14 +60,16 @@ dependencies {
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.1.5'
     compileOnly 'com.sk89q.worldedit:worldedit-core:6.0.0-SNAPSHOT'
 
-    compileOnly group: 'com.flowpowered', name: 'flow-math', version: '1.0.0'
+
+
     compileOnly 'net.kyori:text-api:3.0.3'
     compileOnly 'net.kyori:text-serializer-plain:3.0.3'
     compileOnly 'net.kyori:event-api:3.0.0'
     compileOnly 'net.kyori:event-method:3.0.0'
+    compileOnly "com.flowpowered:flow-math:1.0.3"
+
 
     compileOnly 'com.github.bloodmc:GriefDefenderAPI:master-SNAPSHOT'
-
 
     compile "io.papermc:paperlib:1.0.3"
 

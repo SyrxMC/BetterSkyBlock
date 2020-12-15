@@ -2,9 +2,12 @@ package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.events.IslandEnterEvent;
+import br.com.syrxcraft.betterskyblock.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.islands.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
+import com.griefdefender.api.User;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.event.*;
 import com.griefdefender.event.GDTransferClaimEvent;
@@ -144,6 +147,43 @@ public class ClaimEvents implements Listener {
         }
     }
 
+
+    @Subscribe()
+    @PostOrder(-100)
+    @IgnoreCancelled
+    public void onBorderClaim(BorderClaimEvent event){
+        User user;
+        Player player;
+
+        if((user = event.getUser().orElse(null)) != null){
+            if((player = Bukkit.getPlayer(user.getUniqueId())) != null){
+
+                if(event.getExitClaim() != null){
+
+                    Island island = IslandUtils.getIsland(event.getExitClaim());
+
+                    if(island != null){
+
+                        IslandExitEvent islandExitEvent = new IslandExitEvent(island, player);
+                        Bukkit.getPluginManager().callEvent(islandExitEvent);
+
+                    }
+                }
+
+                if(event.getEnterClaim() != null){
+
+                    Island island = IslandUtils.getIsland(event.getEnterClaim());
+
+                    if(island != null){
+
+                        IslandEnterEvent islandEnterEvent = new IslandEnterEvent(island, player);
+                        Bukkit.getPluginManager().callEvent(islandEnterEvent);
+
+                    }
+                }
+            }
+        }
+    }
 
 //    @Subscribe()
 //    @PostOrder(-100)

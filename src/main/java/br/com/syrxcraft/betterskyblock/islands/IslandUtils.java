@@ -9,13 +9,7 @@ import org.bukkit.entity.Player;
 public class IslandUtils {
 
     public static boolean isIsland(Claim claim) {
-        Island island = getIsland(claim);
-
-        if (island == null) {
-            return false;
-        }
-
-        return island.getClaim() == claim;
+        return getIsland(claim) != null;
     }
 
     public static Island getIsland(Claim claim) {
@@ -26,7 +20,10 @@ public class IslandUtils {
 
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(claim.getOwnerUniqueId());
 
-        if (island.getClaim() == claim) {
+//        System.out.println(island.getClaim().getUniqueId());
+//        System.out.println(claim.getUniqueId());
+
+        if (island != null && island.getClaim().getUniqueId().equals(claim.getUniqueId())) {
             return island;
         }
 

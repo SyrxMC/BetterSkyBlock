@@ -8,7 +8,9 @@ import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.tasks.SpawnTeleportTask;
+import br.com.syrxcraft.betterskyblock.utils.GDHook;
 import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.Tristate;
 import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.api.permission.flag.Flags;
 import com.griefdefender.permission.GDPermissionManager;
@@ -55,7 +57,11 @@ public class SubCmdSpawn implements ISubCommand {
             }
 
 
-            if (!GDPermissionManager.getInstance().getFinalPermission(null, null, island.getClaim(), Flags.ENTER_CLAIM, player, player, player, null, true).asBoolean()) {
+            //GDPermissionManager.getInstance().getClaimFlagPermission
+
+            //if (!GDPermissionManager.getInstance().getFinalPermission(null, null, island.getClaim(), Flags.ENTER_CLAIM, player, player, player, null, true).asBoolean()) {
+            Tristate tristate = GDHook.getClaimFlagPermission(island.getClaim(), Flags.ENTER_CLAIM.getPermission());
+            if(tristate != null && tristate.asBoolean()){
                 player.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                 return false;
             }

@@ -2,15 +2,12 @@ package br.com.syrxcraft.betterskyblock.data;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.data.providers.DataProvider;
-import br.com.syrxcraft.betterskyblock.data.providers.Providers;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.ClaimTypes;
-import com.griefdefender.api.data.PlayerData;
-import net.kyori.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -114,7 +111,7 @@ public class DataStore {
 		islands.remove(island.getOwnerId());
 	}
 
-    public void updateIsland(Island island) throws SQLException {
+    public void updateIsland(Island island) {
 		dataProvider.saveIsland(island);
 	}
 

@@ -34,7 +34,7 @@ public class Island {
 		if(spawn != null){
 			this.spawn = spawn;
 		}else {
-			this.spawn =  getCenter().add(0.5, 1, 0.5);
+			this.spawn = getCenter().add(0.5, 1, 0.5);
 		}
 
 	}

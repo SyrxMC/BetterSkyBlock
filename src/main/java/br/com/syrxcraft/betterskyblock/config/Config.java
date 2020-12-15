@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.border.IslandBorder;
 import br.com.syrxcraft.betterskyblock.data.providers.Providers;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import org.bukkit.block.Biome;
@@ -40,6 +41,8 @@ public class Config {
 	private int tpCountdown;
 	private Providers dataProvider;
 	private boolean useBossShopForMenu = false;
+
+	private IslandBorder.BorderMode borderMode = IslandBorder.BorderMode.GREEN;
 
 
 	private final BetterSkyBlock instance;
@@ -142,6 +145,7 @@ public class Config {
 		tpCountdown = config.getInt("TeleportCountdown", 5);
 		dataProvider = Providers.getFromName(config.getString("DataProvider", "null"));
 		useBossShopForMenu = config.getBoolean("useBossShopForMenu", false);
+		borderMode = IslandBorder.BorderMode.fromString(config.getString("BorderMode", "BLUE"));
 
 	}
 
@@ -279,5 +283,9 @@ public class Config {
 
 	public boolean useBossShopForMenu() {
 		return useBossShopForMenu;
+	}
+
+	public IslandBorder.BorderMode getBorderMode() {
+		return borderMode;
 	}
 }
