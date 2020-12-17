@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock;
 
+import br.com.syrxcraft.betterskyblock.border.IslandBorder;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.integration.IntegrationManager;
 import br.com.syrxcraft.betterskyblock.islands.Island;
@@ -44,9 +45,10 @@ public class BetterSkyBlock extends JavaPlugin {
 
 		dataStore = new DataStore(this);
 		eventManager = new EventManager(this);
-		commandManager = new CommandManager();
 
-		commandManager.load();
+		commandManager = new CommandManager().load();
+
+		IslandBorder.REGISTER(this);
 
 		showInfo();
 	}

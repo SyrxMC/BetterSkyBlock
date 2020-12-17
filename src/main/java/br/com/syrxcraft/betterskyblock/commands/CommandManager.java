@@ -25,9 +25,9 @@ public class CommandManager {
 
     private final LinkedHashMap<CCommand,ICommand> commands = new LinkedHashMap<>();
     private final LinkedHashMap<CSubCommand, ISubCommand> subCommands = new LinkedHashMap<>();
-    private final LinkedHashMap<String,String> confirmations = new LinkedHashMap<String,String>();
+    private final LinkedHashMap<String,String> confirmations = new LinkedHashMap<>();
 
-    public void load(){
+    public CommandManager load(){
 
         HashSet<Class<?>> classes = reflections.scan();
 
@@ -74,7 +74,7 @@ public class CommandManager {
 
                         ISubCommand iSubCommand = (ISubCommand) data;
 
-                        if(existsCommand(cSubCommand.targetCommand())){
+                        if (cSubCommand != null && existsCommand(cSubCommand.targetCommand())) {
                             subCommands.put(cSubCommand, iSubCommand);
                         }
 
@@ -89,6 +89,9 @@ public class CommandManager {
         }
 
         registerCommands();
+
+
+        return this;
 
     }
 

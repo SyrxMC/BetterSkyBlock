@@ -5,14 +5,20 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.minecraft.server.v1_12_R1.WorldBorder;
 import net.minecraft.server.v1_12_R1.WorldServer;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public class IslandBorder {
+
+    public static void REGISTER(Plugin plugin){
+        Bukkit.getPluginManager().registerEvents(new IslandBorderHandler(), plugin);
+    }
 
     private static final HashMap<UUID, WorldBorder> borderCache = new HashMap<>();
 

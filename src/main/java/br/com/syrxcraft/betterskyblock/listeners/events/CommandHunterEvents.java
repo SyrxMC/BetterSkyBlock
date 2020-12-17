@@ -1,8 +1,9 @@
-package br.com.syrxcraft.betterskyblock.listeners.chunter;
+package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.commands.manager.CHunterTarget;
 import br.com.syrxcraft.betterskyblock.islands.Island;
-import br.com.syrxcraft.betterskyblock.islands.IslandUtils;
+import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +16,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class CommandHunter implements Listener {
+public class CommandHunterEvents implements Listener {
 
     private final Pattern PATTERN_ON_SPACE = Pattern.compile(" ", 16);
 
@@ -49,7 +50,7 @@ public class CommandHunter implements Listener {
                     if(s.equalsIgnoreCase(command)){
 
                         try {
-                            Object object = method.invoke(new CommandHunter(),event.getPlayer(), command, args);
+                            Object object = method.invoke(new CommandHunterEvents(),event.getPlayer(), command, args);
 
                             if(object != null){
                                 if((boolean)object){
@@ -70,7 +71,8 @@ public class CommandHunter implements Listener {
     @CHunterTarget(target = {
             "abandon",
             "abandonclaim",
-            "abandontop"
+            "abandontop",
+            "abandonall"
     })
     private boolean onAbandon(Player player, String label, String ... args){
 

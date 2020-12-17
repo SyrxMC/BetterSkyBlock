@@ -1,4 +1,4 @@
-package br.com.syrxcraft.betterskyblock.data.providers;
+package br.com.syrxcraft.betterskyblock.data.provider.providers;
 
 public enum Providers {
 

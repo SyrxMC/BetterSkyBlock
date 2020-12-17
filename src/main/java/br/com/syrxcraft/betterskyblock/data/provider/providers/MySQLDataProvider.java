@@ -1,10 +1,10 @@
-package br.com.syrxcraft.betterskyblock.data.providers;
+package br.com.syrxcraft.betterskyblock.data.provider.providers;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.data.provider.IDataProvider;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.google.common.collect.Maps;
-import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimManager;
 
@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import java.sql.*;
 import java.util.*;
 
-public class MySQLDataProvider implements IDataProvider{
+public class MySQLDataProvider implements IDataProvider {
 
     private MySQLDriver mySQLDriver;
     private BetterSkyBlock instance;

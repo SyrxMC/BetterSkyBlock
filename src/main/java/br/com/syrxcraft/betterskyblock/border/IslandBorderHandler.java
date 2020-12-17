@@ -25,6 +25,8 @@ public class IslandBorderHandler implements Listener {
     public void onIslandExit(IslandExitEvent event){
         if(event.getPlayer() != null){
 
+            if(event.isCancelled()) return;
+
             Player player = event.getPlayer();
             IslandBorder.removeBorder(player);
 

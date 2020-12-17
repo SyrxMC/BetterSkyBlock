@@ -1,4 +1,4 @@
-package br.com.syrxcraft.betterskyblock.listeners.chunter;
+package br.com.syrxcraft.betterskyblock.commands.manager;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

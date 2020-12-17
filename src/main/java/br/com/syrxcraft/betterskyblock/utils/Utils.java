@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import com.flowpowered.math.vector.Vector3i;
+import com.griefdefender.api.User;
 import com.sk89q.worldedit.blocks.TileEntityBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -209,6 +210,10 @@ public class Utils {
 
 	public static Player asBukkitPlayer(UUID uuid){
 		return Bukkit.getPlayer(uuid);
+	}
+
+	public static Player asBukkitPlayer(User user){
+		return asBukkitPlayer(user.getUniqueId());
 	}
 
 	public static Vector3i locationToVector(Location location){

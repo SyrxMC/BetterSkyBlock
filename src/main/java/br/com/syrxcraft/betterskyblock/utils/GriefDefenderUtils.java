@@ -7,7 +7,7 @@ import com.griefdefender.permission.GDPermissionManager;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class GDHook {
+public class GriefDefenderUtils {
 
     private static Method getClaimFlagPermissionMethod;
 

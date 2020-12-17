@@ -5,28 +5,24 @@ import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.events.IslandEnterEvent;
 import br.com.syrxcraft.betterskyblock.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.islands.Island;
-import br.com.syrxcraft.betterskyblock.islands.IslandUtils;
+import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.User;
-import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.event.*;
 import com.griefdefender.event.GDTransferClaimEvent;
 import net.kyori.event.method.annotation.IgnoreCancelled;
 import net.kyori.event.method.annotation.PostOrder;
 import net.kyori.event.method.annotation.Subscribe;
-import net.kyori.text.Component;
 import net.kyori.text.TextComponent;
 import net.kyori.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.sql.SQLException;
 
-import static br.com.syrxcraft.betterskyblock.islands.IslandUtils.getIsland;
-import static br.com.syrxcraft.betterskyblock.islands.IslandUtils.isIslandWorld;
+import static br.com.syrxcraft.betterskyblock.utils.IslandUtils.getIsland;
 
 public class ClaimEvents implements Listener {
 
@@ -156,7 +152,7 @@ public class ClaimEvents implements Listener {
         Player player;
 
         if((user = event.getUser().orElse(null)) != null){
-            if((player = Bukkit.getPlayer(user.getUniqueId())) != null){
+            if((player = Utils.asBukkitPlayer(user)) != null){
 
                 if(event.getExitClaim() != null){
 
@@ -164,9 +160,13 @@ public class ClaimEvents implements Listener {
 
                     if(island != null){
 
-                        IslandExitEvent islandExitEvent = new IslandExitEvent(island, player);
+                        IslandExitEvent islandExitEvent = new IslandExitEvent(island, player, event.getEnterClaim().isWilderness());
                         Bukkit.getPluginManager().callEvent(islandExitEvent);
 
+                        if(islandExitEvent.isCancelled()){
+                            event.cancelled(true);
+                            return;
+                        }
                     }
                 }
 
@@ -179,6 +179,9 @@ public class ClaimEvents implements Listener {
                         IslandEnterEvent islandEnterEvent = new IslandEnterEvent(island, player);
                         Bukkit.getPluginManager().callEvent(islandEnterEvent);
 
+                        if(islandEnterEvent.isCancelled()){
+                            event.cancelled(true);
+                        }
                     }
                 }
             }

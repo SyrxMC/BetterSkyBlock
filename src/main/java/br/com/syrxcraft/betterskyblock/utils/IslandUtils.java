@@ -1,12 +1,19 @@
-package br.com.syrxcraft.betterskyblock.islands;
+package br.com.syrxcraft.betterskyblock.utils;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
+import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.claim.Claim;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+import java.util.WeakHashMap;
+
 public class IslandUtils {
+
+    public static WeakHashMap<UUID, Claim> CACHED_PLAYER_POSITIONS = new WeakHashMap<>();
 
     public static boolean isIsland(Claim claim) {
         return getIsland(claim) != null;
@@ -14,14 +21,11 @@ public class IslandUtils {
 
     public static Island getIsland(Claim claim) {
 
-        if (!isIslandWorld(Utils.worldFromUUID(claim.getWorldUniqueId()))) {
+        if (!isIslandWorld(Utils.worldFromUUID(claim.getWorldUniqueId())) || claim.isWilderness()) {
             return null;
         }
 
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(claim.getOwnerUniqueId());
-
-//        System.out.println(island.getClaim().getUniqueId());
-//        System.out.println(claim.getUniqueId());
 
         if (island != null && island.getClaim().getUniqueId().equals(claim.getUniqueId())) {
             return island;
@@ -37,10 +41,13 @@ public class IslandUtils {
     public static Island isOnIsland(Player player){
 
         if(player != null){
+
             Claim claim = BetterSkyBlock.getInstance().getClaimManager().getClaimAt(Utils.locationToVector(player.getLocation()));
 
-            if(claim != null && isIsland(claim)){
-                return getIsland(claim);
+            Island island = getIsland(claim);
+
+            if(island != null){
+                return island;
             }
 
         }

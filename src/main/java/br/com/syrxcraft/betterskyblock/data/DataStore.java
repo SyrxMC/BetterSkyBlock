@@ -1,7 +1,7 @@
 package br.com.syrxcraft.betterskyblock.data;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.data.providers.DataProvider;
+import br.com.syrxcraft.betterskyblock.data.provider.DataProvider;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;

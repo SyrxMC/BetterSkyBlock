@@ -1,6 +1,7 @@
-package br.com.syrxcraft.betterskyblock.data.providers;
+package br.com.syrxcraft.betterskyblock.data.provider;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.data.provider.providers.Providers;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 
 import java.util.Map;
