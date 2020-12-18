@@ -3,7 +3,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 @HasSubCommand
 public class SubCmdReset implements ISubCommand {
 
-    @CSubCommand(name = "reset", targetCommand = "island")
+    @cSubCommand(name = "reset", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!(commandSender instanceof Player)) {
@@ -29,7 +29,7 @@ public class SubCmdReset implements ISubCommand {
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
 
         if (island == null) {
-            commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/"+label+" spawn\"");
+            commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/"+command+" spawn\"");
             return false;
         }
 
@@ -41,7 +41,7 @@ public class SubCmdReset implements ISubCommand {
         String conf = BetterSkyBlock.getInstance().getCommandManager().getConfirmations().remove(player.getName());
 
         if (conf == null || !conf.equals("reset")) {
-            commandSender.sendMessage("§4§l ▶ §c§lCUIDADO: §cSua ilha inteira será APAGADA!\n§cSe você tem certeza disso, use \"/"+label+" reset\" novamente!");
+            commandSender.sendMessage("§4§l ▶ §c§lCUIDADO: §cSua ilha inteira será APAGADA!\n§cSe você tem certeza disso, use \"/"+command+" reset\" novamente!");
             BetterSkyBlock.getInstance().getCommandManager().getConfirmations().put(player.getName(), "reset");
             return false;
         }

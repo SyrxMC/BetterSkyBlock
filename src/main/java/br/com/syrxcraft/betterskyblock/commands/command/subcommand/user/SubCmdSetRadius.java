@@ -2,7 +2,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import org.bukkit.command.CommandSender;
@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 @HasSubCommand
 public class SubCmdSetRadius implements ISubCommand {
 
-    @CSubCommand(name = "setradius", targetCommand = "island")
+    @cSubCommand(name = "setradius", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_SET_RADIUS)) {

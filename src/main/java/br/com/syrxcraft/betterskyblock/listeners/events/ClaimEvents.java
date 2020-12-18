@@ -26,7 +26,7 @@ import static br.com.syrxcraft.betterskyblock.utils.IslandUtils.getIsland;
 
 public class ClaimEvents implements Listener {
 
-    @Subscribe
+    @Subscribe // todo: claim remove handle
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimRemove(RemoveClaimEvent event) {
@@ -55,7 +55,7 @@ public class ClaimEvents implements Listener {
         }
     }
 
-    @Subscribe
+    @Subscribe // todo: claim create handle
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimCreate(CreateClaimEvent event) {
@@ -78,7 +78,7 @@ public class ClaimEvents implements Listener {
     }
 
 
-    @Subscribe
+    @Subscribe // todo: claim resize handler
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimChange(ChangeClaimEvent event) {
@@ -101,7 +101,7 @@ public class ClaimEvents implements Listener {
         }
     }
 
-    @Subscribe()
+    @Subscribe() // todo: island transfer handler
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimTransfer(GDTransferClaimEvent event) {
@@ -111,7 +111,7 @@ public class ClaimEvents implements Listener {
         if (island != null) {
 
 
-            Island is2 = BetterSkyBlock.getInstance().getIsland(event.getNewOwner());
+            Island is2 = IslandUtils.getPlayerIsland(event.getNewOwner());
 
             if(is2 != null){
                 event.cancelled(true);
@@ -144,6 +144,7 @@ public class ClaimEvents implements Listener {
     }
 
 
+    //TODO: event dispatcher [ Exit Join island ]
     @Subscribe()
     @PostOrder(-100)
     @IgnoreCancelled
@@ -187,37 +188,4 @@ public class ClaimEvents implements Listener {
             }
         }
     }
-
-//    @Subscribe()
-//    @PostOrder(-100)
-//    @IgnoreCancelled
-    public void onClaimExit(BorderClaimEvent event) {
-
-
-        if(!event.getUser().isPresent()){
-            return;
-        }
-
-        Player player = Utils.asBukkitPlayer(event.getUser().get().getUniqueId());
-
-        if(player == null) return;
-
-        Island island;
-
-        if((island = IslandUtils.getIsland(event.getExitClaim())) != null){
-
-            if (player.hasPermission(PermissionNodes.OPTIONS_OVERRIDE) || player.hasPermission(PermissionNodes.OPTIONS_LEAVE_ISLAND)) {
-                return;
-            }
-
-            if(!player.getLocation().getWorld().getUID().equals(BetterSkyBlock.getInstance().getIslandWorld().getUID())){
-                return;
-            }
-
-            player.sendMessage(ChatColor.RED + "Você não pode voar para fora de uma ilha.");
-            player.teleport(island.getSpawn());
-        }
-    }
-
-
 }

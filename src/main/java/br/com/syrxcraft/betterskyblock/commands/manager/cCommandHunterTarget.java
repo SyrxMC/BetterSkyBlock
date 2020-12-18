@@ -5,11 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CSubCommand {
+@Target(ElementType.METHOD)
+public @interface cCommandHunterTarget {
 
-    String name();
-    String targetCommand();
+    String[] target();
 
 }

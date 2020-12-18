@@ -1,30 +1,33 @@
 package br.com.syrxcraft.betterskyblock.islands;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.UUID;
-
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.islands.tasks.ResetIsland;
 import br.com.syrxcraft.betterskyblock.islands.tasks.ResetIslandTask;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
-import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimManager;
-import net.kyori.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.UUID;
 
 public class Island {
 
 	private final UUID ownerId;
 	private final Claim claim;
-	public boolean ready = true;
+
 	private Location spawn;
+	private Location center;
+
+	private int radius = -1;
+
+	public boolean ready = true;
+
+
 
 	public Island(UUID ownerId, Claim claim, Location spawn) {
 
@@ -39,13 +42,15 @@ public class Island {
 
 	}
 
+	public Island(UUID ownerId, Claim claim, int x, int y, int z) {
+		this(ownerId, claim, new Location(Utils.worldFromUUID(claim.getWorldUniqueId()),(x + 0.5), y , (z + 0.5)));
+	}
+
 	public Island(UUID ownerId, Claim claim) {
 		this(ownerId, claim,null);
 	}
 
-	public Island(UUID ownerId, Claim claim, int x, int y, int z) {
-		this(ownerId, claim, new Location(Utils.worldFromUUID(claim.getWorldUniqueId()),(x + 0.5), y , (z + 0.5)));
-	}
+
 	
 	public Claim getClaim() {
 		return claim;
@@ -73,100 +78,93 @@ public class Island {
 
 		return ownerId.toString();
 	}
-	
-	public boolean isOwnerOnline() {
-		return Bukkit.getPlayer(ownerId) != null;
-	}
-	
-	public void reset() {
 
-		try {
-
-			File schematicFile = new File(BetterSkyBlock.getInstance().getDataFolder(), BetterSkyBlock.getInstance().config().getSchematic() + ".schematic");
-
-			if (!schematicFile.exists()) {
-				throw new IllegalStateException("Schematic file \""+ BetterSkyBlock.getInstance().config().getSchematic() + ".schematic\" doesn't exist");
-			}
-
-			teleportEveryoneToSpawn();
-
-			ready = false;
-
-			new ResetIslandTask(this, schematicFile).runTaskTimer(BetterSkyBlock.getInstance(), 1L, 1L);
-
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-
-	}
-	
 	public int getRadius() {
+
+		if(radius != -1) {
+			return  radius;
+		}
 
 		int lx = claim.getLesserBoundaryCorner().getX();
 		int gx = claim.getGreaterBoundaryCorner().getX();
 
-		return (gx-lx) / 2;
+		return radius = ((gx - lx) / 2);
 
 	}
-	
-	public void setRadius(int radius) {
 
-		if (radius > 254 || radius < 1) {
-			throw new IllegalArgumentException("Invalid radius (max 254)");
-		}
-
-		Location center = getCenter();
-
-		claim.resize((center.getBlockX() - radius), (center.getBlockX() + radius),claim.getLesserBoundaryCorner().getY(), claim.getGreaterBoundaryCorner().getY(),(center.getBlockZ() - radius), (center.getBlockZ() + radius));
-	}
-	
 	public Location getCenter() {
-		return new Location(Utils.worldFromUUID(claim.getWorldUniqueId()), claim.getLesserBoundaryCorner().getX() + getRadius(), BetterSkyBlock.getInstance().config().getYLevel(), claim.getLesserBoundaryCorner().getZ() + getRadius());
+
+		if(center != null)
+			return center;
+
+		return center = (
+				new Location(
+						Utils.worldFromUUID(claim.getWorldUniqueId()),
+						claim.getLesserBoundaryCorner().getX() + getRadius(),
+						BetterSkyBlock.getInstance().config().getYLevel(),
+						claim.getLesserBoundaryCorner().getZ() + getRadius())
+		);
+
 	}
-	
-	public void teleportEveryoneToSpawn() {
-		Location spawnLocation = BetterSkyBlock.getInstance().getSpawn();
-		getClaim().getPlayers().forEach(uuid -> Bukkit.getPlayer(uuid).teleport(spawnLocation));
+
+	public boolean isOwnerOnline() {
+		return Bukkit.getPlayer(ownerId) != null;
 	}
-	
+
+
+
 	public void setSpawn(Location location) throws SQLException {
 		this.spawn = location;
-		BetterSkyBlock.getInstance().getDataStore().updateIsland(this);
+		update();
 	}
-	
+
 	public void setIslandBiome(Biome biome) {
 
-		int x  = this.getClaim().getLesserBoundaryCorner().getX();
+		int sx = this.getClaim().getLesserBoundaryCorner().getX();
 		int sz = this.getClaim().getLesserBoundaryCorner().getZ();
 		int ux = this.getClaim().getGreaterBoundaryCorner().getX();
 		int uz = this.getClaim().getGreaterBoundaryCorner().getZ();
 
 		World world = Utils.worldFromUUID(claim.getWorldUniqueId());
 
-		for (; x <= ux; x++) {
+		for (; sx <= ux; sx++) {
 			for (int z = sz; z <= uz; z++) {
-				world.setBiome(x, z, biome);
+				world.setBiome(sx, z, biome);
 			}
 		}
 	}
-	
+
 	public void setChunkBiome(Biome biome, int chunkX, int chunkZ) {
-		int x = chunkX << 4;
+
+		int sx = chunkX << 4;
 		int sz = chunkZ << 4;
-		int ux = x + 16;
+		int ux = sx + 16;
 		int uz = sz + 16;
 
 		World world = Utils.worldFromUUID(claim.getWorldUniqueId());
 
-		for (; x < ux; x++) {
+		for (; sx < ux; sx++) {
 			for (int z = sz; z < uz; z++) {
-				world.setBiome(x, z, biome);
+				world.setBiome(sx, z, biome);
 			}
 		}
 	}
-	
+
 	public void setBlockBiome(Biome biome, int blockX, int blockZ) {
 		Utils.worldFromUUID(claim.getWorldUniqueId()).setBiome(blockX, blockZ, biome);
+	}
+
+
+
+	public void teleportEveryoneToSpawn() {
+
+		Location spawnLocation = BetterSkyBlock.getInstance().getSpawn();
+
+		getClaim().getPlayers().forEach(uuid -> {
+			Player player = Bukkit.getPlayer(uuid);
+			player.teleport(spawnLocation);
+			player.sendMessage("Você foi teleportado para o spawn."); //TODO: Lang
+		});
 	}
 	
 	public void deleteRegionFile() {
@@ -182,32 +180,16 @@ public class Island {
 
 	}
 
-	void removeThisIslandFromServer() {
-
-		int x = this.getSpawn().getBlockX() >> 9;
-		int z = this.getSpawn().getBlockZ() >> 9;
-
-		File regionFile = new File(this.getSpawn().getWorld().getWorldFolder(), "region" + File.separator + "r."+x+"."+z+".mca");
-
-		if (!regionFile.delete()) {
-			regionFile.deleteOnExit();
-		}
-
-	}
-
 	public void delete() throws SQLException {
+
 		ClaimManager claimManager = BetterSkyBlock.getInstance().getClaimManager();
-		UUID uuid = null;
+		Claim claim = getClaim();
 
-		if(getClaim() != null){
-			uuid = getClaim().getUniqueId();
-			claimManager.deleteClaim(getClaim());
-		}
 
-		//Sanity Check
-		if(uuid != null && claimManager.getClaimByUUID(uuid).isPresent()){
-			claimManager.getClaimByUUID(uuid).ifPresent(claimManager::deleteClaim);
-			BetterSkyBlock.getInstance().getLoggerHelper().warn("Delete task from island, uses the sanity check: isPresent ? " + claimManager.getClaimByUUID(uuid).isPresent());
+		if(claim != null){
+			if(!claimManager.deleteClaim(getClaim(), true).successful()){
+				BetterSkyBlock.getInstance().getLoggerHelper().warn("Delete task from " + ownerId + " island, cannot remove the claim. {Claim ID: " + claim.getUniqueId().toString() + "}");
+			}
 		}
 
 		if (BetterSkyBlock.getInstance().config().deleteRegion()) {
@@ -215,5 +197,31 @@ public class Island {
 		}
 
 		BetterSkyBlock.getInstance().getDataStore().removeIsland(this);
+	}
+
+	public void reset() {
+
+		try {
+
+			File schematicFile = new File(BetterSkyBlock.getInstance().getDataFolder(), BetterSkyBlock.getInstance().config().getSchematic() + ".schematic");
+
+			if (!schematicFile.exists()) {
+				throw new IllegalStateException("Schematic file '"+ BetterSkyBlock.getInstance().config().getSchematic() + ".schematic' doesn't exist");
+			}
+
+			teleportEveryoneToSpawn();
+
+			ready = false;
+
+			new ResetIslandTask(this, schematicFile).runTaskTimer(BetterSkyBlock.getInstance(), 1L, 1L);
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+	public void update(){
+		BetterSkyBlock.getInstance().getDataStore().updateIsland(this);
 	}
 }

@@ -5,13 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface CCommand {
+public @interface cSubCommand {
 
-    String label();
-    String[] aliases();
-
-
+    String name();
+    String targetCommand();
 
 }

@@ -3,7 +3,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 @HasSubCommand
 public class SubCmdSetBiome implements ISubCommand {
 
-    @CSubCommand(name = "setbiome", targetCommand = "island")
+    @cSubCommand(name = "setbiome", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         System.out.println(Arrays.asList(args));

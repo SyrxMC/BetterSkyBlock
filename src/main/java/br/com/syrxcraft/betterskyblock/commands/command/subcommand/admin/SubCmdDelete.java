@@ -3,7 +3,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.admin;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
@@ -17,7 +17,7 @@ import java.sql.SQLException;
 @HasSubCommand
 public class SubCmdDelete implements ISubCommand {
 
-    @CSubCommand(name = "delete", targetCommand = "island")
+    @cSubCommand(name = "delete", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_DELETE_OTHER)){
@@ -25,7 +25,6 @@ public class SubCmdDelete implements ISubCommand {
         }
 
         PlayerData playerData = GriefDefender.getCore().getPlayerData(BetterSkyBlock.getInstance().getIslandWorld().getUID(), Bukkit.getPlayerUniqueId(args[0])).orElse(null);
-
 
         if (playerData == null){
             commandSender.sendMessage("§4§l ▶ §cNão existem nenhum jogador chamado [" + args[0] + "] !");

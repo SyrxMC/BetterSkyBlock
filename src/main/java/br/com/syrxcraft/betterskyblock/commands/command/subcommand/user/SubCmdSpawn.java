@@ -3,7 +3,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @HasSubCommand
 public class SubCmdSpawn implements ISubCommand {
 
-    @CSubCommand(name = "spawn", targetCommand = "island")
+    @cSubCommand(name = "spawn", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!(commandSender instanceof Player)) {

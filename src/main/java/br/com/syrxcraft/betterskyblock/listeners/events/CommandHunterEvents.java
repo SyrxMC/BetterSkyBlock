@@ -1,7 +1,7 @@
 package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.commands.manager.CHunterTarget;
+import br.com.syrxcraft.betterskyblock.commands.manager.cCommandHunterTarget;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import org.bukkit.ChatColor;
@@ -44,9 +44,9 @@ public class CommandHunterEvents implements Listener {
 
             method.setAccessible(true);
 
-            if(method.isAnnotationPresent(CHunterTarget.class)){
-                CHunterTarget cHunterTarget = method.getAnnotation(CHunterTarget.class);
-                for (String s: cHunterTarget.target()) {
+            if(method.isAnnotationPresent(cCommandHunterTarget.class)){
+                cCommandHunterTarget cCommandHunterTarget = method.getAnnotation(cCommandHunterTarget.class);
+                for (String s: cCommandHunterTarget.target()) {
                     if(s.equalsIgnoreCase(command)){
 
                         try {
@@ -68,7 +68,7 @@ public class CommandHunterEvents implements Listener {
         }
     }
 
-    @CHunterTarget(target = {
+    @cCommandHunterTarget(target = {
             "abandon",
             "abandonclaim",
             "abandontop",

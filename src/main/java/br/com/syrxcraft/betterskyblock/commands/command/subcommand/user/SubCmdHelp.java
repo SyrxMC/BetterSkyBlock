@@ -3,7 +3,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 import br.com.finalcraft.evernifecore.fancytext.FancyText;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.integration.Integrations;
@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 @HasSubCommand
 public class SubCmdHelp implements ISubCommand {
 
-    @CSubCommand(name = "help", targetCommand = "island")
+    @cSubCommand(name = "help", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if(commandSender instanceof Player && BetterSkyBlock.getInstance().config().useBossShopForMenu() && BetterSkyBlock.getInstance().getIntegrationManager().isIntegrationLoaded(Integrations.BossShopPro)){
@@ -36,9 +36,6 @@ public class SubCmdHelp implements ISubCommand {
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " private","§bDeixa a sua ilha Privada!","/" + command + " private",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " public","§bDeixa a sua ilha Pública!","/" + command + " public",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " reset","§bReseta a sua ilha!(Apaga ela inteira!!!)","/" + command + " reset",true));
-
-//            if (player.hasPermission(PermissionNodes.ADMIN) && player.hasPermission(PermissionNodes.COMMAND_SETRADIUS))
-//                FancyText.sendTo(player, new FancyText("§6§l ▶ §e/" + command + " setraio <Player> <Raio>","§bAltera o tamanho do raio da ilha!","/" + command + " setraio",true));
 
             if (player.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE)) {
                 FancyText.sendTo(player, new FancyText("§3§l ▶ §b/" + command + " biomelist","§bMostra os possíveis biomas!","/" + command + " biomelist",true));

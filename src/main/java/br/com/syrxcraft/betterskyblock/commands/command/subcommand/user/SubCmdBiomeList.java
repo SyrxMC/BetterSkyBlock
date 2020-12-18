@@ -3,7 +3,7 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
-import br.com.syrxcraft.betterskyblock.commands.manager.CSubCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 @HasSubCommand
 public class SubCmdBiomeList implements ISubCommand {
 
-    @CSubCommand(name = "biomelist", targetCommand = "island")
+    @cSubCommand(name = "biomelist", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_BIOME_LIST)){

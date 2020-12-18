@@ -80,28 +80,6 @@ public class Utils {
 		return string.replace("\\", "\\\\").replace("\"", "\\\"");
 	}
 	
-	public static void loadSchematic(File schematic, Location location) {
-		try {
-			// read schematic file
-			FileInputStream fis = new FileInputStream(schematic);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader(bis);
-			
-			// create clipboard
-			WorldData worldData = LegacyWorldData.getInstance();
-			Clipboard clipboard = reader.read(worldData);
-			fis.close();
-			
-			ClipboardHolder clipboardHolder = new ClipboardHolder(clipboard, worldData);
-			EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(fromBukkitToWorldEditWorld(location.getWorld()), 1000000);
-			
-			Operation operation = clipboardHolder.createPaste(editSession, LegacyWorldData.getInstance()).to(toVector(location)).ignoreAirBlocks(true).build();
-			Operations.completeLegacy(operation);
-		} catch (MaxChangedBlocksException | IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static boolean regen(Location center, int blockRadius) {
 		com.sk89q.worldedit.world.World world = fromBukkitToWorldEditWorld(center.getWorld());
 		EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, 1000000);
@@ -152,7 +130,6 @@ public class Utils {
 		
 		return sb.toString();
 	}
-	
 
 	public static com.sk89q.worldedit.world.World fromBukkitToWorldEditWorld(org.bukkit.World world) {
 		for (com.sk89q.worldedit.world.World w : WorldEdit.getInstance().getServer().getWorlds()) {
@@ -219,4 +196,5 @@ public class Utils {
 	public static Vector3i locationToVector(Location location){
 		return new Vector3i(location.getBlockX(),location.getBlockY(),location.getBlockZ());
 	}
+
 }

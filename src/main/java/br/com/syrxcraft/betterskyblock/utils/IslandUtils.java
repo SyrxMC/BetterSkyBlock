@@ -1,6 +1,7 @@
 package br.com.syrxcraft.betterskyblock.utils;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
+import br.com.syrxcraft.betterskyblock.data.DataStore;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.flowpowered.math.vector.Vector3i;
@@ -44,15 +45,19 @@ public class IslandUtils {
 
             Claim claim = BetterSkyBlock.getInstance().getClaimManager().getClaimAt(Utils.locationToVector(player.getLocation()));
 
-            Island island = getIsland(claim);
-
-            if(island != null){
-                return island;
-            }
+            return getIsland(claim);
 
         }
 
         return null;
+    }
+
+    public static Island getPlayerIsland(Player player){
+        return BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
+    }
+
+    public static Island getPlayerIsland(UUID player){
+        return BetterSkyBlock.getInstance().getDataStore().getIsland(player);
     }
 
 }

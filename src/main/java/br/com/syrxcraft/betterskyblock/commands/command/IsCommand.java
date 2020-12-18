@@ -1,11 +1,11 @@
 package br.com.syrxcraft.betterskyblock.commands.command;
 
-import br.com.syrxcraft.betterskyblock.commands.manager.CCommand;
+import br.com.syrxcraft.betterskyblock.commands.manager.cCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ICommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-@CCommand(label = "island", aliases = {"is", "isl", "bsis"})
+@cCommand(label = "island", aliases = {"is", "isl", "bsis"})
 public class IsCommand implements ICommand {
 
     @Override

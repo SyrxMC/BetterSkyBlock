@@ -8,22 +8,31 @@ import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.ClaimTypes;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class DataStore {
 
+	public static DataStore INSTANCE;
+
+	public static DataStore getInstance(){
+		return INSTANCE != null ? INSTANCE : new DataStore();
+	}
+
 	private final BetterSkyBlock instance;
 	private final DataProvider dataProvider;
-	private final Map<UUID, Island> islands;
 
-	public DataStore(BetterSkyBlock instance){
+	private static final HashMap<UUID, Island> islands = new HashMap<>();
 
-		this.instance = instance;
+	private DataStore(){
+
+		INSTANCE = this;
+
+		this.instance = BetterSkyBlock.getInstance();
 
 		if(instance.config().getDataProvider() == null)
 			throw new RuntimeException("Invalid data provider.");
@@ -34,9 +43,15 @@ public class DataStore {
 			throw new RuntimeException();
 		}
 
-		if((islands = dataProvider.loadData()) == null){
+
+		Map<UUID, Island> data = dataProvider.loadData();
+
+		if(data == null){
 			throw new RuntimeException("Unable to load islands...");
 		}
+
+		islands.putAll(data);
+
 
 		instance.getLoggerHelper().info("Loaded " + getTotalOfIslands() + " islands...");
 
@@ -59,8 +74,6 @@ public class DataStore {
 		Vector3i locL = new Vector3i((bx + 255 - radius), 0, (bz + 255 - radius));
 		Vector3i locU = new Vector3i((bx + 255 + radius), 255, (bz + 255 + radius));
 
-		String name = Bukkit.getPlayer(uuid).getName();
-
 		ClaimResult result = Claim.builder()
 				.world(world.getUID())
 				.bounds(locL, locU)
@@ -69,6 +82,8 @@ public class DataStore {
 				.sizeRestrictions(false)
 				.resizable(false)
 				.type(ClaimTypes.TOWN)
+				.expire(false)
+				.levelRestrictions(false)
 				.build();
 
 		if (!result.successful()) {
@@ -87,7 +102,10 @@ public class DataStore {
 
 		} catch (SQLException e) {
 
-			GriefDefender.getCore().getClaimManager(world.getUID()).deleteClaim(result.getClaim().orElse(null));
+			if(claim != null){
+				GriefDefender.getCore().getClaimManager(world.getUID()).deleteClaim(claim);
+			}
+
 			throw new Exception("data store issue." + e.getMessage());
 		}
 		
@@ -98,7 +116,7 @@ public class DataStore {
 
 	
 	public Island getIsland(UUID playerId) {
-		return this.islands.get(playerId);
+		return islands.get(playerId);
 	}
 
     public void addIsland(Island island) throws SQLException {

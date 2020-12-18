@@ -23,9 +23,10 @@ public class CommandManager {
             .setPackage("br.com.syrxcraft.betterskyblock.commands")
             .build();
 
-    private final LinkedHashMap<CCommand,ICommand> commands = new LinkedHashMap<>();
-    private final LinkedHashMap<CSubCommand, ISubCommand> subCommands = new LinkedHashMap<>();
+    private final LinkedHashMap<cCommand,ICommand> commands = new LinkedHashMap<>();
+    private final LinkedHashMap<cSubCommand, ISubCommand> subCommands = new LinkedHashMap<>();
     private final LinkedHashMap<String,String> confirmations = new LinkedHashMap<>();
+
 
     public CommandManager load(){
 
@@ -36,12 +37,12 @@ public class CommandManager {
 
         for(Class<?> clazz : classes){
 
-            if(clazz.isAnnotationPresent(CCommand.class) && ICommand.class.isAssignableFrom(clazz)){
+            if(clazz.isAnnotationPresent(cCommand.class) && ICommand.class.isAssignableFrom(clazz)){
                 try{
 
                     Object data = clazz.newInstance();
 
-                    CCommand cCommand = data.getClass().getAnnotation(CCommand.class);
+                    cCommand cCommand = data.getClass().getAnnotation(br.com.syrxcraft.betterskyblock.commands.manager.cCommand.class);
                     ICommand iCommand = (ICommand) data;
 
                     commands.put(cCommand, iCommand);
@@ -64,11 +65,11 @@ public class CommandManager {
                     try{
 
                         Object data = clazz.newInstance();
-                        CSubCommand cSubCommand = null;
+                        cSubCommand cSubCommand = null;
 
                         for(Method method : data.getClass().getDeclaredMethods()){
-                            if(method.isAnnotationPresent(CSubCommand.class)){
-                                cSubCommand = method.getDeclaredAnnotation(CSubCommand.class);
+                            if(method.isAnnotationPresent(br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand.class)){
+                                cSubCommand = method.getDeclaredAnnotation(br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand.class);
                             }
                         }
 
@@ -101,7 +102,7 @@ public class CommandManager {
             Constructor<PluginCommand> pluginCommandConstructor = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
             pluginCommandConstructor.setAccessible(true);
 
-            for(CCommand command : commands.keySet()){
+            for(cCommand command : commands.keySet()){
 
                 PluginCommand pluginCommand = pluginCommandConstructor.newInstance(command.label(), BetterSkyBlock.getInstance());
 
@@ -141,10 +142,10 @@ public class CommandManager {
         return getCommand(command) != null;
     }
 
-    public CCommand getCommand(String command){
+    public cCommand getCommand(String command){
 
         if(command != null){
-            for(CCommand cCommand : commands.keySet()){
+            for(br.com.syrxcraft.betterskyblock.commands.manager.cCommand cCommand : commands.keySet()){
 
                 if(cCommand.label().equalsIgnoreCase(command)) return cCommand;
 
@@ -159,10 +160,9 @@ public class CommandManager {
     }
 
 
-
     public boolean deliverSubCommand(CommandSender commandSender,String command, String label, String[] args){
 
-        for(CSubCommand subCommand : subCommands.keySet()){
+        for(cSubCommand subCommand : subCommands.keySet()){
             if(subCommand.targetCommand().equalsIgnoreCase(command)){
                 if(subCommand.name().equalsIgnoreCase(label)){
                     ISubCommand iSubCommand = subCommands.get(subCommand);

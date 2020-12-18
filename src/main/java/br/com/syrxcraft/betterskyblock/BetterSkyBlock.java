@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock;
 
+import br.com.syrxcraft.betterskyblock.api.BetterSkyBlockAPI;
 import br.com.syrxcraft.betterskyblock.border.IslandBorder;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.integration.IntegrationManager;
@@ -28,6 +29,7 @@ public class BetterSkyBlock extends JavaPlugin {
 	private CommandManager commandManager;
 	private EventManager eventManager;
 	private World islandWorld;
+	private BetterSkyBlockAPI betterSkyBlockAPI;
 
 	@Override
 	public void onEnable() {
@@ -38,17 +40,22 @@ public class BetterSkyBlock extends JavaPlugin {
 		loggerHelper.info("Hello World!");
 		loggerHelper.info("Better Sky Block - " + getDescription().getVersion());
 
+
 		config = new Config(this);
-		islandWorld = Bukkit.getWorld(config.getWorldName());
+
+		islandWorld = loadWorld();
 
 		integrationManager = new IntegrationManager(this);
 
-		dataStore = new DataStore(this);
+		dataStore = DataStore.getInstance();
+
 		eventManager = new EventManager(this);
 
 		commandManager = new CommandManager().load();
 
 		IslandBorder.REGISTER(this);
+
+		betterSkyBlockAPI = new BetterSkyBlockAPI(this);
 
 		showInfo();
 	}
@@ -85,10 +92,6 @@ public class BetterSkyBlock extends JavaPlugin {
 		return config;
 	}
 
-	public Island getIsland(UUID playerId){
-		return dataStore.getIsland(playerId);
-	}
-
 	public World getIslandWorld() {
 		return islandWorld;
 	}
@@ -101,10 +104,19 @@ public class BetterSkyBlock extends JavaPlugin {
 		return commandManager;
 	}
 
+	public BetterSkyBlockAPI getBetterSkyBlockAPI() {
+		return betterSkyBlockAPI;
+	}
+
 	public void showInfo(){
 		loggerHelper.info("Server version: "   + Bukkit.getVersion().replace("git-",""));
 		loggerHelper.info("Island World: "     + getIslandWorld().getName());
 		loggerHelper.info("DataProvider: "     + getDataStore().getDataProvider().getProvider().name());
 		loggerHelper.info("GriefDefenderAPI: " + GriefDefender.getVersion().getApiVersion());
 	}
+
+	public World loadWorld(){
+		return Bukkit.getWorld(config.getWorldName());
+	}
+
 }

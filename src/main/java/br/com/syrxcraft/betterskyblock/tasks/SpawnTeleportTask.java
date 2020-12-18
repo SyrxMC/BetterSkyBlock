@@ -21,6 +21,9 @@ public class SpawnTeleportTask extends BukkitRunnable {
 		this.countdown = countdown;
 	}
 
+
+	//todo: check spawn system
+
 	@Override
 	public void run() {
 

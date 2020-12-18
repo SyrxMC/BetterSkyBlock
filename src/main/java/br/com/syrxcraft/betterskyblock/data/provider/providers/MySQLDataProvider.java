@@ -78,7 +78,7 @@ public class MySQLDataProvider implements IDataProvider {
     }
 
     @Override
-    public Map<UUID, Island> loadData() {
+    public HashMap<UUID, Island> loadData() {
 
         try{
 
