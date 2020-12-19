@@ -1,6 +1,5 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
-import br.com.finalcraft.evernifecore.fancytext.FancyText;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
@@ -8,6 +7,7 @@ import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.integration.Integrations;
 import br.com.syrxcraft.betterskyblock.integration.integrations.BossShopProIntegration;
+import br.com.syrxcraft.betterskyblock.utils.FancyText;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

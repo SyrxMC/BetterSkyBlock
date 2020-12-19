@@ -31,8 +31,9 @@ public class GriefDefenderUtils {
 
         if(getClaimFlagPermissionMethod != null){
             try {
-                return (Tristate) getClaimFlagPermissionMethod.invoke(claim, flag);
-            } catch (IllegalAccessException | InvocationTargetException ignored) { }
+                getClaimFlagPermissionMethod.setAccessible(true);
+                return (Tristate) getClaimFlagPermissionMethod.invoke(GDPermissionManager.getInstance(), claim, flag);
+            } catch (IllegalAccessException | InvocationTargetException ignored) { ignored.printStackTrace(); }
         }
 
         return null;

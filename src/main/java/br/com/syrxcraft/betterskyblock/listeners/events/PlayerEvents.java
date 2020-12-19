@@ -38,7 +38,7 @@ public class PlayerEvents implements Listener {
         }
     }
 
-    @EventHandler //Todo: repensar : possivel funcionalidade, se um jogador se teleporta para o mundo de ilhas pelo portal do fim, ele é jogado pro spawn do mundo
+    @EventHandler
     void onPlayerTeleport(PlayerPortalEvent event) {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL && isIslandWorld(event.getFrom().getWorld())) {
             Location loc = event.getPortalTravelAgent().findPortal(new Location(event.getTo().getWorld(), 0, 64, 0));
@@ -49,7 +49,7 @@ public class PlayerEvents implements Listener {
         }
     }
 
-    @EventHandler // Todo: player saindo da ilha
+    @EventHandler
     void onPlayerIslandExit(IslandExitEvent event){
 
         if(event.getIsland() != null){
@@ -77,7 +77,7 @@ public class PlayerEvents implements Listener {
 
     }
 
-    @EventHandler// Todo: player saindo da ilha [Handle secundário, pq ele processa abaixo de 0]
+    @EventHandler
     void onPlayerMoveEvent(PlayerMoveEvent event){
 
         Location location = event.getTo();
