@@ -53,6 +53,9 @@ public class PlaceHolderAPIIntegration extends PlaceholderExpansion implements I
 
                             Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(),Flags.ENTER_CLAIM.getPermission());
 
+                            System.out.println(tristate != null);
+                            System.out.println(tristate.asBoolean());
+
                             return tristate != null && tristate.asBoolean() ? "Sim" : "Não"; // TODO: fix
                         }
 
@@ -62,6 +65,9 @@ public class PlaceHolderAPIIntegration extends PlaceholderExpansion implements I
                     case "island_public_boolean":{
 
                         Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(),Flags.ENTER_CLAIM.getPermission());
+
+                        System.out.println(tristate != null);
+                        System.out.println(tristate.asBoolean());
 
                         return "" + (tristate != null && tristate.asBoolean());
 

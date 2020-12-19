@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class DataStore {
 
-	public static DataStore INSTANCE;
+	private static DataStore INSTANCE;
 
 	public static DataStore getInstance(){
 		return INSTANCE != null ? INSTANCE : new DataStore();

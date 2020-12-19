@@ -34,8 +34,6 @@ public class IsCommand implements ICommand {
                 return deliverSubCommand(sender, command, "reset", args);
             case "delete":
                 return deliverSubCommand(sender, command, "delete", args);
-            case "setradius":
-                return deliverSubCommand(sender, command, "setradius", args);
             case "reload":
                 return deliverSubCommand(sender, command, "reload", args);
             default:{

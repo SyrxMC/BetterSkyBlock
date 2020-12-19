@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
@@ -195,6 +197,37 @@ public class Utils {
 
 	public static Vector3i locationToVector(Location location){
 		return new Vector3i(location.getBlockX(),location.getBlockY(),location.getBlockZ());
+	}
+
+	public static Vector3i[] orderPositions(Vector3i[] positions){
+
+		int minX = positions[0].getX();
+		int minY = positions[0].getY();
+		int minZ = positions[0].getZ();
+
+		int maxX = minX;
+		int maxY = minY;
+		int maxZ = minZ;
+
+		for (Vector3i pos : positions) {
+
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+
+			if (x < minX) minX = x;
+			if (y < minY) minY = y;
+			if (z < minZ) minZ = z;
+
+			if (x > maxX) maxX = x;
+			if (y > maxY) maxY = y;
+			if (z > maxZ) maxZ = z;
+		}
+
+		return new Vector3i[]{
+				new Vector3i(minX, minY, minZ),
+				new Vector3i(maxX, maxY, maxZ)
+		};
 	}
 
 }

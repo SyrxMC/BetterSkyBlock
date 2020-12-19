@@ -2,14 +2,18 @@ package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.data.DataStore;
 import br.com.syrxcraft.betterskyblock.events.IslandEnterEvent;
 import br.com.syrxcraft.betterskyblock.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.User;
 import com.griefdefender.api.event.*;
+import com.griefdefender.event.GDCauseStackManager;
 import com.griefdefender.event.GDTransferClaimEvent;
+import com.griefdefender.permission.GDPermissionUser;
 import net.kyori.event.method.annotation.IgnoreCancelled;
 import net.kyori.event.method.annotation.PostOrder;
 import net.kyori.event.method.annotation.Subscribe;
@@ -26,125 +30,109 @@ import static br.com.syrxcraft.betterskyblock.utils.IslandUtils.getIsland;
 
 public class ClaimEvents implements Listener {
 
-    @Subscribe // todo: claim remove handle
+    @Subscribe
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimRemove(RemoveClaimEvent event) {
 
         Island island = getIsland(event.getClaim());
-
-        Player player = event.getCause().first(Player.class).orElse(null);
+        Player player = GriefDefenderUtils.getPlayerFromEvent(event);
 
         if (island != null) {
 
             if (event instanceof RemoveClaimEvent.Abandon) {
 
                 if(player != null){
-                    player.sendMessage(ChatColor.RED + "Se você quer deletar a sua ilha use o comando \"/is delete\"!");
-                }else if(island.getPlayer() != null){
-                    island.getPlayer().sendMessage(ChatColor.RED + "Se você quer deletar a sua ilha use o comando \"/is delete\"!");
+                    player.sendMessage(ChatColor.RED + "1 Se você quer deletar a sua ilha use o comando \"/is delete\"!"); //TODO: LANG
                 }
 
                 event.cancelled(true);
-
                 return;
             }
 
             island.teleportEveryoneToSpawn();
+
+            if(BetterSkyBlock.getInstance().config().deleteRegion()){
+                island.deleteRegionFile();
+            }
+
+            try {
+                DataStore.getInstance().removeIsland(island);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+
+
             BetterSkyBlock.getInstance().getLoggerHelper().info("Removed " + island.getOwnerName() + "'s island because the claim was deleted. Reason: " + event.getMessage() + ".");
         }
     }
 
-    @Subscribe // todo: claim create handle
+    @Subscribe
     @PostOrder(-100)
     @IgnoreCancelled
-    public void onClaimCreate(CreateClaimEvent event) {
+    public void onClaimCreate(CreateClaimEvent.Pre event) {
 
-        if (!event.getCause().containsType(Player.class)) {
-            return;
-        }
+        Player player = GriefDefenderUtils.getPlayerFromEvent(event);
 
-        if (event.getClaim().isAdminClaim()) {
+        if (player == null)
             return;
-        }
+
+        if (event.getClaim().isAdminClaim() || event.getClaim().isTown())
+            return;
 
         if (!event.getClaim().getWorldUniqueId().equals(BetterSkyBlock.getInstance().getIslandWorld().getUID())) {
             return;
         }
 
         event.cancelled(true);
-        //TODO: Implement a lang system
-        event.setMessage(TextComponent.of("You do not have permissions to create claims on the islands world."));
+        player.sendMessage("You do not have permissions to create claims on the islands world. Create a admin claim instead a basic claim."); //TODO: Implement a lang system
     }
 
 
-    @Subscribe // todo: claim resize handler
+    @Subscribe
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimChange(ChangeClaimEvent event) {
 
-        Player player = event.getCause().first(Player.class).orElse(null);
+        Player player = GriefDefenderUtils.getPlayerFromEvent(event);
 
-        if (player == null || event.cancelled()) {
+        if (player == null) {
             return;
         }
 
         if (IslandUtils.isIsland(event.getClaim())) {
-            if (getIsland(event.getClaim()) != null) {
-                event.cancelled(true);
 
-                if (event instanceof ChangeClaimEvent.Resize) {
-                    player.sendMessage(ChatColor.RED + "Você não pode redefinir o tamanho dessa ilha. É uma ilha afinal das contas.It's an island!");
-                }
+            event.cancelled(true);
 
+            if (event instanceof ChangeClaimEvent.Resize) {
+                player.sendMessage(ChatColor.RED + "Você não pode redefinir o tamanho dessa ilha !"); //TODO: Lang
+            }
+
+            if (event instanceof ChangeClaimEvent.Type) {
+                player.sendMessage(ChatColor.RED + "Você não pode alterar o tipo dessa ilhas !"); //TODO: Lang
             }
         }
+
     }
 
-    @Subscribe() // todo: island transfer handler
+    @Subscribe()
     @PostOrder(-100)
     @IgnoreCancelled
     public void onClaimTransfer(GDTransferClaimEvent event) {
 
-        Island island = getIsland(event.getClaim());
+        Player player = GriefDefenderUtils.getPlayerFromEvent(event);
 
-        if (island != null) {
+        if (IslandUtils.isIsland(event.getClaim())) {
 
+            event.cancelled(true);
 
-            Island is2 = IslandUtils.getPlayerIsland(event.getNewOwner());
-
-            if(is2 != null){
-                event.cancelled(true);
-                event.setMessage(TextComponent.of("This claim is an island and the other player has an island already. The other player has to delete their island first."));
-            }
-
-
-            Island newIsland = new Island(event.getNewOwner(), event.getClaim(), island.getSpawn());
-
-            try {
-
-                BetterSkyBlock.getInstance().getDataStore().removeIsland(island);
-                BetterSkyBlock.getInstance().getDataStore().addIsland(newIsland);
-
-                BetterSkyBlock.getInstance().getLoggerHelper().info("Transferred island " + event.getClaim().getUniqueId() + " owner from " + PlainComponentSerializer.INSTANCE.serialize(event.getClaim().getOwnerDisplayName()) + " to " + event.getNewOwner());
-
-
-            } catch (SQLException e) {
-
-                BetterSkyBlock.getInstance().getLoggerHelper().error("SQL exception while transferring island " + event.getClaim().getUniqueId() + "owner from " + PlainComponentSerializer.INSTANCE.serialize(event.getClaim().getOwnerDisplayName()) + " to " + event.getNewOwner());
-
-                if (Utils.asBukkitPlayer(event.getNewOwner())!= null) {
-                    Utils.asBukkitPlayer(event.getNewOwner()).sendMessage(ChatColor.RED + "WARNING! A severe error occurred while transferring the island! Contact your server administrator!");
-                }
-
-                e.printStackTrace();
-
+            if (player != null){
+                player.sendMessage("§c ! §fEsse claim é uma ilha! E as ilhas são Intransferíveis."); // TODO: Lang
             }
         }
     }
 
 
-    //TODO: event dispatcher [ Exit Join island ]
     @Subscribe()
     @PostOrder(-100)
     @IgnoreCancelled

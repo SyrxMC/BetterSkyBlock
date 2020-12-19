@@ -6,6 +6,7 @@ import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.claim.Claim;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -58,6 +59,15 @@ public class IslandUtils {
 
     public static Island getPlayerIsland(UUID player){
         return BetterSkyBlock.getInstance().getDataStore().getIsland(player);
+    }
+
+    public static World getIslandWorld(Island island){
+
+        if(island != null){
+            return Bukkit.getWorld(island.getClaim().getWorldUniqueId());
+        }
+
+        return null;
     }
 
 }

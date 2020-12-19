@@ -7,6 +7,8 @@ import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.utils.Cooldown;
+import br.com.syrxcraft.betterskyblock.utils.TimeUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,7 +31,7 @@ public class SubCmdReset implements ISubCommand {
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
 
         if (island == null) {
-            commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/"+command+" spawn\"");
+            commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + command + " spawn\"");
             return false;
         }
 
@@ -46,14 +48,13 @@ public class SubCmdReset implements ISubCommand {
             return false;
         }
 
-        //TODO: Implement a new cooldown system ?
-//        Cooldown cooldown = Cooldown.getOrCreateCooldown("GPPSkyBlock-ISRESET",player.getName());
-//        if (cooldown.isInCooldown()){
-//            cooldown.warnPlayer(sender);
-//            return true;
-//        }
-//        cooldown.setPermaCooldown(true);
-//        cooldown.startWith(259200);//3 Dias
+        if(Cooldown.isInCooldown(player)){
+            player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player))  + " para executar este comando.");
+            return false;
+        }
+
+        Cooldown.setCooldown(player, 1800L);
+
         island.reset();
         return true;
     }

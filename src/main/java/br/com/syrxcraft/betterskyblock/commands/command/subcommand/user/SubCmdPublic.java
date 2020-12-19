@@ -34,7 +34,7 @@ public class SubCmdPublic implements ISubCommand {
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
 
         if (island == null) {
-            commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/"+label+" spawn\"");
+            commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + label + " spawn\"");
             return false;
         }
 

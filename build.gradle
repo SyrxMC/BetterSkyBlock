@@ -60,8 +60,6 @@ dependencies {
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.1.5'
     compileOnly 'com.sk89q.worldedit:worldedit-core:6.0.0-SNAPSHOT'
 
-
-
     compileOnly 'net.kyori:text-api:3.0.3'
     compileOnly 'net.kyori:text-serializer-plain:3.0.3'
     compileOnly 'net.kyori:event-api:3.0.0'
@@ -72,6 +70,7 @@ dependencies {
     compileOnly 'com.github.bloodmc:GriefDefenderAPI:master-SNAPSHOT'
 
     compile "io.papermc:paperlib:1.0.3"
+    compile files('libs/Yamler-Core-2.4.0-SNAPSHOT.jar')
 
     compileOnly fileTree(dir: "libs", include: "*.jar")
 }
@@ -86,6 +85,7 @@ jar.finalizedBy shadowJar
 
 shadowJar {
     relocate 'io.papermc.lib', 'br.com.brunoxkk0.betterskyblock.paperlib'
+    relocate 'net.cubespace.Yamler.Config', 'br.com.brunoxkk0.betterskyblock.yamlerlib'
 }
 
 processResources {

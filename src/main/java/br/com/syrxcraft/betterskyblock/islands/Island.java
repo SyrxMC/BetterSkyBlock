@@ -1,7 +1,7 @@
 package br.com.syrxcraft.betterskyblock.islands;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.islands.tasks.ResetIslandTask;
+import br.com.syrxcraft.betterskyblock.tasks.ResetIslandThread;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimManager;
@@ -213,7 +213,7 @@ public class Island {
 
 			ready = false;
 
-			new ResetIslandTask(this, schematicFile).runTaskTimer(BetterSkyBlock.getInstance(), 1L, 1L);
+			new ResetIslandThread(this, schematicFile);
 
 		}catch (Exception e){
 			e.printStackTrace();

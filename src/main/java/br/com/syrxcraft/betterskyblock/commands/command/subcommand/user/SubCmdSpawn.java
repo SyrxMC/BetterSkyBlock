@@ -55,12 +55,7 @@ public class SubCmdSpawn implements ISubCommand {
                 return false;
             }
 
-
-            //GDPermissionManager.getInstance().getClaimFlagPermission
-
-            //if (!GDPermissionManager.getInstance().getFinalPermission(null, null, island.getClaim(), Flags.ENTER_CLAIM, player, player, player, null, true).asBoolean()) {
-            Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(), Flags.ENTER_CLAIM.getPermission());
-            if(tristate != null && tristate.asBoolean()){
+            if(!GriefDefenderUtils.getPlayerFlagPermission(player, island.getClaim(), Flags.ENTER_CLAIM, GriefDefenderUtils.getPlayerTrustType(player, island.getClaim()))){
                 player.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                 return false;
             }
