@@ -113,6 +113,7 @@ public class BetterSkyBlock extends JavaPlugin {
 		loggerHelper.info("Island World: "     + getIslandWorld().getName());
 		loggerHelper.info("DataProvider: "     + getDataStore().getDataProvider().getProvider().name());
 		loggerHelper.info("GriefDefenderAPI: " + GriefDefender.getVersion().getApiVersion());
+		loggerHelper.info("GriefDefender: " + Bukkit.getPluginManager().getPlugin("GriefDefender").getDescription().getVersion());
 	}
 
 	public World loadWorld(){

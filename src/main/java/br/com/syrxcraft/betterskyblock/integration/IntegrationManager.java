@@ -48,7 +48,7 @@ public class IntegrationManager implements Listener {
                     }
 
                     if(iIntegration.load()){
-                        betterSkyBlock.getLoggerHelper().info("Integration [ " + iIntegration.targetPlugin() + "-" + iIntegration.targetVersion() + "] was successfully Loaded.");
+                        betterSkyBlock.getLoggerHelper().info("Integration [ " + iIntegration.targetPlugin() + "-" + Bukkit.getPluginManager().getPlugin(iIntegration.targetPlugin()).getDescription().getVersion() + "] was successfully Loaded.");
                     }else {
                         betterSkyBlock.getLoggerHelper().info("Integration [ " + iIntegration.targetPlugin() + "-" + iIntegration.targetVersion() + "] cannot be Loaded.");
                     }
