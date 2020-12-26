@@ -62,7 +62,6 @@ public class SubCmdTransfer implements ISubCommand {
 
         try {
             instance.getDataStore().removeIsland(oldOwnerIsland);
-            //Remove old Island!
             instance.getDataStore().transferIsland(oldOwnerIsland, newOwner.getUniqueId());
             Island newIsland = new Island(newOwner.getUniqueId(), oldOwnerIsland.getClaim(), oldOwnerIsland.getSpawn());
             instance.getDataStore().addIsland(newIsland);
