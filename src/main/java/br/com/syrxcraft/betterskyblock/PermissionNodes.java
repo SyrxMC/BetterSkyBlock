@@ -10,6 +10,7 @@ public class PermissionNodes {
     public static final String COMMAND_PRIVATE              = "betterskyblock.cmd.private";
     public static final String COMMAND_PUBLIC               = "betterskyblock.cmd.public";
     public static final String COMMAND_DELETE_OTHER         = "betterskyblock.cmd.delete.other";
+    public static final String COMMAND_INFO                 = "betterskyblock.cmd.info";
 
     public static final String COMMAND_SET_SPAWN            = "betterskyblock.set.spawn";
     public static final String OPTIONS_SET_BIOME_BASE       = "betterskyblock.set.biome";

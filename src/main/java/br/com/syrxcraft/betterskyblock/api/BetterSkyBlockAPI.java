@@ -20,7 +20,7 @@ public class BetterSkyBlockAPI {
         return INSTANCE;
     }
 
-    public BetterSkyBlockAPI(BetterSkyBlock betterSkyBlock){
+    public BetterSkyBlockAPI(BetterSkyBlock betterSkyBlock) {
 
         INSTANCE = this;
         pluginInstance = betterSkyBlock;
@@ -29,25 +29,30 @@ public class BetterSkyBlockAPI {
 
     }
 
-    public int getIslandCount(){
+    public int getIslandCount() {
         return pluginInstance.getDataStore().getTotalOfIslands();
     }
 
-    public Island getPlayerIsland(Player player){
+    public Island getPlayerIsland(Player player) {
         return getPlayerIsland(player.getUniqueId());
     }
 
-    public Island getPlayerIsland(UUID player){
+    public Island getPlayerIsland(UUID player) {
         return IslandUtils.getPlayerIsland(player);
     }
 
-    public boolean hasIsland(Player player){
+    public boolean hasIsland(Player player) {
         return getPlayerIsland(player) != null;
     }
 
-    public boolean isIslandPublic(Player player){
+    public boolean isIslandPublic(Player player) {
 
         Island island = getPlayerIsland(player);
+
+        return isIslandPublic(island);
+    }
+
+    public boolean isIslandPublic(Island island) {
         Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(), Flags.ENTER_CLAIM.getPermission());
 
         return tristate != null && tristate.asBoolean();

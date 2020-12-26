@@ -4,9 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.*;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import com.flowpowered.math.vector.Vector3i;
@@ -228,6 +228,31 @@ public class Utils {
 				new Vector3i(minX, minY, minZ),
 				new Vector3i(maxX, maxY, maxZ)
 		};
+	}
+
+	public static String getFormatedDate(Date date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'às' HH:mm:ss");
+		return formatter.format(date);
+	}
+
+	public static String getFormatedDate(Instant instant) {
+		Date date = Date.from(instant);
+		return getFormatedDate(date);
+	}
+
+	public static List<Player> getPlayersByUUID(List<UUID> uuidList) {
+		List<Player> players = new ArrayList<>();
+		for (UUID uuid : uuidList) {
+			players.add(asBukkitPlayer(uuid));
+		}
+		return players;
+	}
+	public static List<String> getPlayersNameByUUID(List<UUID> uuidList) {
+		List<String> players = new ArrayList<>();
+		for (UUID uuid : uuidList) {
+			players.add(asBukkitPlayer(uuid).getName());
+		}
+		return players;
 	}
 
 }
