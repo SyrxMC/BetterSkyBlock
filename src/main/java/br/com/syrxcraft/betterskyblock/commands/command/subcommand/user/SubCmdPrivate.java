@@ -46,6 +46,8 @@ public class SubCmdPrivate implements ISubCommand {
         Claim claim = island.getClaim();
         claim.setFlagPermission(Flags.ENTER_CLAIM, Tristate.FALSE, new HashSet<>());
 
+        System.out.println(claim.getPlayers());
+
         for(UUID uuid : claim.getPlayers()){
 
             Player p = Bukkit.getPlayer(uuid);

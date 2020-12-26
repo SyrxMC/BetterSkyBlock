@@ -45,7 +45,7 @@ public class BetterSkyBlockAPI {
         return getPlayerIsland(player) != null;
     }
 
-    public boolean islandIsPublic(Player player){
+    public boolean isIslandPublic(Player player){
 
         Island island = getPlayerIsland(player);
         Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(), Flags.ENTER_CLAIM.getPermission());
