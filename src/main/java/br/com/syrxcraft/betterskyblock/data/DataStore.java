@@ -2,6 +2,7 @@ package br.com.syrxcraft.betterskyblock.data;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.data.provider.DataProvider;
+import br.com.syrxcraft.betterskyblock.data.provider.providers.Providers;
 import br.com.syrxcraft.betterskyblock.islands.Island;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
@@ -36,11 +37,13 @@ public class DataStore {
 
 		if(instance.config().getDataProvider() == null)
 			throw new RuntimeException("Invalid data provider.");
-
-		dataProvider = new DataProvider(instance.config().getDataProvider());
+		Providers dataProviderType = instance.config().getDataProvider();
+		dataProvider = new DataProvider(dataProviderType);
 
 		if(!dataProvider.onLoad(instance)){
-			throw new RuntimeException();
+			instance.getLoggerHelper().error("Error connecting to DataProvider: '"+ dataProviderType.name() +"'. Disabling plugin.");
+			instance.getServer().getPluginManager().disablePlugin(instance);
+			return;
 		}
 
 

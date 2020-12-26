@@ -10,6 +10,8 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Locale;
+
 public class IntegrationManager implements Listener {
 
     private final BetterSkyBlock betterSkyBlock;
@@ -30,11 +32,11 @@ public class IntegrationManager implements Listener {
         for(Integrations integrations : Integrations.values()){
 
             try{
-                Object instance  = integrations.getClazz().newInstance();
 
-                IIntegration iIntegration = (IIntegration) instance;
+                if(Bukkit.getPluginManager().isPluginEnabled(integrations.getPluginName().toLowerCase())){
+                    Object instance  = integrations.getClazz().newInstance();
 
-                if(Bukkit.getPluginManager().isPluginEnabled(iIntegration.targetPlugin())){
+                    IIntegration iIntegration = (IIntegration) instance;
 
                     if(!iIntegration.targetVersion().equals("*")){
 
