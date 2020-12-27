@@ -1,8 +1,8 @@
-package br.com.syrxcraft.betterskyblock.data.provider;
+package br.com.syrxcraft.betterskyblock.core.data.provider;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.data.provider.providers.Providers;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.data.provider.providers.Providers;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,24 +27,28 @@ public class DataProvider implements IDataProvider{
 
     @Override
     public void saveData(Set<Island> islands) {
-        internalProvider.saveData(islands);
+        callAsync(() -> internalProvider.saveData(islands));
     }
 
     @Override
     public void saveData(Map<UUID, Island> islands) {
-        internalProvider.saveData(islands);
+        callAsync(() -> internalProvider.saveData(islands));
     }
 
     @Override
     public void saveIsland(Island island) {
-        internalProvider.saveIsland(island);
+        callAsync(() -> internalProvider.saveIsland(island));
     }
 
     @Override
     public void removeIsland(Island island) {
-        internalProvider.removeIsland(island);
+        callAsync(() -> internalProvider.removeIsland(island));
     }
 
+    @Override
+    public boolean isAsync() {
+        return internalProvider.isAsync();
+    }
 
     private IDataProvider internalProvider;
     private final Providers provider;

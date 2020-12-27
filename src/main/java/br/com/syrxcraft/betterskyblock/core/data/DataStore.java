@@ -1,8 +1,10 @@
-package br.com.syrxcraft.betterskyblock.data;
+package br.com.syrxcraft.betterskyblock.core.data;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.data.provider.DataProvider;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.data.provider.DataProvider;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionHolder;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
@@ -94,7 +96,13 @@ public class DataStore {
 		instance.config().saveData();
 
 		Claim claim = result.getClaim().orElse(null);
-		Island island = new Island(uuid, claim);
+
+		PermissionHolder permissionHolder = PermissionHolder.createInstance();
+		permissionHolder.updatePermission(uuid, PermissionType.OWNER);
+
+		UUID islandUUID = UUID.randomUUID();
+
+		Island island = new Island(islandUUID, uuid, claim, permissionHolder);
 
 		try {
 
@@ -124,7 +132,7 @@ public class DataStore {
 		islands.put(island.getOwnerId(), island);
 	}
 	
-	public void removeIsland(Island island) throws SQLException {
+	public void removeIsland(Island island) {
 		dataProvider.removeIsland(island);
 		islands.remove(island.getOwnerId());
 	}
@@ -139,5 +147,9 @@ public class DataStore {
 
 	public int getTotalOfIslands(){
 		return islands.size();
+	}
+
+	public void saveAll(){
+		dataProvider.saveData(islands);
 	}
 }

@@ -15,7 +15,6 @@ public class PermissionNodes {
     public static final String OPTIONS_SET_BIOME_BASE       = "betterskyblock.set.biome";
     public static final String OPTIONS_SET_BIOME_ALL        = "betterskyblock.set.biome.all";
     public static final String COMMAND_SET_BIOME_OTHER      = "betterskyblock.set.biome.other";
-    public static final String COMMAND_SET_RADIUS           = "betterskyblock.set.radius";
 
     public static final String OPTIONS_NO_TELEPORT_DELAY    = "betterskyblock.noteleportdelay";
     public static final String OPTIONS_OVERRIDE             = "betterskyblock.override";

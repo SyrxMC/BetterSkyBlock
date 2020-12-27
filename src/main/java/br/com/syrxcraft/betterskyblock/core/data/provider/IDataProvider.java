@@ -1,7 +1,9 @@
-package br.com.syrxcraft.betterskyblock.data.provider;
+package br.com.syrxcraft.betterskyblock.core.data.provider;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 import java.util.Set;
@@ -23,8 +25,16 @@ public interface IDataProvider {
 
     void removeIsland(Island island);
 
-    default boolean isAsync(){
-        return true;
+    boolean isAsync();
+
+    default void callAsync(Runnable runnable){
+
+        if(isAsync()){
+            Bukkit.getScheduler().runTaskAsynchronously(BetterSkyBlock.getInstance(), runnable);
+        }else {
+            runnable.run();
+        }
+
     }
 
 }

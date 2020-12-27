@@ -1,7 +1,8 @@
-package br.com.syrxcraft.betterskyblock.islands;
+package br.com.syrxcraft.betterskyblock.core.islands;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.tasks.ResetIslandThread;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionHolder;
+import br.com.syrxcraft.betterskyblock.core.tasks.ResetIslandThread;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimManager;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 public class Island {
 
+	private final UUID islandId;
 	private final UUID ownerId;
 	private final Claim claim;
 
@@ -27,31 +29,47 @@ public class Island {
 
 	public boolean ready = true;
 
+	public PermissionHolder permissionHolder;
 
+	public Island(UUID islandId, UUID ownerId, Claim claim, PermissionHolder permissionHolder, Location spawn) {
 
-	public Island(UUID ownerId, Claim claim, Location spawn) {
-
+		this.islandId = islandId;
 		this.ownerId = ownerId;
 		this.claim = claim;
+
+		this.permissionHolder = permissionHolder;
 
 		if(spawn != null){
 			this.spawn = spawn;
 		}else {
 			this.spawn = getCenter().add(0.5, 1, 0.5);
 		}
-
 	}
 
-	public Island(UUID ownerId, Claim claim, int x, int y, int z) {
-		this(ownerId, claim, new Location(Utils.worldFromUUID(claim.getWorldUniqueId()),(x + 0.5), y , (z + 0.5)));
+	public Island(UUID islandId, UUID ownerId, Claim claim, PermissionHolder permissionHolder, int x, int y, int z) {
+		this(
+				islandId,
+				ownerId,
+				claim,
+				permissionHolder,
+				new Location(Utils.worldFromUUID(claim.getWorldUniqueId()),(x + 0.5), y , (z + 0.5))
+		);
 	}
 
-	public Island(UUID ownerId, Claim claim) {
-		this(ownerId, claim,null);
+	public Island(UUID islandId, UUID ownerId, Claim claim, PermissionHolder permissionHolder) {
+		this(
+				islandId,
+				ownerId,
+				claim,
+				permissionHolder,
+				null
+		);
 	}
 
+	public UUID getIslandId() {
+		return islandId;
+	}
 
-	
 	public Claim getClaim() {
 		return claim;
 	}
@@ -107,11 +125,13 @@ public class Island {
 
 	}
 
+	public PermissionHolder getPermissionHolder() {
+		return permissionHolder;
+	}
+
 	public boolean isOwnerOnline() {
 		return Bukkit.getPlayer(ownerId) != null;
 	}
-
-
 
 	public void setSpawn(Location location) throws SQLException {
 		this.spawn = location;

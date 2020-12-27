@@ -1,23 +1,25 @@
-package br.com.syrxcraft.betterskyblock.events;
+package br.com.syrxcraft.betterskyblock.core.events;
 
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class IslandEnterEvent extends Event implements Cancellable {
+public class IslandExitEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
     private final Island island;
     private final Player player;
+    private final boolean isOnWilderness;
 
     private boolean isCancelled = false;
 
-    public IslandEnterEvent(Island island, Player player) {
+    public IslandExitEvent(Island island, Player player, boolean isOnWilderness) {
         this.island = island;
         this.player = player;
+        this.isOnWilderness = isOnWilderness;
     }
 
     public Island getIsland() {
@@ -26,6 +28,10 @@ public class IslandEnterEvent extends Event implements Cancellable {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public boolean isOnWilderness() {
+        return isOnWilderness;
     }
 
     @Override

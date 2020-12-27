@@ -1,10 +1,7 @@
 package br.com.syrxcraft.betterskyblock.utils;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.data.DataStore;
-import br.com.syrxcraft.betterskyblock.islands.Island;
-import br.com.syrxcraft.betterskyblock.utils.Utils;
-import com.flowpowered.math.vector.Vector3i;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import com.griefdefender.api.claim.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

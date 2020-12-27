@@ -1,7 +1,7 @@
-package br.com.syrxcraft.betterskyblock.api;
+package br.com.syrxcraft.betterskyblock.core.api;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import com.griefdefender.api.Tristate;

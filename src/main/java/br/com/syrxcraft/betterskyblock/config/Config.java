@@ -7,7 +7,7 @@ import java.util.List;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.border.IslandBorder;
-import br.com.syrxcraft.betterskyblock.data.provider.providers.Providers;
+import br.com.syrxcraft.betterskyblock.core.data.provider.providers.Providers;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;

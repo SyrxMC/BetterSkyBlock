@@ -1,8 +1,10 @@
-package br.com.syrxcraft.betterskyblock.data.provider.providers;
+package br.com.syrxcraft.betterskyblock.core.data.provider.providers;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.data.provider.IDataProvider;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.data.provider.IDataProvider;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionHolder;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.google.common.collect.Maps;
 import com.griefdefender.api.claim.Claim;
@@ -54,12 +56,22 @@ public class MySQLDataProvider implements IDataProvider {
             // Creates tables on the database
             statement.executeUpdate("" +
                     "CREATE TABLE IF NOT EXISTS betterskyblock_islands (" +
+                    "id binary(16) NOT NULL," +
                     "player binary(16) NOT NULL, " +
                     "claimid binary(16) NOT NULL, " +
                     "sx int(11) NOT NULL, " +
                     "sy int(11) NOT NULL, " +
                     "sz int(11) NOT NULL, " +
-                    "PRIMARY KEY (player));"
+                    "PRIMARY KEY (id));"
+            );
+
+            statement.executeUpdate("" +
+                    "CREATE TABLE IF NOT EXISTS betterskyblock_permissions (" +
+                    "islandid binary(16) NOT NULL," +
+                    "player binary(16) NOT NULL," +
+                    "perm int NOT NULL," +
+                    "CONSTRAINT fk_islandid FOREIGN KEY (islandid) REFERENCES betterskyblock_islands (id) ON DELETE CASCADE," +
+                    "CONSTRAINT pk_islandidplayer PRIMARY KEY (islandid, player));"
             );
 
         } catch(Exception e) {
@@ -74,6 +86,9 @@ public class MySQLDataProvider implements IDataProvider {
 
     @Override
     public boolean onStop(BetterSkyBlock instance) {
+
+        instance.getDataStore().saveAll();
+
         return true;
     }
 
@@ -90,25 +105,47 @@ public class MySQLDataProvider implements IDataProvider {
 
             while (rs.next()) {
 
-                UUID uuid = Utils.toUUID(rs.getBytes(1));
-                Claim claim = claimManager.getClaimByUUID(Utils.toUUID(rs.getBytes(2))).orElse(null);
+                UUID islandUUID = Utils.toUUID(rs.getBytes(1));
 
-                int x = rs.getInt(3);
-                int y = rs.getInt(4);
-                int z = rs.getInt(5);
+                PermissionHolder holder = PermissionHolder.createInstance();
+
+                ResultSet rs2 = statement().executeQuery("SELECT * FROM betterskyblock_permissions WHERE islandid = " + Utils.UUIDtoHexString(islandUUID) + ";");
+
+                System.out.println(rs2);
+
+                while (rs2.next()){
+
+                    UUID player = Utils.toUUID(rs2.getBytes(2));
+                    PermissionType permission = PermissionType.getPermissionType(rs2.getInt(3));
+
+                    holder.updatePermission(player, permission);
+
+                }
+
+                UUID owner = Utils.toUUID(rs.getBytes(2));
+                Claim claim = claimManager.getClaimByUUID(Utils.toUUID(rs.getBytes(3))).orElse(null);
+
+                int x = rs.getInt(4);
+                int y = rs.getInt(5);
+                int z = rs.getInt(6);
 
                 if (claim != null) {
 
-                    Island island = new Island(uuid, claim, x, y, z);
-                    islands.put(uuid, island);
+                    if(holder.isEmpty()) holder.updatePermission(owner, PermissionType.OWNER);
+
+                    Island island = new Island(islandUUID, owner, claim, holder, x, y, z);
+                    islands.put(owner, island);
 
                     continue;
                 }
 
-                instance.getLoggerHelper().warn("Unable to load island for: " + uuid + " claim is null... [ X: " + x + " | Y: " + y + " | Z: " + z + "]");
+                instance.getLoggerHelper().warn("Unable to load island for: " + owner + " claim is null... [ X: " + x + " | Y: " + y + " | Z: " + z + "]");
             }
 
+
+
         }catch (Exception e) {
+            e.printStackTrace();
             instance.getLoggerHelper().error("Unable to load islands from database. Details: \n" + e.getMessage());
             return null;
         }
@@ -134,26 +171,44 @@ public class MySQLDataProvider implements IDataProvider {
     public void saveIsland(Island island) {
 
         try {
+
             statement().executeUpdate("REPLACE INTO betterskyblock_islands VALUES(" +
-
-                    Utils.UUIDtoHexString(island.getOwnerId()) + ", " +
-                    Utils.UUIDtoHexString(island.getClaim().getUniqueId()) + ", " +
-                    island.getSpawn().getBlockX() + ", " +
-                    island.getSpawn().getBlockY() + ", " +
-                    island.getSpawn().getBlockZ() + ");"
-
+                    Utils.UUIDtoHexString(island.getIslandId())             + ", " +
+                    Utils.UUIDtoHexString(island.getOwnerId())              + ", " +
+                    Utils.UUIDtoHexString(island.getClaim().getUniqueId())  + ", " +
+                    island.getSpawn().getBlockX()                           + ", " +
+                    island.getSpawn().getBlockY()                           + ", " +
+                    island.getSpawn().getBlockZ()                           + ");"
             );
+
+            Map<UUID, PermissionType> permissions = island.permissionHolder.getPermissions();
+
+            statement().executeUpdate("DELETE FROM betterskyblock_permissions WHERE islandid = " + Utils.UUIDtoHexString(island.getIslandId()) + ";");
+
+            permissions.forEach(((uuid, permissionType) -> {
+
+                try {
+                    statement().executeUpdate("INSERT INTO betterskyblock_permissions (ISLANDID, PLAYER, PERM) VALUES (" +
+                            Utils.UUIDtoHexString(island.getIslandId())         + ", " +
+                            Utils.UUIDtoHexString(uuid)                         + ", " +
+                            permissionType.intPermission()                      +");"
+                    );
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }));
+
         } catch (SQLException exception) {
             instance.getLoggerHelper().error("Unable to save a island on database. Details: " + exception.getMessage());
         }
 
     }
 
-
     @Override
     public void removeIsland(Island island) {
         try{
-            statement().executeUpdate("DELETE FROM betterskyblock_islands WHERE player = " + Utils.UUIDtoHexString(island.getOwnerId()) + " LIMIT 1");
+            statement().executeUpdate("DELETE FROM betterskyblock_islands WHERE id = " + Utils.UUIDtoHexString(island.getIslandId()) + " LIMIT 1");
         }
         catch (SQLException exception) {
             instance.getLoggerHelper().error("Unable to remove a island on database. Details: " + exception.getMessage());

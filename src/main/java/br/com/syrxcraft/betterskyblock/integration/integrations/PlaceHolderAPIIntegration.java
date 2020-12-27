@@ -1,18 +1,13 @@
 package br.com.syrxcraft.betterskyblock.integration.integrations;
 
-import br.com.syrxcraft.betterskyblock.api.BetterSkyBlockAPI;
+import br.com.syrxcraft.betterskyblock.core.api.BetterSkyBlockAPI;
 import br.com.syrxcraft.betterskyblock.integration.IIntegration;
 import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.permission.flag.Flags;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.clip.placeholderapi.external.EZPlaceholderHook;
-import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import java.util.HashSet;
 
 public class PlaceHolderAPIIntegration extends PlaceholderExpansion implements IIntegration {
 

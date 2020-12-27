@@ -79,4 +79,8 @@ public class GriefDefenderUtils {
         return TrustTypes.NONE;
     }
 
+    public static boolean hasPlayerTrust(Player player, Claim claim){
+        return getPlayerTrustType(player, claim) != TrustTypes.NONE;
+    }
+
 }

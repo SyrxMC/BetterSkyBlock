@@ -2,7 +2,7 @@ package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
-import br.com.syrxcraft.betterskyblock.events.IslandExitEvent;
+import br.com.syrxcraft.betterskyblock.core.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;

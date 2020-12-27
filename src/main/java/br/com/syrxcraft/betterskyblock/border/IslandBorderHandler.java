@@ -1,8 +1,8 @@
 package br.com.syrxcraft.betterskyblock.border;
 
-import br.com.syrxcraft.betterskyblock.events.IslandEnterEvent;
-import br.com.syrxcraft.betterskyblock.events.IslandExitEvent;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.events.IslandEnterEvent;
+import br.com.syrxcraft.betterskyblock.core.events.IslandExitEvent;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

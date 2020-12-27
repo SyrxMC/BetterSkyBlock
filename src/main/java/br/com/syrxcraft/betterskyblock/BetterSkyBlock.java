@@ -1,12 +1,11 @@
 package br.com.syrxcraft.betterskyblock;
 
-import br.com.syrxcraft.betterskyblock.api.BetterSkyBlockAPI;
+import br.com.syrxcraft.betterskyblock.core.api.BetterSkyBlockAPI;
 import br.com.syrxcraft.betterskyblock.border.IslandBorder;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.integration.IntegrationManager;
-import br.com.syrxcraft.betterskyblock.islands.Island;
 import br.com.syrxcraft.betterskyblock.config.Config;
-import br.com.syrxcraft.betterskyblock.data.DataStore;
+import br.com.syrxcraft.betterskyblock.core.data.DataStore;
 import br.com.syrxcraft.betterskyblock.listeners.EventManager;
 import br.com.syrxcraft.betterskyblock.utils.LoggerHelper;
 import com.griefdefender.api.GriefDefender;
@@ -15,8 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.UUID;
 
 public class BetterSkyBlock extends JavaPlugin {
 
@@ -58,6 +55,13 @@ public class BetterSkyBlock extends JavaPlugin {
 		betterSkyBlockAPI = new BetterSkyBlockAPI(this);
 
 		showInfo();
+
+		dataStore.saveAll();
+	}
+
+	@Override
+	public void onDisable() {
+		dataStore.getDataProvider().onStop(this);
 	}
 
 	public LoggerHelper getLoggerHelper() {

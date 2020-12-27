@@ -1,7 +1,7 @@
-package br.com.syrxcraft.betterskyblock.tasks;
+package br.com.syrxcraft.betterskyblock.core.tasks;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.Chronometer;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.LoggerHelper;
