@@ -6,7 +6,7 @@ import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.FancyText;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.data.PlayerData;
@@ -63,7 +63,7 @@ public class SubCmdTransfer implements ISubCommand {
         try {
             instance.getDataStore().removeIsland(oldOwnerIsland);
             instance.getDataStore().transferIsland(oldOwnerIsland, newOwner.getUniqueId());
-            Island newIsland = new Island(newOwner.getUniqueId(), oldOwnerIsland.getClaim(), oldOwnerIsland.getSpawn());
+            Island newIsland = new Island(oldOwnerIsland.getIslandId(), newOwner.getUniqueId(), oldOwnerIsland.getClaim(), oldOwnerIsland.getPermissionHolder(), oldOwnerIsland.getSpawn());
             instance.getDataStore().addIsland(newIsland);
         } catch (Exception e) {
             sender.sendMessage("§c§l ▶ §cFalha ao transferir ilha...§oMesangem: " + e.getMessage());

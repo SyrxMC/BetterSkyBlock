@@ -2,12 +2,12 @@ package br.com.syrxcraft.betterskyblock.commands.command.subcommand.admin;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
-import br.com.syrxcraft.betterskyblock.api.BetterSkyBlockAPI;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
-import br.com.syrxcraft.betterskyblock.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.api.BetterSkyBlockAPI;
+import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.FancyText;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.GriefDefender;

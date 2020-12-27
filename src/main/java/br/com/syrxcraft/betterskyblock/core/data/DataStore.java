@@ -137,6 +137,10 @@ public class DataStore {
 		islands.remove(island.getOwnerId());
 	}
 
+	public void transferIsland(Island island, UUID newOwnerUUID) {
+		island.getClaim().transferOwner(newOwnerUUID);
+	}
+
     public void updateIsland(Island island) {
 		dataProvider.saveIsland(island);
 	}
