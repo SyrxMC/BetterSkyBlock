@@ -44,8 +44,6 @@ public class SubCmdPrivate implements ISubCommand {
         Claim claim = island.getClaim();
         claim.setFlagPermission(Flags.ENTER_CLAIM, Tristate.FALSE, new HashSet<>());
 
-        System.out.println(claim.getPlayers());
-
         for(UUID uuid : claim.getPlayers()){
 
             Player p = Bukkit.getPlayer(uuid);
@@ -54,12 +52,9 @@ public class SubCmdPrivate implements ISubCommand {
 
                 TrustType trustType = GriefDefenderUtils.getPlayerTrustType(p, claim);
 
-                if(claim.getOwnerUniqueId().equals(uuid))
-                    continue;
-
-                if(!GriefDefenderUtils.getPlayerFlagPermission(p, claim, Flags.ENTER_CLAIM, trustType)){
-                    player.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
-                    player.teleport(BetterSkyBlock.getInstance().getSpawn());
+                if(!claim.isUserTrusted(uuid, trustType)){
+                    p.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
+                    p.teleport(BetterSkyBlock.getInstance().getSpawn());
                 }
             }
         }

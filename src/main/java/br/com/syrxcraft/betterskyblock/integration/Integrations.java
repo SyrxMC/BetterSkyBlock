@@ -5,15 +5,17 @@ import br.com.syrxcraft.betterskyblock.integration.integrations.PlaceHolderAPIIn
 
 public enum Integrations {
 
-    PlaceHolderAPI(PlaceHolderAPIIntegration.class),
-    BossShopPro(BossShopProIntegration.class);
+    PlaceHolderAPI(PlaceHolderAPIIntegration.class, "PlaceHolderAPI"),
+    BossShopPro(BossShopProIntegration.class, "BossShopPro");
 
     private final Class<?> clazz;
 
     private boolean isEnabled;
+    private String pluginName;
 
-    Integrations(Class<?> clazz){
+    Integrations(Class<?> clazz, String pluginName){
         this.clazz = clazz;
+        this.pluginName = pluginName;
     }
 
     public Class<?> getClazz() {
@@ -28,4 +30,7 @@ public enum Integrations {
         isEnabled = enabled;
     }
 
+    public String getPluginName() {
+        return pluginName;
+    }
 }
