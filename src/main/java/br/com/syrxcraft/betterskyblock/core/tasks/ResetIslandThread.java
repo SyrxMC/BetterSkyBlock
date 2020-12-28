@@ -326,7 +326,7 @@ public class ResetIslandThread extends Thread{
                     changeBiomes();
                 }
             }.runTaskLater(BetterSkyBlock.getInstance(),1);
-
+            island.setGenerating(false);
             bringOwnerBack();
 
             if (failedChunks.get() > 0) {

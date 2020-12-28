@@ -28,6 +28,7 @@ public class Island {
 	private int radius = -1;
 
 	public boolean ready = true;
+	public boolean generating = false;
 
 	public PermissionHolder permissionHolder;
 
@@ -239,6 +240,14 @@ public class Island {
 			e.printStackTrace();
 		}
 
+	}
+
+	public boolean isGenerating() {
+		return generating;
+	}
+
+	public void setGenerating(boolean generating) {
+		this.generating = generating;
 	}
 
 	public void update(){

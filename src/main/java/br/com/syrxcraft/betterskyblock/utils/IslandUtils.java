@@ -37,7 +37,7 @@ public class IslandUtils {
         return world.getName().equals(BetterSkyBlock.getInstance().config().getWorldName());
     }
 
-    public static Island isOnIsland(Player player){
+    public static Island getCurrentIsland(Player player){
 
         if(player != null){
 

@@ -120,7 +120,7 @@ public class DataStore {
 		UUID islandUUID = UUID.randomUUID();
 
 		Island island = new Island(islandUUID, uuid, claim, permissionHolder);
-
+		island.setGenerating(true);
 		try {
 
 			instance.getDataStore().addIsland(island);
@@ -148,13 +148,16 @@ public class DataStore {
 		dataProvider.saveIsland(island);
 		islands.put(island.getOwnerId(), island);
 	}
-	
+	public void addIslandAndQueueUpdate(Island island) {
+		islands.put(island.getOwnerId(), island);
+		updateIsland(island);
+	}
 	public void removeIsland(Island island) {
 		dataProvider.removeIsland(island);
 		islands.remove(island.getOwnerId());
 	}
 
-	public void transferIsland(Island island, UUID newOwnerUUID) {
+	public void transferIslandClaim(Island island, UUID newOwnerUUID) {
 		island.getClaim().transferOwner(newOwnerUUID);
 	}
 
