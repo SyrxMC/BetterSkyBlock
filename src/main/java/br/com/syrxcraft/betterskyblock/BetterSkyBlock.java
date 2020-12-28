@@ -61,6 +61,7 @@ public class BetterSkyBlock extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		loggerHelper.info("Saving all islands.");
 		dataStore.getDataProvider().onStop(this);
 	}
 

@@ -51,6 +51,10 @@ public class IsCommand implements ICommand {
                 return deliverSubCommand(sender, command, "kick", args);
             case "member":
                 return deliverSubCommand(sender, command, "member", args);
+            case "entry":
+                return deliverSubCommand(sender, command, "entry", args);
+            case "manager":
+                return deliverSubCommand(sender, command, "manager", args);
             default: {
                 sender.sendMessage("§cErro de parametros, por favor use /" + label + " help");
                 return false;

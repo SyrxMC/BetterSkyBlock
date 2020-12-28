@@ -35,6 +35,13 @@ public class SubCmdReset implements ISubCommand {
             return false;
         }
 
+
+        if(Cooldown.isInCooldown(player, "COMMANDS_RESET")){
+            player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player, "COMMANDS_RESET"))  + " para executar este comando.");
+            return false;
+        }
+
+
         if (!island.ready) {
             commandSender.sendMessage("§4§l ▶ §cExiste alguma operação pendente nessa ilha!");
             return false;
@@ -48,12 +55,7 @@ public class SubCmdReset implements ISubCommand {
             return false;
         }
 
-        if(Cooldown.isInCooldown(player)){
-            player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player))  + " para executar este comando.");
-            return false;
-        }
-
-        Cooldown.setCooldown(player, 1800L);
+        Cooldown.setCooldown(player, 1800L, "COMMANDS_RESET");
 
         island.reset();
         return true;

@@ -17,15 +17,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @HasSubCommand
-public class SubCmdKick implements ISubCommand {
+public class SubCmdEntry implements ISubCommand {
 
-    @cSubCommand(name = "kick", targetCommand = "island")
+    @cSubCommand(name = "entry", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
         if(!(commandSender instanceof Player))
             return false;
 
-        if (!commandSender.hasPermission(PermissionNodes.COMMAND_KICK)){
+        if (!commandSender.hasPermission(PermissionNodes.COMMAND_INVITE)){
             return CommandManager.noPermission(commandSender);
         }
 
@@ -43,40 +43,32 @@ public class SubCmdKick implements ISubCommand {
         if(args.length >= 1 && args[0] != null) {
             p = Bukkit.getOfflinePlayer(args[0]);
         }else {
-            player.sendMessage("§4§l ▶ §cFalta argumentos, use /is kick <player> para expulsar um jogador de sua ilha.");
+            player.sendMessage("§4§l ▶ §cFalta argumentos, use /is entry <player> para convidar um jogador para entrar sua ilha.");
             return false;
         }
+
 
         if(p == null){
             player.sendMessage("§4§l ▶ §cNão existem nenhum jogador chamado [" + args[0] + "] !");
             return false;
         }
 
-        if(island.getPermissionHolder().getEffectivePermission(p.getUniqueId()) == PermissionType.NONE){
-            player.sendMessage("§4§l ▶ §cO jogador §4§l" + p.getName() + "§r§c não é Membro de sua ilha!");
+        if(Cooldown.isInCooldown(player, "COMMANDS_ENTRY")){
+            player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player, "COMMANDS_ENTRY"))  + " para executar este comando.");
             return false;
         }
 
-        if(Cooldown.isInCooldown(player, "COMMANDS_KICK")){
-            player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player, "COMMANDS_KICK"))  + " para executar este comando.");
+        if(island.getPermissionHolder().getEffectivePermission(p.getUniqueId()).intPermission() >= PermissionType.ENTRY.intPermission()){
+            player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e já possui permissão em sua ilha.");
             return false;
         }
 
-        switch (island.getPermissionHolder().getEffectivePermission(p.getUniqueId())){
-            case ADMINISTRATOR:{
-                island.getClaim().removeUserTrust(p.getUniqueId(), TrustTypes.MANAGER);
-            }
-
-            case MEMBER:{
-                island.getClaim().removeUserTrust(p.getUniqueId(), TrustTypes.BUILDER);
-            }
-
-        }
-
-        island.getPermissionHolder().updatePermission(p.getUniqueId(), PermissionType.NONE);
+        island.getPermissionHolder().updatePermission(p.getUniqueId(), PermissionType.ENTRY);
         island.update();
-        player.sendMessage("§4§l ▶ §cO jogador §4§l" + p.getName() + "§r§c foi expulso com sucesso!");
-        Cooldown.setCooldown(player, 10L, "COMMANDS_KICK");
+
+        player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e foi convidado para entrar em sua ilha com sucesso!");
+
+        Cooldown.setCooldown(player, 10L, "COMMANDS_ENTRY");
         return true;
     }
 }

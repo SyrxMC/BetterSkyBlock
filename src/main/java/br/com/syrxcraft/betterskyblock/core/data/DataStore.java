@@ -6,16 +6,19 @@ import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionHolder;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import com.flowpowered.math.vector.Vector3i;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.ClaimTypes;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class DataStore {
 
@@ -29,6 +32,9 @@ public class DataStore {
 	private final DataProvider dataProvider;
 
 	private static final HashMap<UUID, Island> islands = new HashMap<>();
+
+	private final ScheduledExecutorService service = Executors.newScheduledThreadPool(1, new ThreadFactoryBuilder().setDaemon(true).build());
+	private final Queue<Island> updatedIslands = new LinkedList<>();
 
 	private DataStore(){
 
@@ -56,6 +62,17 @@ public class DataStore {
 
 
 		instance.getLoggerHelper().info("Loaded " + getTotalOfIslands() + " islands...");
+
+		service.scheduleAtFixedRate(() -> {
+
+			if(!updatedIslands.isEmpty()){
+
+				Island island = updatedIslands.poll();
+
+				dataProvider.saveIsland(island);
+				BetterSkyBlock.getInstance().getLoggerHelper().info("Island " + island.getIslandId() + " was saved on database.");
+			}
+		}, 0, 25, TimeUnit.MILLISECONDS);
 
 	}
 	
@@ -142,7 +159,8 @@ public class DataStore {
 	}
 
     public void updateIsland(Island island) {
-		dataProvider.saveIsland(island);
+		updatedIslands.add(island);
+		//dataProvider.saveIsland(island);
 	}
 
 	public DataProvider getDataProvider() {
@@ -154,6 +172,8 @@ public class DataStore {
 	}
 
 	public void saveAll(){
-		dataProvider.saveData(islands);
+		islands.forEach((uuid, island) -> {
+			updateIsland(island);
+		});
 	}
 }

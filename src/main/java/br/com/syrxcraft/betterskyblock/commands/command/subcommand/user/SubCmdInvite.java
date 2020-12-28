@@ -7,7 +7,9 @@ import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
+import br.com.syrxcraft.betterskyblock.utils.Cooldown;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
+import br.com.syrxcraft.betterskyblock.utils.TimeUtils;
 import com.griefdefender.api.claim.TrustTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -51,11 +53,22 @@ public class SubCmdInvite implements ISubCommand {
             return false;
         }
 
+        if(Cooldown.isInCooldown(player, "COMMANDS_INVITE")){
+            player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player, "COMMANDS_INVITE"))  + " para executar este comando.");
+            return false;
+        }
+
+        if(island.getPermissionHolder().getEffectivePermission(p.getUniqueId()).intPermission() >= PermissionType.MEMBER.intPermission()){
+            player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e já possui permissão em sua ilha.");
+            return false;
+        }
+
         island.permissionHolder.updatePermission(p.getUniqueId(), PermissionType.MEMBER);
         island.update();
         island.getClaim().addUserTrust(p.getUniqueId(), TrustTypes.BUILDER);
 
         player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e foi convidado para sua ilha com sucesso!");
+        Cooldown.setCooldown(player, 10L, "COMMANDS_INVITE");
 
         return true;
     }

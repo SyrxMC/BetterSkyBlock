@@ -9,6 +9,7 @@ import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.google.common.collect.Maps;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimManager;
+import com.griefdefender.api.claim.TrustTypes;
 
 import javax.annotation.Nonnull;
 import java.sql.*;
@@ -131,6 +132,21 @@ public class MySQLDataProvider implements IDataProvider {
                 if (claim != null) {
 
                     if(holder.isEmpty()) holder.updatePermission(owner, PermissionType.OWNER);
+
+                    holder.getPermissions().forEach((uuid, type) -> {
+                        switch (type){
+
+                            case MEMBER:{
+                                claim.addUserTrust(uuid, TrustTypes.BUILDER);
+                                return;
+                            }
+
+                            case ADMINISTRATOR:{
+                                claim.addUserTrust(uuid, TrustTypes.MANAGER);
+                            }
+
+                        }
+                    });
 
                     Island island = new Island(islandUUID, owner, claim, holder, x, y, z);
                     islands.put(owner, island);
