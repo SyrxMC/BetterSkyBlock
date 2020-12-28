@@ -25,7 +25,7 @@ public class BetterSkyBlockAPI {
         INSTANCE = this;
         pluginInstance = betterSkyBlock;
 
-        betterSkyBlock.getLoggerHelper().info("Init API");
+        betterSkyBlock.getLoggerHelper().info("Init API - 1.0v");
 
     }
 

@@ -111,7 +111,6 @@ public class MySQLDataProvider implements IDataProvider {
 
                 ResultSet rs2 = statement().executeQuery("SELECT * FROM betterskyblock_permissions WHERE islandid = " + Utils.UUIDtoHexString(islandUUID) + ";");
 
-                System.out.println(rs2);
 
                 while (rs2.next()){
 

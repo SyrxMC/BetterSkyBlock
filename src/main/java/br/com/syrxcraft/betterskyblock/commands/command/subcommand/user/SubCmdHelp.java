@@ -37,6 +37,8 @@ public class SubCmdHelp implements ISubCommand {
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " public","§bDeixa a sua ilha Pública!","/" + command + " public",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " reset","§bReseta a sua ilha!(Apaga ela inteira!!!)","/" + command + " reset",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " transfer","§bTransfere a ilha para um jogador(Esse jogador não pode ter uma ilha!)","/" + command + " transfer",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " invite","§bConvida um jogador para sua ilha como MEMBRO.","/" + command + " invite",true));
+
 
             if (player.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE)) {
                 FancyText.sendTo(player, new FancyText("§3§l ▶ §b/" + command + " biomelist","§bMostra os possíveis biomas!","/" + command + " biomelist",true));
@@ -48,8 +50,8 @@ public class SubCmdHelp implements ISubCommand {
             }
 
             if (player.hasPermission(PermissionNodes.ADMIN)){
-                FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " delete <Player>","§bDeleta a ilha de algum jogador!\n\nNá pratica nao deleta fisicamente, apenas remove o claim!\nFazendo com que ele tenha que criar uma nova ilha em outro lugar.","/" + command + " biomelist",true));
-                FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " info <Player>","§bMostra algumas informações da ilha de um jogador","/" + command + " biomelist",true));
+                FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " delete <Player>","§bDeleta a ilha de algum jogador!\n\nNá pratica nao deleta fisicamente, apenas remove o claim!\nFazendo com que ele tenha que criar uma nova ilha em outro lugar.","/" + command + " delete",true));
+                FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " info <Player>","§bMostra algumas informações da ilha de um jogador","/" + command + " info",true));
             }
 
             player.sendMessage("");
