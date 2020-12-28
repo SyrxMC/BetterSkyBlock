@@ -6,7 +6,9 @@ import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
+import br.com.syrxcraft.betterskyblock.core.data.DataStore;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import br.com.syrxcraft.betterskyblock.utils.FancyText;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.data.PlayerData;
@@ -56,13 +58,15 @@ public class SubCmdTransfer implements ISubCommand {
         }
 
         if (!oldOwnerIsland.ready) {
-            sender.sendMessage("§4§l ▶ §cExiste alguma operação pendente nessa ilha! Transferencia bloqueada!");
+            sender.sendMessage("§4§l ▶ §cExiste alguma operação pendente nessa ilha! Transferência bloqueada!");
             return true;
         }
 
         try {
             instance.getDataStore().removeIsland(oldOwnerIsland);
             instance.getDataStore().transferIsland(oldOwnerIsland, newOwner.getUniqueId());
+            oldOwnerIsland.getPermissionHolder().updatePermission(oldOwner.getUniqueId(), PermissionType.MEMBER);
+            oldOwnerIsland.getPermissionHolder().updatePermission(newOwner.getUniqueId(), PermissionType.OWNER);
             Island newIsland = new Island(oldOwnerIsland.getIslandId(), newOwner.getUniqueId(), oldOwnerIsland.getClaim(), oldOwnerIsland.getPermissionHolder(), oldOwnerIsland.getSpawn());
             instance.getDataStore().addIsland(newIsland);
         } catch (Exception e) {
