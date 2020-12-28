@@ -10,6 +10,7 @@ public enum PermissionType {
 
     private final int permission;
 
+
     PermissionType(int permission) {
         this.permission = permission;
     }
@@ -25,5 +26,13 @@ public enum PermissionType {
 
     public int intPermission() {
         return permission;
+    }
+
+    public String toPrettyType() {
+        return PermissionsUtils.getPrettyType(this);
+    }
+
+    public String toFormattedType() {
+        return PermissionsUtils.getFormatedType(this);
     }
 }

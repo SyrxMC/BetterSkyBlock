@@ -172,8 +172,6 @@ public class DataStore {
 	}
 
 	public void saveAll(){
-		islands.forEach((uuid, island) -> {
-			updateIsland(island);
-		});
+		islands.forEach((uuid, island) -> updateIsland(island));
 	}
 }
