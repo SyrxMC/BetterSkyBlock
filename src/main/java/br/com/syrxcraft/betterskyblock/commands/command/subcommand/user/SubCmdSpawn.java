@@ -6,7 +6,9 @@ import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
+import br.com.syrxcraft.betterskyblock.core.api.BetterSkyBlockAPI;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionsUtils;
 import br.com.syrxcraft.betterskyblock.core.tasks.SpawnTeleportTask;
 import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
 import com.griefdefender.api.GriefDefender;
@@ -42,19 +44,19 @@ public class SubCmdSpawn implements ISubCommand {
             UUID argPlayer = Bukkit.getPlayerUniqueId(args[0]);
             PlayerData playerData = GriefDefender.getCore().getPlayerData(BetterSkyBlock.getInstance().getIslandWorld().getUID(), argPlayer).orElse(null);
 
-            if (playerData == null){
+            if (playerData == null || argPlayer == null){
                 player.sendMessage("§4§l ▶ §cNão existem nenhum jogador chamado [" + args[0] + "] !");
-                return true;
+                return false;
             }
 
             island = BetterSkyBlock.getInstance().getDataStore().getIsland(argPlayer);
 
             if (island == null) {
-                player.sendMessage("§4§l ▶ §e" + Bukkit.getOfflinePlayer(argPlayer).getName() + "§c não possui uma ilha nesse servidor!");
+                player.sendMessage("§4§l ▶ §e" + args[0] + "§c não possui uma ilha nesse servidor!");
                 return false;
             }
 
-            if(!GriefDefenderUtils.getPlayerFlagPermission(player, island.getClaim(), Flags.ENTER_CLAIM, GriefDefenderUtils.getPlayerTrustType(player, island.getClaim()))){
+            if(!BetterSkyBlockAPI.getInstance().isIslandPublic(island) && !PermissionsUtils.canEnter(island.getPermissionHolder().getEffectivePermission(player))){
                 player.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                 return false;
             }
@@ -69,7 +71,7 @@ public class SubCmdSpawn implements ISubCommand {
                     island = BetterSkyBlock.getInstance().getDataStore().createIsland(player.getUniqueId());
                 } catch (Exception e) {
                     player.sendMessage(ChatColor.RED + "Um erro ocorreu ao gerar sua ilha: " + e.getMessage());
-                    e.printStackTrace();
+                    BetterSkyBlock.getInstance().getLoggerHelper().error(e.getMessage());
                     return false;
                 }
 

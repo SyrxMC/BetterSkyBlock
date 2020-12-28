@@ -113,11 +113,13 @@ public class BetterSkyBlock extends JavaPlugin {
 	}
 
 	public void showInfo(){
-		loggerHelper.info("Server version: "   + Bukkit.getVersion().replace("git-",""));
-		loggerHelper.info("Island World: "     + getIslandWorld().getName());
-		loggerHelper.info("DataProvider: "     + getDataStore().getDataProvider().getProvider().name());
-		loggerHelper.info("GriefDefenderAPI: " + GriefDefender.getVersion().getApiVersion());
-		loggerHelper.info("GriefDefender: " + Bukkit.getPluginManager().getPlugin("GriefDefender").getDescription().getVersion());
+		loggerHelper.info("Some Info: ");
+		loggerHelper.info(" Server version:		 "	+ Bukkit.getVersion().replace("git-",""));
+		loggerHelper.info(" Island World:		 "	+ getIslandWorld().getName());
+		loggerHelper.info(" DataProvider:		 "	+ getDataStore().getDataProvider().getProvider().name());
+		loggerHelper.info(" GriefDefenderAPI:    "	+ GriefDefender.getVersion().getApiVersion());
+		loggerHelper.info(" GriefDefender:		 "	+ Bukkit.getPluginManager().getPlugin("GriefDefender").getDescription().getVersion());
+		loggerHelper.info("   --+--   ");
 	}
 
 	public World loadWorld(){

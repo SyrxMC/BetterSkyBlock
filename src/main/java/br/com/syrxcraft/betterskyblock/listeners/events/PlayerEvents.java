@@ -2,7 +2,10 @@ package br.com.syrxcraft.betterskyblock.listeners.events;
 
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.core.api.BetterSkyBlockAPI;
+import br.com.syrxcraft.betterskyblock.core.events.IslandEnterEvent;
 import br.com.syrxcraft.betterskyblock.core.events.IslandExitEvent;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionsUtils;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
@@ -39,8 +42,18 @@ public class PlayerEvents implements Listener {
     }
 
     @EventHandler
-    void onPlayerTeleport(PlayerPortalEvent event) {
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL && isIslandWorld(event.getFrom().getWorld())) {
+    void onPlayerEnterIsland(IslandEnterEvent event){
+        if(!event.isCancelled()){
+            if(!BetterSkyBlockAPI.getInstance().isIslandPublic(event.getIsland()) && !PermissionsUtils.canEnter(event.getIsland().permissionHolder.getEffectivePermission(event.getPlayer()))){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
+            }
+        }
+    }
+
+    @EventHandler
+    void onPlayerPortal(PlayerPortalEvent event) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL && isIslandWorld(event.getTo().getWorld())) {
             Location loc = event.getPortalTravelAgent().findPortal(new Location(event.getTo().getWorld(), 0, 64, 0));
             if (loc!=null) {
                 event.setTo(loc);

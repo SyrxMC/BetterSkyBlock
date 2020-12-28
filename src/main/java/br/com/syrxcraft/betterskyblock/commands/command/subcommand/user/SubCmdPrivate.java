@@ -7,6 +7,7 @@ import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionsUtils;
 import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.claim.Claim;
@@ -50,9 +51,7 @@ public class SubCmdPrivate implements ISubCommand {
 
             if (p != null){
 
-                TrustType trustType = GriefDefenderUtils.getPlayerTrustType(p, claim);
-
-                if(!claim.isUserTrusted(uuid, trustType)){
+                if(!PermissionsUtils.canEnter(island.getPermissionHolder().getEffectivePermission(uuid))){
                     p.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                     p.teleport(BetterSkyBlock.getInstance().getSpawn());
                 }

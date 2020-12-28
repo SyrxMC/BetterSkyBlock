@@ -27,43 +27,50 @@ public class SubCmdInfo implements ISubCommand {
 
     @cSubCommand(name = "info", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
+
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_INFO)) {
             return CommandManager.noPermission(commandSender);
         }
+
         UUID uuid;
 
         Player player = (Player) commandSender;
+
         if (args.length == 0) {
             uuid = player.getUniqueId();
         } else {
             uuid = Bukkit.getPlayerUniqueId(args[0]);
         }
+
         PlayerData playerData = GriefDefender.getCore().getPlayerData(BetterSkyBlock.getInstance().getIslandWorld().getUID(), uuid).orElse(null);
 
         if (playerData == null) {
             commandSender.sendMessage("§c§l ▶ §cNão existem nenhum jogador chamado [" + args[0] + "] !");
-            return true;
+            return false;
         }
-        BetterSkyBlock instance = BetterSkyBlock.getInstance();
-        BetterSkyBlockAPI api = instance.getBetterSkyBlockAPI();
 
+        BetterSkyBlockAPI api = BetterSkyBlockAPI.getInstance();
         Island island = api.getPlayerIsland(uuid);
 
         if (island == null) {
             commandSender.sendMessage("§c§l ▶ §e" + Bukkit.getPlayer(uuid).getName() + "§c não possui uma ilha nesse servidor!");
-            return true;
+            return false;
         }
 
         GDClaim claim = (GDClaim) island.getClaim();
-        player.sendMessage("§7(§m---- §3Ilha de " + island.getOwnerName() + "§7§m----§r§f)");
-        FancyText.sendTo(player, new FancyText("§fCriada em: §b" + Utils.getFormatedDate(claim.getData().getDateCreated())));
-        FancyText.sendTo(player, new FancyText("Expira: " + (claim.getData().allowExpiration() ? "§aSim" : "§cNão expira")));
-        FancyText.sendTo(player, new FancyText("Dono: §b" + claim.getOwnerName()));
-        FancyText.sendTo(player, new FancyText("UUID: §b" + claim.getUniqueId()));
-        FancyText.sendTo(player, new FancyText("Jogadores: §b" + claim.getPlayers().size(), String.join("\n", Utils.getPlayersNameByUUID(claim.getPlayers()))));
-        FancyText.sendTo(player, new FancyText("Estado: " + (api.isIslandPublic(island) ? "§aPública" : "§cPrivada")));
-        FancyText.sendTo(player, new FancyText("Bioma: §b" + island.getSpawn().getBlock().getBiome().name()));
-        FancyText.sendTo(player, new FancyText("Spawn: §5[TELEPORTAR]", "Clique para teleportar", "/is spawn " + island.getOwnerName(), false));
-        return false;
+        player.sendMessage("§6§m------------§6(  §e§lIlha de " + island.getOwnerName() + "§e  §6)§m------------");
+
+        FancyText.sendTo(player, new FancyText(" §6▶ Criada em: §b"       + Utils.getFormatedDate(claim.getData().getDateCreated())));
+        FancyText.sendTo(player, new FancyText(" §6▶ Expira: "            + (claim.getData().allowExpiration() ? "§cSim" : "§aNão expira")));
+        FancyText.sendTo(player, new FancyText(" §6▶ Dono: §b"            + claim.getOwnerName()));
+        FancyText.sendTo(player, new FancyText(" §6▶ UUID: §b"            + island.getIslandId()));
+        FancyText.sendTo(player, new FancyText(" §6▶ Estado: "            + (api.isIslandPublic(island) ? "§aPública" : "§cPrivada")));
+        FancyText.sendTo(player, new FancyText(" §6▶ Bioma: §b"           + island.getSpawn().getBlock().getBiome().name()));
+
+        FancyText.sendTo(player, new FancyText(" §6▶ Jogadores: §b"  + claim.getPlayers().size(), String.join("\n", Utils.getPlayersNameByUUID(claim.getPlayers()))));
+        FancyText.sendTo(player, new FancyText(" §6▶ Spawn: §5[§dTELEPORTAR§5]", "Clique para se teleportar", "/is spawn " + island.getOwnerName(), false));
+
+        player.sendMessage(" ");
+        return true;
     }
 }

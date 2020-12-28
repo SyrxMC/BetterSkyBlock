@@ -98,11 +98,11 @@ public class ClaimEvents implements Listener {
             event.cancelled(true);
 
             if (event instanceof ChangeClaimEvent.Resize) {
-                player.sendMessage(ChatColor.RED + "Você não pode redefinir o tamanho dessa ilha !"); //TODO: Lang
+                player.sendMessage(ChatColor.RED + "Você não pode redefinir o tamanho dessa ilha!"); //TODO: Lang
             }
 
             if (event instanceof ChangeClaimEvent.Type) {
-                player.sendMessage(ChatColor.RED + "Você não pode alterar o tipo dessa ilhas !"); //TODO: Lang
+                player.sendMessage(ChatColor.RED + "Você não pode alterar o tipo dessa ilha!"); //TODO: Lang
             }
         }
 

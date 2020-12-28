@@ -1,6 +1,5 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
-import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
@@ -11,11 +10,8 @@ import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionsUtils;
 import br.com.syrxcraft.betterskyblock.utils.FancyText;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
-import br.com.syrxcraft.betterskyblock.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -31,6 +27,10 @@ public class SubCmdMember implements ISubCommand {
         if(!(commandSender instanceof Player))
             return false;
 
+        if (!commandSender.hasPermission(PermissionNodes.COMMAND_MEMBER)) {
+            return CommandManager.noPermission(commandSender);
+        }
+
         Player player = (Player) commandSender;
 
         Island island = IslandUtils.getPlayerIsland(player);
@@ -42,7 +42,6 @@ public class SubCmdMember implements ISubCommand {
 
         player.sendMessage("§6§m------------§6(  §e§lIlha de " + player.getName() + "§e  §6)§m------------");
         FancyText.sendTo(player, new FancyText("§6§l ▶ §aMembros:"));
-        player.sendMessage("  ");
 
         Map<UUID, PermissionType> map = island.permissionHolder.getPermissions();
 

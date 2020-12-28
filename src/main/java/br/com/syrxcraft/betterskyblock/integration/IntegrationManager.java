@@ -34,6 +34,7 @@ public class IntegrationManager implements Listener {
             try{
 
                 if(Bukkit.getPluginManager().isPluginEnabled(integrations.getPluginName().toLowerCase())){
+
                     Object instance  = integrations.getClazz().newInstance();
 
                     IIntegration iIntegration = (IIntegration) instance;
@@ -59,7 +60,6 @@ public class IntegrationManager implements Listener {
             } catch (IllegalAccessException | InstantiationException ex) {
                 BetterSkyBlock.getInstance().getLoggerHelper().info(ex.getLocalizedMessage());
             }
-
         }
     }
 

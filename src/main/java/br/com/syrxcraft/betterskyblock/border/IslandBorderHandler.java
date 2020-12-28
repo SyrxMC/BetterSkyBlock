@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock.border;
 
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.core.events.IslandEnterEvent;
 import br.com.syrxcraft.betterskyblock.core.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
@@ -17,7 +18,8 @@ public class IslandBorderHandler implements Listener {
             Player player = event.getPlayer();
             Island island = event.getIsland();
 
-            IslandBorder.setBorder(player, island.getCenter().getBlockX(), island.getCenter().getBlockZ(), (island.getRadius() * 2) + 1);
+            if(!player.hasPermission(PermissionNodes.OPTIONS_NO_BORDER))
+                IslandBorder.setBorder(player, island.getCenter().getBlockX(), island.getCenter().getBlockZ(), (island.getRadius() * 2) + 1);
         }
     }
 

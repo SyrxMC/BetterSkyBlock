@@ -1,11 +1,14 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
+import br.com.syrxcraft.betterskyblock.PermissionNodes;
+import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
+import com.griefdefender.api.claim.TrustTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -19,6 +22,10 @@ public class SubCmdKick implements ISubCommand {
 
         if(!(commandSender instanceof Player))
             return false;
+
+        if (!commandSender.hasPermission(PermissionNodes.COMMAND_KICK)){
+            return CommandManager.noPermission(commandSender);
+        }
 
         Player player = (Player) commandSender;
 
@@ -50,6 +57,7 @@ public class SubCmdKick implements ISubCommand {
 
         island.permissionHolder.updatePermission(p.getUniqueId(), PermissionType.NONE);
         island.update();
+        island.getClaim().removeUserTrust(p.getUniqueId(), TrustTypes.BUILDER);
         player.sendMessage("§4§l ▶ §cO jogador §4§l" + p.getName() + "§r§c foi expulso com sucesso!");
         return true;
     }
