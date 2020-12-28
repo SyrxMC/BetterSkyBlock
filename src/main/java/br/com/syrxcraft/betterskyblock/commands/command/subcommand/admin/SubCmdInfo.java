@@ -9,6 +9,7 @@ import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.core.api.BetterSkyBlockAPI;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.utils.FancyText;
+import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.data.PlayerData;
@@ -50,7 +51,7 @@ public class SubCmdInfo implements ISubCommand {
         }
 
         BetterSkyBlockAPI api = BetterSkyBlockAPI.getInstance();
-        Island island = api.getPlayerIsland(uuid);
+        Island island = IslandUtils.getCurrentIsland(player);
 
         if (island == null) {
             commandSender.sendMessage("§c§l ▶ §e" + Bukkit.getPlayer(uuid).getName() + "§c não possui uma ilha nesse servidor!");
@@ -62,7 +63,7 @@ public class SubCmdInfo implements ISubCommand {
 
         FancyText.sendTo(player, new FancyText(" §6▶ Criada em: §b"       + Utils.getFormatedDate(claim.getData().getDateCreated())));
         FancyText.sendTo(player, new FancyText(" §6▶ Expira: "            + (claim.getData().allowExpiration() ? "§cSim" : "§aNão expira")));
-        FancyText.sendTo(player, new FancyText(" §6▶ Dono: §b"            + claim.getOwnerName()));
+        FancyText.sendTo(player, new FancyText(" §6▶ Dono: §b"            + claim.getOwnerName(),(island.isOwnerOnline()? "§aOnline" : "§cOffline")));
         FancyText.sendTo(player, new FancyText(" §6▶ UUID: §b"            + island.getIslandId()));
         FancyText.sendTo(player, new FancyText(" §6▶ Estado: "            + (api.isIslandPublic(island) ? "§aPública" : "§cPrivada")));
         FancyText.sendTo(player, new FancyText(" §6▶ Bioma: §b"           + island.getSpawn().getBlock().getBiome().name()));
