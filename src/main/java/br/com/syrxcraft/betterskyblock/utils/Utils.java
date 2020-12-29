@@ -254,5 +254,11 @@ public class Utils {
 		}
 		return players;
 	}
-
+	public static List<String> getPlayersNameByUUID(Set<UUID> uuidList) {
+		List<String> players = new ArrayList<>();
+		for (UUID uuid : uuidList) {
+			players.add(asBukkitPlayer(uuid).getName());
+		}
+		return players;
+	}
 }
