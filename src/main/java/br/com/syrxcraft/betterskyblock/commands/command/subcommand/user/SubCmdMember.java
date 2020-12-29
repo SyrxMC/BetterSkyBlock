@@ -15,8 +15,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @HasSubCommand
 public class SubCmdMember implements ISubCommand {
@@ -51,12 +54,16 @@ public class SubCmdMember implements ISubCommand {
 
         Map<UUID, PermissionType> map = island.permissionHolder.getPermissions();
 
-        map.forEach((uuid, type) -> {
+        map.entrySet()
+                .stream()
+                .sorted(Comparator.comparingInt(it -> it.getValue().intPermission()))
+                .sorted(Collections.reverseOrder())
+                .forEach(it -> {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(it.getKey());
 
             if(offlinePlayer != null){
-                FancyText.sendTo(player, new FancyText("   §e⦁ " + offlinePlayer.getName() + " - " + PermissionsUtils.getPrettyType(type), (offlinePlayer.isOnline() ? "§aOnline" : "§cOffline")));
+                FancyText.sendTo(player, new FancyText("   §e⦁ " + offlinePlayer.getName() + " - " + PermissionsUtils.getPrettyType(it.getValue()), (offlinePlayer.isOnline() ? "§aOnline" : "§cOffline")));
             }
 
         });
