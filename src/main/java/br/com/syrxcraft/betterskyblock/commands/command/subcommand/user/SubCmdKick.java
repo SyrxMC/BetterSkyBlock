@@ -68,7 +68,13 @@ public class SubCmdKick implements ISubCommand {
             player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player, "COMMANDS_KICK"))  + " para executar este comando.");
             return false;
         }
+
         GDCauseStackManager.getInstance().pushCause(BetterSkyBlock.getInstance());
+
+        if(island.getPermissionHolder().getEffectivePermission(p.getUniqueId()).intPermission() >= island.getPermissionHolder().getEffectivePermission(player).intPermission()){
+            player.sendMessage("§4§l ▶ §cVocê não tem permissões suficientes para expulsar o jogador §4§l" + p.getName() + "§r§c!");
+            return false;
+        }
 
         switch (island.getPermissionHolder().getEffectivePermission(p.getUniqueId())){
             case ADMINISTRATOR:{
