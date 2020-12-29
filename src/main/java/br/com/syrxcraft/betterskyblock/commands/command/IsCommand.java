@@ -41,18 +41,23 @@ public class IsCommand implements ICommand {
                 return deliverSubCommand(sender, command, "reset", args);
             case "delete":
                 return deliverSubCommand(sender, command, "delete", args);
-            case "reload":
-                return deliverSubCommand(sender, command, "reload", args);
+//            case "reload":
+//                return deliverSubCommand(sender, command, "reload", args);
             case "info":
                 return deliverSubCommand(sender, command, "info", args);
+            case "convidar":
             case "invite":
                 return deliverSubCommand(sender, command, "invite", args);
+            case "expulsar":
             case "kick":
                 return deliverSubCommand(sender, command, "kick", args);
+            case "membros":
             case "member":
                 return deliverSubCommand(sender, command, "member", args);
+            case "entrar":
             case "entry":
                 return deliverSubCommand(sender, command, "entry", args);
+            case "administrador":
             case "manager":
                 return deliverSubCommand(sender, command, "manager", args);
             case "transfer":

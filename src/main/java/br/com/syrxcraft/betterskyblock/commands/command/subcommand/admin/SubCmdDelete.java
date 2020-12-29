@@ -25,13 +25,18 @@ public class SubCmdDelete implements ISubCommand {
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_DELETE_OTHER)) {
             return CommandManager.noPermission(commandSender);
         }
+
         if (!(commandSender instanceof Player))
             return false;
+
         Player player = (Player) commandSender;
+
         UUID uuid;
+
         if (args.length == 0) {
             uuid = player.getUniqueId();
         } else uuid = Bukkit.getPlayerUniqueId(args[0]);
+
         PlayerData playerData = GriefDefender.getCore().getPlayerData(BetterSkyBlock.getInstance().getIslandWorld().getUID(), uuid).orElse(null);
 
         if (playerData == null) {

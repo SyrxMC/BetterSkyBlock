@@ -36,8 +36,12 @@ public class SubCmdHelp implements ISubCommand {
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " private","§bDeixa a sua ilha Privada!","/" + command + " private",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " public","§bDeixa a sua ilha Pública!","/" + command + " public",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " reset","§bReseta a sua ilha!(Apaga ela inteira!!!)","/" + command + " reset",true));
-            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " transfer","§bTransfere a ilha para um jogador(Esse jogador não pode ter uma ilha!)","/" + command + " transfer",true));
-            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " invite","§bConvida um jogador para sua ilha como MEMBRO.","/" + command + " invite",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " transferir [Player]","§bTransfere a ilha para um jogador(Esse jogador não pode ter uma ilha!)","/" + command + " transfer",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " convidar [Player]","§bConvida um jogador para sua ilha como MEMBRO.","/" + command + " convidar",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " entrar [Player]","§bConvida um jogador para poder entrar em sua ilha.","/" + command + " entrar",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " administrador [Player]","§bConvida um jogador para sua ilha como ADMINISTRADOR.","/" + command + " administrador",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " expulsar [Player]","§bexpulsa um membro de sua ilha.","/" + command + " expulsar",true));
+            FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " info [Player]","§bMostra algumas informações da ilha de um jogador","/" + command + " info",true));
 
 
             if (player.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE)) {
@@ -51,7 +55,6 @@ public class SubCmdHelp implements ISubCommand {
 
             if (player.hasPermission(PermissionNodes.ADMIN)){
                 FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " delete <Player>","§bDeleta a ilha de algum jogador!\n\nNá pratica nao deleta fisicamente, apenas remove o claim!\nFazendo com que ele tenha que criar uma nova ilha em outro lugar.","/" + command + " delete",true));
-                FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " info <Player>","§bMostra algumas informações da ilha de um jogador","/" + command + " info",true));
             }
 
             player.sendMessage("");
