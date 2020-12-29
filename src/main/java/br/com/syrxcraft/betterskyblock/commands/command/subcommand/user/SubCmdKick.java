@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
+import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
@@ -11,6 +12,7 @@ import br.com.syrxcraft.betterskyblock.utils.Cooldown;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.TimeUtils;
 import com.griefdefender.api.claim.TrustTypes;
+import com.griefdefender.event.GDCauseStackManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -66,6 +68,7 @@ public class SubCmdKick implements ISubCommand {
             player.sendMessage("§3Você precisa esperar " + TimeUtils.formatSec((int) Cooldown.getCooldownTimeSec(player, "COMMANDS_KICK"))  + " para executar este comando.");
             return false;
         }
+        GDCauseStackManager.getInstance().pushCause(BetterSkyBlock.getInstance());
 
         switch (island.getPermissionHolder().getEffectivePermission(p.getUniqueId())){
             case ADMINISTRATOR:{
@@ -77,9 +80,11 @@ public class SubCmdKick implements ISubCommand {
             }
 
         }
+        GDCauseStackManager.getInstance().popCause();
 
         island.getPermissionHolder().updatePermission(p.getUniqueId(), PermissionType.NONE);
         island.update();
+
         player.sendMessage("§4§l ▶ §cO jogador §4§l" + p.getName() + "§r§c foi expulso com sucesso!");
         Cooldown.setCooldown(player, 10L, "COMMANDS_KICK");
         return true;

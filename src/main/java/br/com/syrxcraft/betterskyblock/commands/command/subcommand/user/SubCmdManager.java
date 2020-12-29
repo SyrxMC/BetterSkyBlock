@@ -1,5 +1,6 @@
 package br.com.syrxcraft.betterskyblock.commands.command.subcommand.user;
 
+import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import br.com.syrxcraft.betterskyblock.PermissionNodes;
 import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
@@ -11,6 +12,7 @@ import br.com.syrxcraft.betterskyblock.utils.Cooldown;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.TimeUtils;
 import com.griefdefender.api.claim.TrustTypes;
+import com.griefdefender.event.GDCauseStackManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -70,7 +72,11 @@ public class SubCmdManager implements ISubCommand {
 
         island.permissionHolder.updatePermission(p.getUniqueId(), PermissionType.ADMINISTRATOR);
         island.update();
+        GDCauseStackManager.getInstance().pushCause(BetterSkyBlock.getInstance());
+
         island.getClaim().addUserTrust(p.getUniqueId(), TrustTypes.MANAGER);
+
+        GDCauseStackManager.getInstance().popCause();
 
         player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e foi convidado para sua ilha com sucesso!");
         Cooldown.setCooldown(player, 10L, "COMMANDS_MANAGER");

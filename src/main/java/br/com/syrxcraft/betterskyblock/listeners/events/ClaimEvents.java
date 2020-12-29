@@ -12,7 +12,6 @@ import com.griefdefender.api.User;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.event.*;
-import com.griefdefender.event.GDTransferClaimEvent;
 import net.kyori.event.method.annotation.IgnoreCancelled;
 import net.kyori.event.method.annotation.PostOrder;
 import net.kyori.event.method.annotation.Subscribe;
@@ -37,7 +36,7 @@ public class ClaimEvents implements Listener {
 
             if (event instanceof RemoveClaimEvent.Abandon) {
 
-                if(player != null){
+                if (player != null) {
                     player.sendMessage(ChatColor.RED + "1 Se você quer deletar a sua ilha use o comando \"/is delete\"!"); //TODO: LANG
                 }
 
@@ -47,7 +46,7 @@ public class ClaimEvents implements Listener {
 
             island.teleportEveryoneToSpawn();
 
-            if(BetterSkyBlock.getInstance().config().deleteRegion()){
+            if (BetterSkyBlock.getInstance().config().deleteRegion()) {
                 island.deleteRegionFile();
             }
 
@@ -117,7 +116,7 @@ public class ClaimEvents implements Listener {
 
         Player player = GriefDefenderUtils.getPlayerFromEvent(event);
 
-        if(player == null) return;
+        if (player == null) return;
 
         if (IslandUtils.isIsland(event.getClaim())) {
 
@@ -130,39 +129,39 @@ public class ClaimEvents implements Listener {
     @Subscribe()
     @PostOrder(-100)
     @IgnoreCancelled
-    public void onBorderClaim(BorderClaimEvent event){
+    public void onBorderClaim(BorderClaimEvent event) {
         User user;
         Player player;
 
-        if((user = event.getUser().orElse(null)) != null){
-            if((player = Utils.asBukkitPlayer(user)) != null){
+        if ((user = event.getUser().orElse(null)) != null) {
+            if ((player = Utils.asBukkitPlayer(user)) != null) {
 
-                if(event.getExitClaim() != null){
+                if (event.getExitClaim() != null) {
 
                     Island island = IslandUtils.getIsland(event.getExitClaim());
 
-                    if(island != null){
+                    if (island != null) {
 
                         IslandExitEvent islandExitEvent = new IslandExitEvent(island, player, event.getEnterClaim().isWilderness());
                         Bukkit.getPluginManager().callEvent(islandExitEvent);
 
-                        if(islandExitEvent.isCancelled()){
+                        if (islandExitEvent.isCancelled()) {
                             event.cancelled(true);
                             return;
                         }
                     }
                 }
 
-                if(event.getEnterClaim() != null){
+                if (event.getEnterClaim() != null) {
 
                     Island island = IslandUtils.getIsland(event.getEnterClaim());
 
-                    if(island != null){
+                    if (island != null) {
 
                         IslandEnterEvent islandEnterEvent = new IslandEnterEvent(island, player);
                         Bukkit.getPluginManager().callEvent(islandEnterEvent);
 
-                        if(islandEnterEvent.isCancelled()){
+                        if (islandEnterEvent.isCancelled()) {
                             event.cancelled(true);
                         }
                     }
@@ -175,10 +174,13 @@ public class ClaimEvents implements Listener {
     @Subscribe()
     @PostOrder(-100)
     @IgnoreCancelled
-    public void onTrustPlayer(TrustClaimEvent event){
+    public void onTrustPlayer(TrustClaimEvent event) {
+        BetterSkyBlock cause = event.getCause().first(BetterSkyBlock.class).orElse(null);
+        if(cause != null) return;
+
         Player player = GriefDefenderUtils.getPlayerFromEvent(event);
 
-        if(player == null || event.getTrustType() == TrustTypes.NONE)
+        if (player == null || event.getTrustType() == TrustTypes.NONE)
             return;
 
         Claim claim = event.getClaim();
@@ -192,7 +194,7 @@ public class ClaimEvents implements Listener {
         }
 
 
-        if(IslandUtils.isIsland(claim)){
+        if (IslandUtils.isIsland(claim)) {
             event.cancelled(true);
             player.sendMessage(" §6▶ §ePara adicionar um §6§lMembro§r§e em sua ilha, use o comando '/is invite <jogador>'.");
         }
