@@ -6,12 +6,15 @@ import br.com.syrxcraft.betterskyblock.commands.CommandManager;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
+import br.com.syrxcraft.betterskyblock.core.data.DataStore;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import br.com.syrxcraft.betterskyblock.utils.FancyText;
+import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.data.PlayerData;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,64 +30,71 @@ public class SubCmdTransfer implements ISubCommand {
         if (!sender.hasPermission(PermissionNodes.COMMAND_TRANSFER)) {
             return CommandManager.noPermission(sender);
         }
-        if (args[0] == null && args[1] == null) {
-            FancyText.sendTo(sender, new FancyText("§5§l ▶ §6/" + command + " transfer <oldOwner> <newOwner>", "§bTransfere a ilha de um jogador para outro jogador!\n", "/" + command + " transfer ", true));
-            return true;
-        }
-
-        BetterSkyBlock instance = BetterSkyBlock.getInstance();
-        UUID targetUUID = Bukkit.getPlayerUniqueId(args[1]);
-        PlayerData oldOwner = GriefDefender.getCore().getPlayerData(instance.getIslandWorld().getUID(), Bukkit.getPlayerUniqueId(args[0])).orElse(null);
-        PlayerData newOwner = GriefDefender.getCore().getPlayerData(instance.getIslandWorld().getUID(), targetUUID).orElse(null);
-
-        if (oldOwner == null) {
-            sender.sendMessage("§4§l ▶ §cNão existe nenhum jogador chamado [" + args[0] + "] !");
+        if (!(sender instanceof Player)) {
             return false;
         }
-        Player target = Bukkit.getPlayer(targetUUID);
+
+        Player player = (Player) sender;
+
+        if (args[0] == null) {
+            FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " transfer <newOwner>", "§bTransfere a ilha de um jogador para outro jogador!\n", "/" + command + " transfer ", true));
+            return true;
+        }
+        
+        Island currentIs = IslandUtils.getCurrentIsland(player);
+        Island island = IslandUtils.getPlayerIsland(player);
+        if(currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.OWNER){
+            island = currentIs;
+        }
+
+        if (island == null) {
+            player.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + command + " spawn\"");
+            return false;
+        }
+
+        World islandWorld = BetterSkyBlock.getInstance().getIslandWorld();
+        DataStore datastore = BetterSkyBlock.getInstance().getDataStore();
+        
+        Player target = Bukkit.getPlayer(args[0]);
+        PlayerData newOwner = GriefDefender.getCore().getPlayerData(islandWorld.getUID(), target.getUniqueId()).orElse(null);
+
         if (newOwner == null || target == null) {
             sender.sendMessage("§4§l ▶ §cNão existe nenhum jogador chamado [" + args[1] + "] !");
             return false;
         }
-        Island oldOwnerIsland = instance.getDataStore().getIsland(oldOwner.getUniqueId());
-        Island newOwnerIsland = instance.getDataStore().getIsland(newOwner.getUniqueId());
-
-        if (oldOwnerIsland == null) {
-            sender.sendMessage("§4§l ▶ §e" + oldOwner.getName() + "§c não possui uma ilha nesse servidor!");
-            return true;
-        }
+        Island newOwnerIsland = datastore.getIsland(newOwner.getUniqueId());
 
         if (newOwnerIsland != null) {
             sender.sendMessage("§4§l ▶ §e" + newOwner.getName() + "§e já possui uma ilha nesse servidor! Delete a ilha dele antes de dar uma nova!");
             return true;
         }
 
-        if (!oldOwnerIsland.ready) {
+        if (!island.ready) {
             sender.sendMessage("§4§l ▶ §cExiste alguma operação pendente nessa ilha! Transferência bloqueada!");
             return true;
         }
         String conf = BetterSkyBlock.getInstance().getCommandManager().getConfirmations().remove(sender.getName());
 
         if (conf == null || !conf.equals("transfer")) {
-            sender.sendMessage("§4§l ▶ §c§lCUIDADO: §cSua ilha inteira será transferida!\n§cSe você tem certeza disso, use \"/"+command+" transfer\" novamente!");
+            sender.sendMessage("§4§l ▶ §c§lCUIDADO: §cSua ilha inteira será transferida!\n§cSe você tem certeza disso, use \"/" + command + " transfer\" novamente!");
             BetterSkyBlock.getInstance().getCommandManager().getConfirmations().put(sender.getName(), "transfer");
             return false;
         }
         try {
-            instance.getDataStore().removeIsland(oldOwnerIsland);
-            instance.getDataStore().transferIslandClaim(oldOwnerIsland, newOwner.getUniqueId());
-            oldOwnerIsland.getPermissionHolder().updatePermission(oldOwner.getUniqueId(), PermissionType.MEMBER);
-            oldOwnerIsland.getPermissionHolder().updatePermission(newOwner.getUniqueId(), PermissionType.OWNER);
-            Island newIsland = new Island(oldOwnerIsland.getIslandId(), newOwner.getUniqueId(), oldOwnerIsland.getClaim(), oldOwnerIsland.getPermissionHolder(), oldOwnerIsland.getSpawn());
-            instance.getDataStore().addIslandAndQueueUpdate(newIsland);
+            datastore.removeIsland(island);
+            datastore.transferIslandClaim(island, newOwner.getUniqueId());
+            island.getPermissionHolder().updatePermission(player.getUniqueId(), PermissionType.MEMBER);
+            island.getPermissionHolder().updatePermission(newOwner.getUniqueId(), PermissionType.OWNER);
+            Island newIsland = new Island(island.getIslandId(), newOwner.getUniqueId(), island.getClaim(), island.getPermissionHolder(), island.getSpawn());
+            datastore.addIslandAndQueueUpdate(newIsland);
         } catch (Exception e) {
             sender.sendMessage("§c§l ▶ §cFalha ao transferir ilha...§oMesangem: " + e.getMessage());
-            instance.getLoggerHelper().info("Failed to transfer island from [" + oldOwner.getName() + "] to [" + newOwner.getName());
+            BetterSkyBlock.getInstance().getLoggerHelper().info("Failed to transfer island from [" + player.getName() + "] to [" + newOwner.getName());
             e.printStackTrace();
         }
 
-        sender.sendMessage("§2§l ▶ §aIlha transferida com sucesso do jogador [§e" + oldOwner.getName() + "§a] para o jogador [§e" + newOwner.getName() + "§a]!");
-        target.sendMessage("§2§l ▶ §aIlha transferida com sucesso do jogador [§e" + oldOwner.getName() + "§a] para o jogador [§e" + newOwner.getName() + "§a]!");
+        sender.sendMessage("§2§l ▶ §aIlha transferida com sucesso do jogador [§e" + player.getName() + "§a] para o jogador [§e" + newOwner.getName() + "§a]!");
+        target.sendMessage("§2§l ▶ §aIlha transferida com sucesso do jogador [§e" + player.getName() + "§a] para o jogador [§e" + newOwner.getName() + "§a]!");
         return true;
     }
 }
