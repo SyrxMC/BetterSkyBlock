@@ -2,49 +2,99 @@ name: BetterSkyBlock
 main: br.com.syrxcraft.betterskyblock.BetterSkyBlock
 version: @VERSION@
 author: brunoxkk0
+
 depend: [GriefDefender, WorldEdit]
 softdepend: [PlaceholderAPI, BossShopPro]
 load: POSTWORLD
 
 permissions:
-  betterskyblock.admin:
-    default: op
-    children:
-      betterskyblock.cmd.spawn: true
-      betterskyblock.cmd.biome.list: true
-      betterskyblock.cmd.reset: true
-      betterskyblock.cmd.private: true
-      betterskyblock.cmd.public: true
-      betterskyblock.cmd.delete.other: true
-      betterskyblock.set.spawn: true
-      betterskyblock.set.biome: true
-      betterskyblock.set.biome.all: true
-      betterskyblock.set.radius: true
-      betterskyblock.noteleportdelay: true
-      betterskyblock.override: true
-      betterskyblock.leaveisland: true
+  betterskyblock.cmd.spawn:
+    description: Permission to use /is spawn.
+    default: true
 
   betterskyblock.cmd.biome.list:
+    description: Permission to use /is biomelist.
     default: true
+
   betterskyblock.cmd.reset:
+    description: Permission to use /is reset.
     default: true
+
   betterskyblock.cmd.private:
+    description: Permission to use /is private.
     default: true
+
   betterskyblock.cmd.public:
+    description: Permission to use /is public.
     default: true
+
   betterskyblock.cmd.delete.other:
+    description: Permission to use /is delete.
     default: op
-  betterskyblock.set.spawn:
+
+  betterskyblock.cmd.info:
+    description: Permission to use /is info.
     default: true
-  betterskyblock.set.biome:
+
+  betterskyblock.cmd.info.other:
+    description: Permission to use /is info <player>.
+    default: op
+
+  betterskyblock.cmd.transfer:
+    description: Permission to use /is transfer.
     default: true
-  betterskyblock.set.biome.all:
+
+  betterskyblock.cmd.member:
+    description: Permission to use /is member.
+    default: true
+
+  betterskyblock.cmd.kick:
+    description: Permission to use /is kick.
+    default: true
+
+  betterskyblock.cmd.invite:
+    description: Permission to use /is [invite, entry, manager].
+    default: true
+
+  betterskyblock.cmd.set.spawn:
+    description: Permission to use /is setspawn.
+    default: true
+
+  betterskyblock.cmd.set.biome.other:
+    description: Permission to use /is setbiome <biome> [player].
     default: op
-  betterskyblock.set.radius:
+
+  betterskyblock.opt.set.biome:
+    description: Permission to change the biome of your island.
+    default: true
+
+  betterskyblock.opt.set.biome.all:
+    description: Permission to change the biome of your island ignoring biome restrictions.
+    default: true
+
+  betterskyblock.opt.noteleportdelay:
+    description: Permission to ignore the teleport delay.
     default: op
-  betterskyblock.noteleportdelay:
+
+  betterskyblock.opt.override:
+    description: Permission to ignore some actions.
     default: op
-  betterskyblock.override:
+
+  betterskyblock.opt.leaveisland:
+    description: Permission to exit from your island.
     default: op
-  betterskyblock.leaveisland:
+
+  betterskyblock.opt.noborder:
+    description: Permission to remove world border from your island.
+
+  betterskyblock.admin:
+    description: Master permission.
     default: op
+    children:
+      betterskyblock.cmd.delete.other: true
+      betterskyblock.cmd.info.other: true
+      betterskyblock.cmd.set.biome.other: true
+      betterskyblock.opt.noteleportdelay: true
+      betterskyblock.opt.override: true
+      betterskyblock.opt.leaveisland: true
+      betterskyblock.opt.noborder: true
