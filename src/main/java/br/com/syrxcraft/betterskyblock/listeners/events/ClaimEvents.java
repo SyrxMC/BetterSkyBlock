@@ -9,6 +9,8 @@ import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.griefdefender.api.User;
+import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.event.*;
 import com.griefdefender.event.GDTransferClaimEvent;
 import net.kyori.event.method.annotation.IgnoreCancelled;
@@ -111,17 +113,16 @@ public class ClaimEvents implements Listener {
     @Subscribe()
     @PostOrder(-100)
     @IgnoreCancelled
-    public void onClaimTransfer(GDTransferClaimEvent event) {
+    public void onClaimTransfer(TransferClaimEvent event) {
 
         Player player = GriefDefenderUtils.getPlayerFromEvent(event);
+
+        if(player == null) return;
 
         if (IslandUtils.isIsland(event.getClaim())) {
 
             event.cancelled(true);
-
-            if (player != null){
-                player.sendMessage("§c ! §fEsse claim é uma ilha! E as ilhas são Intransferíveis."); // TODO: Lang
-            }
+            player.sendMessage(" §6▶ §cEsse terreno é uma ilha, para transferir ilhas use '/is transfer <atual_dono> <novo_dono>'.");
         }
     }
 
@@ -167,6 +168,33 @@ public class ClaimEvents implements Listener {
                     }
                 }
             }
+        }
+    }
+
+
+    @Subscribe()
+    @PostOrder(-100)
+    @IgnoreCancelled
+    public void onTrustPlayer(TrustClaimEvent event){
+        Player player = GriefDefenderUtils.getPlayerFromEvent(event);
+
+        if(player == null || event.getTrustType() == TrustTypes.NONE)
+            return;
+
+        Claim claim = event.getClaim();
+
+        if (claim.isSubdivision()) {
+            Claim parent = claim;
+            while (parent.getParent().isPresent()) {
+                parent = parent.getParent().get();
+            }
+            claim = parent;
+        }
+
+
+        if(IslandUtils.isIsland(claim)){
+            event.cancelled(true);
+            player.sendMessage(" §6▶ §ePara adicionar um §6§lMembro§r§e em sua ilha, use o comando '/is invite <jogador>'.");
         }
     }
 }

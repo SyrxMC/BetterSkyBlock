@@ -20,6 +20,8 @@ public class IslandUtils {
 
     public static Island getIsland(Claim claim) {
 
+        if(claim == null) return null;
+
         if (!isIslandWorld(Utils.worldFromUUID(claim.getWorldUniqueId())) || claim.isWilderness()) {
             return null;
         }

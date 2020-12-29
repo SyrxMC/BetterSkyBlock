@@ -35,12 +35,18 @@ public class SubCmdMember implements ISubCommand {
 
         Island island = IslandUtils.getPlayerIsland(player);
 
+        Island currentIs = IslandUtils.getCurrentIsland(player);
+
+        if(currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.ADMINISTRATOR){
+            island = currentIs;
+        }
+
         if (island == null) {
             commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + command + " spawn\"");
             return false;
         }
 
-        player.sendMessage("§6§m------------§6(  §e§lIlha de " + player.getName() + "§e  §6)§m------------");
+        player.sendMessage("§6§m------------§6(  §e§lIlha de " + island.getOwnerName() + "§e  §6)§m------------");
         FancyText.sendTo(player, new FancyText("§6§l ▶ §aMembros:"));
 
         Map<UUID, PermissionType> map = island.permissionHolder.getPermissions();
@@ -50,10 +56,12 @@ public class SubCmdMember implements ISubCommand {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
             if(offlinePlayer != null){
-                FancyText.sendTo(player, new FancyText("   §e⦁ " + offlinePlayer.getName() + " - " + PermissionsUtils.getPrettyType(type)));
+                FancyText.sendTo(player, new FancyText("   §e⦁ " + offlinePlayer.getName() + " - " + PermissionsUtils.getPrettyType(type), (offlinePlayer.isOnline() ? "§aOnline" : "§cOffline")));
             }
 
         });
+
+        player.sendMessage(" ");
 
         return true;
     }

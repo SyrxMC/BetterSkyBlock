@@ -7,8 +7,10 @@ import br.com.syrxcraft.betterskyblock.commands.manager.cSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.HasSubCommand;
 import br.com.syrxcraft.betterskyblock.commands.manager.ISubCommand;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import br.com.syrxcraft.betterskyblock.core.permission.PermissionType;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionsUtils;
 import br.com.syrxcraft.betterskyblock.utils.GriefDefenderUtils;
+import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustType;
@@ -36,6 +38,11 @@ public class SubCmdPrivate implements ISubCommand {
         }
 
         Island island = BetterSkyBlock.getInstance().getDataStore().getIsland(player.getUniqueId());
+
+        Island currentIs = IslandUtils.getCurrentIsland(player);
+        if(currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.ADMINISTRATOR){
+            island = currentIs;
+        }
 
         if (island == null) {
             commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + command + " spawn\"");

@@ -31,6 +31,7 @@ public class SubCmdTransfer implements ISubCommand {
             FancyText.sendTo(sender, new FancyText("§5§l ▶ §6/" + command + " transfer <oldOwner> <newOwner>", "§bTransfere a ilha de um jogador para outro jogador!\n", "/" + command + " transfer ", true));
             return true;
         }
+
         BetterSkyBlock instance = BetterSkyBlock.getInstance();
         UUID targetUUID = Bukkit.getPlayerUniqueId(args[1]);
         PlayerData oldOwner = GriefDefender.getCore().getPlayerData(instance.getIslandWorld().getUID(), Bukkit.getPlayerUniqueId(args[0])).orElse(null);

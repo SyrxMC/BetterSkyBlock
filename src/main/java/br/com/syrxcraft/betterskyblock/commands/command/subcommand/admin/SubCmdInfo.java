@@ -63,7 +63,7 @@ public class SubCmdInfo implements ISubCommand {
 
         FancyText.sendTo(player, new FancyText(" §6▶ Criada em: §b"       + Utils.getFormatedDate(claim.getData().getDateCreated())));
         FancyText.sendTo(player, new FancyText(" §6▶ Expira: "            + (claim.getData().allowExpiration() ? "§cSim" : "§aNão expira")));
-        FancyText.sendTo(player, new FancyText(" §6▶ Dono: §b"            + claim.getOwnerName(),(island.isOwnerOnline()? "§aOnline" : "§cOffline")));
+        FancyText.sendTo(player, new FancyText(" §6▶ Dono: §b"       + claim.getOwnerName(),(island.isOwnerOnline()? "§aOnline" : "§cOffline")));
         FancyText.sendTo(player, new FancyText(" §6▶ UUID: §b"            + island.getIslandId()));
         FancyText.sendTo(player, new FancyText(" §6▶ Estado: "            + (api.isIslandPublic(island) ? "§aPública" : "§cPrivada")));
         FancyText.sendTo(player, new FancyText(" §6▶ Bioma: §b"           + island.getSpawn().getBlock().getBiome().name()));
