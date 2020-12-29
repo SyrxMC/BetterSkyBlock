@@ -79,9 +79,12 @@ public class SubCmdManager implements ISubCommand {
         GDCauseStackManager.getInstance().popCause();
 
         player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e foi convidado para sua ilha com sucesso!");
+
+        if(p.isOnline()){
+            p.getPlayer().sendMessage("§6§l ▶ §eVocê agora é Membro da ilha §6§l" + island.getOwnerName() + "§r§e!");
+        }
+
         Cooldown.setCooldown(player, 10L, "COMMANDS_MANAGER");
-
-
         return true;
     }
 }

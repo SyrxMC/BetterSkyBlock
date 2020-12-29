@@ -86,6 +86,11 @@ public class SubCmdKick implements ISubCommand {
         island.update();
 
         player.sendMessage("§4§l ▶ §cO jogador §4§l" + p.getName() + "§r§c foi expulso com sucesso!");
+
+        if(p.isOnline()){
+            p.getPlayer().sendMessage("§4§l ▶ §cVocê foi expulso da ilha de §4§l" + island.getOwnerName() + "§r§c!");
+        }
+
         Cooldown.setCooldown(player, 10L, "COMMANDS_KICK");
         return true;
     }

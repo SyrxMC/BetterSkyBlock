@@ -40,7 +40,6 @@ public class SubCmdInvite implements ISubCommand {
             island = currentIs;
         }
 
-
         if (island == null) {
             commandSender.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + command + " spawn\"");
             return false;
@@ -82,6 +81,11 @@ public class SubCmdInvite implements ISubCommand {
         GDCauseStackManager.getInstance().popCause();
 
         player.sendMessage("§6§l ▶ §eO jogador §6§l" + p.getName() + "§r§e foi convidado para sua ilha com sucesso!");
+
+        if(p.isOnline()){
+            p.getPlayer().sendMessage("§6§l ▶ §eVocê agora é Membro da ilha §6§l" + island.getOwnerName() + "§r§e!");
+        }
+
         Cooldown.setCooldown(player, 10L, "COMMANDS_INVITE");
 
         return true;

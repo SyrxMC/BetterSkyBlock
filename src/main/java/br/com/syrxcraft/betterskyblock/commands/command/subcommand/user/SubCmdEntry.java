@@ -68,6 +68,10 @@ public class SubCmdEntry implements ISubCommand {
 
         player.sendMessage("§6§l ▶ §eO jogador §6§l"+ p.getName() + "§r§e foi convidado para entrar em sua ilha com sucesso!");
 
+        if(p.isOnline()){
+            p.getPlayer().sendMessage("§6§l ▶ §eVocê agora é Convidado da ilha §6§l" + island.getOwnerName() + "§r§e!");
+        }
+
         Cooldown.setCooldown(player, 10L, "COMMANDS_ENTRY");
         return true;
     }
