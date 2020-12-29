@@ -1,9 +1,5 @@
 package br.com.syrxcraft.betterskyblock.utils;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
@@ -11,34 +7,23 @@ import java.util.*;
 import br.com.syrxcraft.betterskyblock.BetterSkyBlock;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.User;
-import com.sk89q.worldedit.blocks.TileEntityBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.Vector2D;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.biome.BiomeReplace;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.biome.Biomes;
-import com.sk89q.worldedit.world.registry.LegacyWorldData;
-import com.sk89q.worldedit.world.registry.WorldData;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Utils {
 
@@ -194,6 +179,13 @@ public class Utils {
 	public static Player asBukkitPlayer(User user){
 		return asBukkitPlayer(user.getUniqueId());
 	}
+	public static OfflinePlayer asBukkitOfflinePlayer(UUID uuid){
+		return Bukkit.getOfflinePlayer(uuid);
+	}
+
+	public static OfflinePlayer asBukkitOfflinePlayer(User user){
+		return asBukkitOfflinePlayer(user.getUniqueId());
+	}
 
 	public static Vector3i locationToVector(Location location){
 		return new Vector3i(location.getBlockX(),location.getBlockY(),location.getBlockZ());
@@ -240,24 +232,24 @@ public class Utils {
 		return getFormatedDate(date);
 	}
 
-	public static List<Player> getPlayersByUUID(List<UUID> uuidList) {
-		List<Player> players = new ArrayList<>();
+	public static List<OfflinePlayer> getPlayersByUUID(List<UUID> uuidList) {
+		List<OfflinePlayer> players = new ArrayList<>();
 		for (UUID uuid : uuidList) {
-			players.add(asBukkitPlayer(uuid));
+			players.add(asBukkitOfflinePlayer(uuid));
 		}
 		return players;
 	}
 	public static List<String> getPlayersNameByUUID(List<UUID> uuidList) {
 		List<String> players = new ArrayList<>();
 		for (UUID uuid : uuidList) {
-			players.add(asBukkitPlayer(uuid).getName());
+			players.add(asBukkitOfflinePlayer(uuid).getName());
 		}
 		return players;
 	}
 	public static List<String> getPlayersNameByUUID(Set<UUID> uuidList) {
 		List<String> players = new ArrayList<>();
 		for (UUID uuid : uuidList) {
-			players.add(asBukkitPlayer(uuid).getName());
+			players.add(asBukkitOfflinePlayer(uuid).getName());
 		}
 		return players;
 	}
