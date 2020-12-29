@@ -42,6 +42,11 @@ public class SubCmdInfo implements ISubCommand {
         if (args.length == 0) {
             uuid = player.getUniqueId();
         } else {
+
+            if (!commandSender.hasPermission(PermissionNodes.COMMAND_INFO_OTHER)) {
+                return CommandManager.noPermission(commandSender);
+            }
+
             uuid = Bukkit.getPlayerUniqueId(args[0]);
         }
 
@@ -54,6 +59,11 @@ public class SubCmdInfo implements ISubCommand {
 
         BetterSkyBlockAPI api = BetterSkyBlockAPI.getInstance();
         Island island = IslandUtils.getCurrentIsland(player);
+
+        Island currentIs = IslandUtils.getCurrentIsland(player);
+        if (args.length == 0 && currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.ADMINISTRATOR) {
+            island = currentIs;
+        }
 
         if (island == null) {
             commandSender.sendMessage("§c§l ▶ §e" + Bukkit.getPlayer(uuid).getName() + "§c não possui uma ilha nesse servidor!");
