@@ -25,27 +25,26 @@ import java.util.UUID;
  */
 @HasSubCommand
 public class SubCmdTransfer implements ISubCommand {
+
     @cSubCommand(name = "transfer", targetCommand = "island")
     public boolean execute(CommandSender sender, String command, String label, String[] args) {
+
         if (!sender.hasPermission(PermissionNodes.COMMAND_TRANSFER)) {
             return CommandManager.noPermission(sender);
         }
+
         if (!(sender instanceof Player)) {
             return false;
         }
 
         Player player = (Player) sender;
 
-        if (args[0] == null) {
+        if (args.length == 0) {
             FancyText.sendTo(player, new FancyText("§5§l ▶ §6/" + command + " transfer <newOwner>", "§bTransfere a ilha de um jogador para outro jogador!\n", "/" + command + " transfer ", true));
-            return true;
+            return false;
         }
-        
-        Island currentIs = IslandUtils.getCurrentIsland(player);
+
         Island island = IslandUtils.getPlayerIsland(player);
-        if(currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.OWNER){
-            island = currentIs;
-        }
 
         if (island == null) {
             player.sendMessage("§4§l ▶ §cVocê ainda não possui uma ilha nesse servidor! Para criar uma, use \"/" + command + " spawn\"");
@@ -58,21 +57,23 @@ public class SubCmdTransfer implements ISubCommand {
         Player target = Bukkit.getPlayer(args[0]);
         PlayerData newOwner = GriefDefender.getCore().getPlayerData(islandWorld.getUID(), target.getUniqueId()).orElse(null);
 
-        if (newOwner == null || target == null) {
-            sender.sendMessage("§4§l ▶ §cNão existe nenhum jogador chamado [" + args[1] + "] !");
+        if (newOwner == null) {
+            sender.sendMessage("§4§l ▶ §cNão existe nenhum jogador chamado [" + args[0] + "] !");
             return false;
         }
+
         Island newOwnerIsland = datastore.getIsland(newOwner.getUniqueId());
 
         if (newOwnerIsland != null) {
             sender.sendMessage("§4§l ▶ §e" + newOwner.getName() + "§e já possui uma ilha nesse servidor! Delete a ilha dele antes de dar uma nova!");
-            return true;
+            return false;
         }
 
         if (!island.ready) {
             sender.sendMessage("§4§l ▶ §cExiste alguma operação pendente nessa ilha! Transferência bloqueada!");
-            return true;
+            return false;
         }
+
         String conf = BetterSkyBlock.getInstance().getCommandManager().getConfirmations().remove(sender.getName());
 
         if (conf == null || !conf.equals("transfer")) {
@@ -80,21 +81,30 @@ public class SubCmdTransfer implements ISubCommand {
             BetterSkyBlock.getInstance().getCommandManager().getConfirmations().put(sender.getName(), "transfer");
             return false;
         }
+
         try {
+
             datastore.removeIsland(island);
             datastore.transferIslandClaim(island, newOwner.getUniqueId());
+
             island.getPermissionHolder().updatePermission(player.getUniqueId(), PermissionType.MEMBER);
             island.getPermissionHolder().updatePermission(newOwner.getUniqueId(), PermissionType.OWNER);
+
             Island newIsland = new Island(island.getIslandId(), newOwner.getUniqueId(), island.getClaim(), island.getPermissionHolder(), island.getSpawn());
+
             datastore.addIslandAndQueueUpdate(newIsland);
+
         } catch (Exception e) {
+
             sender.sendMessage("§c§l ▶ §cFalha ao transferir ilha...§oMesangem: " + e.getMessage());
             BetterSkyBlock.getInstance().getLoggerHelper().info("Failed to transfer island from [" + player.getName() + "] to [" + newOwner.getName());
             e.printStackTrace();
+
         }
 
         sender.sendMessage("§2§l ▶ §aIlha transferida com sucesso do jogador [§e" + player.getName() + "§a] para o jogador [§e" + newOwner.getName() + "§a]!");
         target.sendMessage("§2§l ▶ §aIlha transferida com sucesso do jogador [§e" + player.getName() + "§a] para o jogador [§e" + newOwner.getName() + "§a]!");
+
         return true;
     }
 }
