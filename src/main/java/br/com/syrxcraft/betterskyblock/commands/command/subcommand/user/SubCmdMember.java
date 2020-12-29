@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @HasSubCommand
 public class SubCmdMember implements ISubCommand {
@@ -27,7 +26,7 @@ public class SubCmdMember implements ISubCommand {
     @cSubCommand(name = "member", targetCommand = "island")
     public boolean execute(CommandSender commandSender, String command, String label, String[] args) {
 
-        if(!(commandSender instanceof Player))
+        if (!(commandSender instanceof Player))
             return false;
 
         if (!commandSender.hasPermission(PermissionNodes.COMMAND_MEMBER)) {
@@ -40,7 +39,7 @@ public class SubCmdMember implements ISubCommand {
 
         Island currentIs = IslandUtils.getCurrentIsland(player);
 
-        if(currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.ADMINISTRATOR){
+        if (currentIs != null && currentIs.getPermissionHolder().getEffectivePermission(player.getUniqueId()) == PermissionType.ADMINISTRATOR) {
             island = currentIs;
         }
 
@@ -56,17 +55,18 @@ public class SubCmdMember implements ISubCommand {
 
         map.entrySet()
                 .stream()
-                .sorted(Comparator.comparingInt(it -> it.getValue().intPermission()))
-                .sorted(Collections.reverseOrder())
+                .sorted(Map.Entry.comparingByValue(((Comparator<PermissionType>) (o1, o2) -> {
+                    return Integer.compare(o1.intPermission(), o2.intPermission());
+                }).reversed()))
                 .forEach(it -> {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(it.getKey());
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(it.getKey());
 
-            if(offlinePlayer != null){
-                FancyText.sendTo(player, new FancyText("   §e⦁ " + offlinePlayer.getName() + " - " + PermissionsUtils.getPrettyType(it.getValue()), (offlinePlayer.isOnline() ? "§aOnline" : "§cOffline")));
-            }
+                    if (offlinePlayer != null) {
+                        FancyText.sendTo(player, new FancyText("   §e⦁ " + offlinePlayer.getName() + " - " + PermissionsUtils.getPrettyType(it.getValue()), (offlinePlayer.isOnline() ? "§aOnline" : "§cOffline")));
+                    }
 
-        });
+                });
 
         player.sendMessage(" ");
 
