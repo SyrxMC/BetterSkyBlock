@@ -48,17 +48,19 @@ public class PlaceHolderAPIIntegration extends PlaceholderExpansion implements I
 
                             Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(),Flags.ENTER_CLAIM.getPermission());
 
-                            return tristate != null && tristate.asBoolean() ? "Sim" : "Não"; // TODO: fix
+                            return tristate != null && tristate.asBoolean() ? "Sim" : "Não";
                         }
 
-                        return "Você não possui uma ilha ainda!"; // TODO: Lang Support
+                        return "Você não possui uma ilha ainda!";
                     }
 
                     case "island_public_boolean":{
 
-                        Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(),Flags.ENTER_CLAIM.getPermission());
+                        if(island != null){
+                            Tristate tristate = GriefDefenderUtils.getClaimFlagPermission(island.getClaim(),Flags.ENTER_CLAIM.getPermission());
 
-                        return "" + (tristate != null && tristate.asBoolean());
+                            return "" + (tristate != null && tristate.asBoolean());
+                        }
 
                     }
 
@@ -66,8 +68,8 @@ public class PlaceHolderAPIIntegration extends PlaceholderExpansion implements I
                         return "" + ((island != null) ? island.getRadius() : 0);
                     }
 
-                    case "island_trust":{
-                        return "" + island.getClaim().getUserTrusts().size();
+                    case "island_members":{
+                        return "" + ((island != null) ? island.getPermissionHolder().getPermissions().size() : 0);
                     }
 
                     default: {

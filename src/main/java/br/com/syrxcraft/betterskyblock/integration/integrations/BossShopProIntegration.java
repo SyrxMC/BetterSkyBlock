@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-//TODO: Rewrite
+
 public class BossShopProIntegration implements IIntegration, Listener {
 
     private static BossShop bs;

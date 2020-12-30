@@ -25,7 +25,7 @@ import static br.com.syrxcraft.betterskyblock.utils.IslandUtils.isIslandWorld;
 
 public class PlayerEvents implements Listener {
 
-    @EventHandler //todo: repensar : possivel funcionalidade, se um jogador se teleporta para o mundo de ilhas, e não vai diretamente pra uma ilha, ele é jogado pro spawn do mundo
+    @EventHandler
     void onPlayerTeleport(PlayerTeleportEvent event) {
         if (!event.getPlayer().hasPermission(PermissionNodes.OPTIONS_OVERRIDE) &&
                 isIslandWorld(event.getTo().getWorld()) &&

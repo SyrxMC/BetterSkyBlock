@@ -22,8 +22,6 @@ public class SpawnTeleportTask extends BukkitRunnable {
 	}
 
 
-	//todo: check spawn system
-
 	@Override
 	public void run() {
 
