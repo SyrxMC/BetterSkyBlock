@@ -28,7 +28,7 @@ public class SubCmdBiomeList implements ISubCommand {
         } else {
             for (Biome biome : BetterSkyBlock.getInstance().config().getAllowedBiomes()) {
 
-                if(!commandSender.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE + "." + biome.toString().toLowerCase())) {
+                if(!commandSender.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_BASE + "." + biome.toString().toLowerCase()) && !commandSender.hasPermission(PermissionNodes.OPTIONS_SET_BIOME_ALL)) {
                     continue;
                 }
 
