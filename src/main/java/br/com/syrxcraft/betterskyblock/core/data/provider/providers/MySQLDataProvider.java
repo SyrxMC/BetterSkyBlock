@@ -238,7 +238,7 @@ public class MySQLDataProvider implements IDataProvider {
 
     synchronized Statement statement() throws SQLException {
 
-        if (databaseConnection == null || databaseConnection.isClosed()) {
+        if (databaseConnection == null /*|| databaseConnection.isClosed()*/ || !databaseConnection.isValid(10)) {
             databaseConnection = mySQLDriver.connect();
         }
 
