@@ -33,8 +33,8 @@ public class SubCmdHelp implements ISubCommand {
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " help","§bMostra essa mensagem!","/" + command + " help",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " spawn [Player]","§bTeleporta para a sua ilha ou a de algum jogador!","/" + command + " spawn",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " setspawn","§bAltera a localização do Spawn da sua ilha!","/" + command + " setspawn",true));
-            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " private","§bDeixa a sua ilha Privada!","/" + command + " private",true));
-            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " public","§bDeixa a sua ilha Pública!","/" + command + " public",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " privada","§bDeixa a sua ilha Privada!","/" + command + " private",true));
+            FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " publica","§bDeixa a sua ilha Pública!","/" + command + " public",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " reset","§bReseta a sua ilha!(Apaga ela inteira!!!)","/" + command + " reset",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " transferir [Player]","§bTransfere a ilha para um jogador(Esse jogador não pode ter uma ilha!)","/" + command + " transfer",true));
             FancyText.sendTo(player, new FancyText("§3§l ▶ §a/" + command + " convidar [Player]","§bConvida um jogador para sua ilha como MEMBRO.","/" + command + " convidar",true));
