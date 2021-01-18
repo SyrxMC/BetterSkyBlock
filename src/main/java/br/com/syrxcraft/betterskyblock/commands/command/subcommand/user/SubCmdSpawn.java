@@ -56,7 +56,7 @@ public class SubCmdSpawn implements ISubCommand {
                 return false;
             }
 
-            if(!BetterSkyBlockAPI.getInstance().isIslandPublic(island) && !PermissionsUtils.canEnter(island.getPermissionHolder().getEffectivePermission(player))){
+            if(!BetterSkyBlockAPI.getInstance().isIslandPublic(island) && !PermissionsUtils.canEnter(island.getPermissionHolder().getEffectivePermission(player)) && !player.hasPermission(PermissionNodes.OPTIONS_CAN_ENTER)){
                 player.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                 return false;
             }

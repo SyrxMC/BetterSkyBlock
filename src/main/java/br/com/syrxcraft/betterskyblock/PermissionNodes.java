@@ -25,5 +25,6 @@ public class PermissionNodes {
     public static final String OPTIONS_OVERRIDE             = "betterskyblock.opt.override";
     public static final String OPTIONS_LEAVE_ISLAND         = "betterskyblock.opt.leaveisland";
     public static final String OPTIONS_NO_BORDER            = "betterskyblock.opt.noborder";
+    public static final String OPTIONS_CAN_ENTER            = "betterskyblock.opt.can.enter";
 
 }

@@ -58,7 +58,7 @@ public class SubCmdPrivate implements ISubCommand {
 
             if (p != null){
 
-                if(!PermissionsUtils.canEnter(island.getPermissionHolder().getEffectivePermission(uuid))){
+                if(!PermissionsUtils.canEnter(island.getPermissionHolder().getEffectivePermission(uuid)) && !p.hasPermission(PermissionNodes.OPTIONS_CAN_ENTER)){
                     p.sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
                     p.teleport(BetterSkyBlock.getInstance().getSpawn());
                 }

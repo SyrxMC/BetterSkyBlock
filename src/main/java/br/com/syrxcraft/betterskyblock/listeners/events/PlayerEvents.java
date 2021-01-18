@@ -44,7 +44,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     void onPlayerEnterIsland(IslandEnterEvent event){
         if(!event.isCancelled()){
-            if(!BetterSkyBlockAPI.getInstance().isIslandPublic(event.getIsland()) && !PermissionsUtils.canEnter(event.getIsland().permissionHolder.getEffectivePermission(event.getPlayer()))){
+            if(!BetterSkyBlockAPI.getInstance().isIslandPublic(event.getIsland()) && !PermissionsUtils.canEnter(event.getIsland().permissionHolder.getEffectivePermission(event.getPlayer())) && !event.getPlayer().hasPermission(PermissionNodes.OPTIONS_CAN_ENTER)){
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("§4§l ▶ §c Você não tem permissão para entrar nessa ilha!");
             }

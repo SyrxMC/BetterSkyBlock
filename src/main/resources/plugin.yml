@@ -70,7 +70,7 @@ permissions:
 
   betterskyblock.opt.set.biome.all:
     description: Permission to change the biome of your island ignoring biome restrictions.
-    default: true
+    default: op
 
   betterskyblock.opt.noteleportdelay:
     description: Permission to ignore the teleport delay.
@@ -87,6 +87,10 @@ permissions:
   betterskyblock.opt.noborder:
     description: Permission to remove world border from your island.
 
+  betterskyblock.opt.can.enter:
+    description: Permissions to bypass island private.
+    default: op
+
   betterskyblock.admin:
     description: Master permission.
     default: op
@@ -98,3 +102,4 @@ permissions:
       betterskyblock.opt.override: true
       betterskyblock.opt.leaveisland: true
       betterskyblock.opt.noborder: true
+      betterskyblock.opt.can.enter: true
