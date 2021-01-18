@@ -1,6 +1,7 @@
 package br.com.syrxcraft.betterskyblock.core.events;
 
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
+import com.griefdefender.api.claim.Claim;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -13,13 +14,15 @@ public class IslandExitEvent extends Event implements Cancellable {
     private final Island island;
     private final Player player;
     private final boolean isOnWilderness;
+    private final Claim newClaim;
 
     private boolean isCancelled = false;
 
-    public IslandExitEvent(Island island, Player player, boolean isOnWilderness) {
+    public IslandExitEvent(Island island, Player player, boolean isOnWilderness, Claim newClaim) {
         this.island = island;
         this.player = player;
         this.isOnWilderness = isOnWilderness;
+        this.newClaim = newClaim;
     }
 
     public Island getIsland() {
@@ -32,6 +35,10 @@ public class IslandExitEvent extends Event implements Cancellable {
 
     public boolean isOnWilderness() {
         return isOnWilderness;
+    }
+
+    public Claim getNewClaim() {
+        return newClaim;
     }
 
     @Override

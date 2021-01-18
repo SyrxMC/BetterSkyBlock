@@ -7,6 +7,7 @@ import br.com.syrxcraft.betterskyblock.core.events.IslandEnterEvent;
 import br.com.syrxcraft.betterskyblock.core.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.core.permission.PermissionsUtils;
 import br.com.syrxcraft.betterskyblock.utils.IslandUtils;
+import br.com.syrxcraft.betterskyblock.utils.Utils;
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
@@ -72,6 +73,10 @@ public class PlayerEvents implements Listener {
         if(event.isOnWilderness()){
 
             Player player = event.getPlayer();
+
+            if(!isIslandWorld(Utils.worldFromUUID(event.getNewClaim().getWorldUniqueId()))){
+                return;
+            }
 
             if(player.getLocation().getBlockY() <= 1) return;
 

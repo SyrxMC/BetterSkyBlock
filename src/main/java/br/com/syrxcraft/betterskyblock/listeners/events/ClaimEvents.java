@@ -142,7 +142,7 @@ public class ClaimEvents implements Listener {
 
                     if (island != null) {
 
-                        IslandExitEvent islandExitEvent = new IslandExitEvent(island, player, event.getEnterClaim().isWilderness());
+                        IslandExitEvent islandExitEvent = new IslandExitEvent(island, player, event.getEnterClaim().isWilderness(), event.getEnterClaim());
                         Bukkit.getPluginManager().callEvent(islandExitEvent);
 
                         if (islandExitEvent.isCancelled()) {
