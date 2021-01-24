@@ -6,7 +6,10 @@ import br.com.syrxcraft.betterskyblock.core.events.IslandExitEvent;
 import br.com.syrxcraft.betterskyblock.core.islands.Island;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 
 public class IslandBorderHandler implements Listener {
@@ -32,6 +35,13 @@ public class IslandBorderHandler implements Listener {
             Player player = event.getPlayer();
             IslandBorder.removeBorder(player);
 
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerJoin(PlayerJoinEvent event){
+        if(event.getPlayer().isOnline()){
+            IslandBorder.removeBorder(event.getPlayer());
         }
     }
 }

@@ -28,6 +28,8 @@ public class IslandBorder {
 
         if(borderMode != BorderMode.OFF){
 
+            if(hasBorder(player)) removeBorder(player);
+
             CraftPlayer craftPlayer = (CraftPlayer) player;
             PlayerConnection playerConnection = craftPlayer.getHandle().playerConnection;
 
