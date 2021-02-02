@@ -14,8 +14,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class IslandBorderHandler implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onIslandEnter(IslandEnterEvent event){
+
+        IslandBorder.removeBorder(event.getPlayer());
+
         if(event.getIsland() != null && event.getPlayer() != null){
 
             Player player = event.getPlayer();
@@ -26,7 +29,7 @@ public class IslandBorderHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onIslandExit(IslandExitEvent event){
         if(event.getPlayer() != null){
 
