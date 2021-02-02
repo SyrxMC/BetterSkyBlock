@@ -39,7 +39,6 @@ public class DataStore {
 	private DataStore(){
 
 		INSTANCE = this;
-
 		this.instance = BetterSkyBlock.getInstance();
 
 		if(instance.config().getDataProvider() == null)
@@ -176,5 +175,23 @@ public class DataStore {
 
 	public void saveAll(){
 		islands.forEach((uuid, island) -> updateIsland(island));
+	}
+
+	public void processSaveQueue(){
+
+		if (!service.isShutdown() && !service.isTerminated() && !updatedIslands.isEmpty()){
+			try {
+
+				boolean success = service.awaitTermination(30, TimeUnit.SECONDS);
+
+				if (!success){
+					BetterSkyBlock.getInstance().getLoggerHelper().error("Process queue task is coming out after 30 seconds.");
+					service.shutdown();
+				}
+
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -89,7 +89,7 @@ public class MySQLDataProvider implements IDataProvider {
     @Override
     public boolean onStop(BetterSkyBlock instance) {
 
-        instance.getDataStore().saveAll();
+        instance.getDataStore().processSaveQueue();
 
         return true;
     }
